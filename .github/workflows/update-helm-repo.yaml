@@ -12,7 +12,7 @@ jobs:
       - name: Chart Checkout
         uses: actions/checkout@v2
       - name: Install Helm
-        uses: azure/setup-helm@1.1
+        uses: azure/setup-helm@v3
         with:
           version: v3.11.0
       - name: Helm Repository Checkout
