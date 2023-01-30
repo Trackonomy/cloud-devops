@@ -27,13 +27,13 @@ image:
 podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext: {}
-   capabilities:
-     drop:
-     - ALL
-   readOnlyRootFilesystem: true
-   runAsNonRoot: true
-   runAsUser: node
+#securityContext: {}
+#   capabilities:
+#     drop:
+#     - ALL
+#   readOnlyRootFilesystem: true
+#   runAsNonRoot: true
+#   runAsUser: node
 
 service:
   type: ClusterIP
