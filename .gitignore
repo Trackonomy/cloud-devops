@@ -13,9 +13,9 @@ crash.*.log
 # password, private keys, and other secrets. These should not be part of version 
 # control as they are data points which are potentially sensitive and subject 
 # to change depending on the environment.
-sandbox-credentials.tfvars
+local-*-credentials.tfvars
 *.tfvars.json
-**/backends/sandbox.conf
+**/backends/local-*.conf
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
