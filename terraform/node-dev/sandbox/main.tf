@@ -18,82 +18,153 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "main-rg" {
-  name     = var.rg_name
-  location = var.rg_loc
+  name     = var.project_name
+  location = var.project_loc
+
+  tags = {
+    environment = "Sandbox"
+  }
+}
+
+resource "azurerm_network_security_rule" "openports-rules" {
+  for_each = var.accepted_ports
+  name                       = "Port_${each.key}"
+  priority                   =  each.value
+  direction                  = "Inbound"
+  access                     = "Allow"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  source_address_prefix      = "*"
+  destination_address_prefix = "*"
+  destination_port_range    = each.key
+  resource_group_name = azurerm_resource_group.main-rg.name
+  network_security_group_name = azurerm_network_security_group.main-nsg.name
 }
 
 # firewall settings
 resource "azurerm_network_security_group" "main-nsg" {
-  name                = "trk-ppe-sbx-nsg"
+  name                = "${var.project_name}-nsg"
   location            = azurerm_resource_group.main-rg.location
   resource_group_name = azurerm_resource_group.main-rg.name
+  # CORS policy
 
-  security_rule {
-    name                       = "Port_inbppe"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-    destination_port_ranges    = [ "8098","8191", "8491", "9091", "9111", "9000" ]
-
-  }
-
-  security_rule {
-    name                       = "Port_9000"
-    priority                   = 110
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-    destination_port_range     = "9000"
-  }
-
-  security_rule {
-    name                       = "Port_9003"
-    priority                   = 120
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-    destination_port_range     = "9003"
+  tags = {
+    environment = "Sandbox"
   }
 }
 
 resource "azurerm_virtual_network" "main-vnet" {
-  name = "trk-ppe-sbx-vnet"
-  location = azurerm_resource_group.main-rg.location
+  name                = "${var.project_name}-vnet"
+  location            = azurerm_resource_group.main-rg.location
   resource_group_name = azurerm_resource_group.main-rg.name
-  address_space = ["10.0.0.0/16"]
-  dns_servers = ["10.0.1.4"]
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.1.4"]
 
-  subnet {
-    name = "trk-ppe-sbx-sub01"
-    address_prefix = "10.0.1.0/24"
-    security_group = azurerm_network_security_group.main-nsg.id
+  tags = {
+    environment = "Sandbox"
   }
 }
 
+resource "azurerm_subnet" "main-subnet" {
+  name                 = "${var.project_name}-sub01"
+  address_prefixes     = ["10.0.2.0/24"]
+  resource_group_name  = azurerm_resource_group.main-rg.name
+  virtual_network_name = azurerm_virtual_network.main-vnet.name
+}
+
 resource "azurerm_public_ip" "main-pubip" {
-  name = "trk-ppe-sbx-PublicIP"
-  location = azurerm_resource_group.main-rg.location
+  name                = "${var.project_name}-publicip"
+  location            = azurerm_resource_group.main-rg.location
   resource_group_name = azurerm_resource_group.main-rg.name
-  allocation_method = "Static"
+  allocation_method   = "Static"
+
+  tags = {
+    environment = "Sandbox"
+  }
 }
 
 resource "azurerm_lb" "main-lb" {
-  name = "trk-ppe-sbx-LoadBalancer"
-  location = azurerm_resource_group.main-rg.location
+  name                = "${var.project_name}-loadbalancer"
+  location            = azurerm_resource_group.main-rg.location
   resource_group_name = azurerm_resource_group.main-rg.name
 
   frontend_ip_configuration {
-    name = "PublicIPAddress"
+    name                 = "LoadBalancer-PublicIPAddress"
     public_ip_address_id = azurerm_public_ip.main-pubip.id
+  }
+}
+
+resource "azurerm_lb_backend_address_pool" "main-bpepool" {
+  name                = "LoadBalancer-BackendAddressPool"
+  #resource_group_name = azurerm_resource_group.main-rg.name
+  loadbalancer_id     = azurerm_lb.main-lb.id
+}
+
+resource "azurerm_lb_rule" "main-lb-rule" {
+  loadbalancer_id                = azurerm_lb.main-lb.id
+  for_each                       = var.accepted_ports
+  name                           = "${var.project_name}-lbrule-${each.key}"
+  protocol                       = "Tcp"
+  frontend_port                  = each.key
+  backend_port                   = each.key
+  frontend_ip_configuration_name = "LoadBalancer-PublicIPAddress"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.main-bpepool.id]
+}
+
+resource "azurerm_virtual_machine_scale_set" "main-scaleset" {
+  name                = "${var.project_name}-scaleset"
+  location            = azurerm_resource_group.main-rg.location
+  resource_group_name = azurerm_resource_group.main-rg.name
+  upgrade_policy_mode = "Manual"
+
+  os_profile {
+    computer_name_prefix = "vm"
+    admin_username       = "azureadm"
+  }
+
+  os_profile_linux_config {
+    disable_password_authentication = true
+    ssh_keys {
+      path     = "/home/azureadm/.ssh/authorized_keys"
+      key_data = file("id_rsa.pub")
+    }
+  }
+  network_profile {
+    name    = "${var.project_name}-NetworkProfile"
+    primary = true
+
+    ip_configuration {
+      name      = "${var.project_name}-ipconfiguration"
+      primary   = true
+      subnet_id = azurerm_subnet.main-subnet.id
+      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.main-bpepool.id]
+    }
+  }
+
+  storage_profile_os_disk {
+    name = ""
+    caching = "ReadWrite"
+    create_option = "FromImage"
+    managed_disk_type = "Standard_LRS"
+  }
+
+  storage_profile_data_disk {
+    lun = 0
+    caching = "ReadWrite"
+    create_option = "Empty"
+    disk_size_gb = 10
+  }
+  
+  storage_profile_image_reference {
+    publisher = "Canonical"
+    offer = "UbuntuServer"
+    sku = "16.04-LTS"
+    version = "latest"
+  }
+
+  sku {
+    name = "Standard_F2"
+    tier = "Standard"
+    capacity = 1
   }
 }

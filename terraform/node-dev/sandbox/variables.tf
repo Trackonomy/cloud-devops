@@ -6,15 +6,17 @@ variable "tenant_id" {}
 variable "client_id" {}
 variable "client_secret" {}
 
-variable "rg_name" {
-  description = "Resource group which we would like to use"
+variable "project_name" {
+  description = "What name prefix will be used in all resources during their creation."
   type = string
-  default = ""
 }
 
-variable "rg_loc" {
-  description = "Resource group location which we would like to use"
+variable "project_loc" {
+  description = "Main region of our project"
   type = string
-  default = ""
 }
 
+variable "accepted_ports" {
+  description = "Ports which we would like to open. Structure port = priority"
+  type = map(string)
+}
