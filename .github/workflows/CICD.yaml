@@ -11,8 +11,10 @@ on:
 jobs:
   inject_secrets:
     runs-on: ubuntu-latest
+    name: Inject tf secrets
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repo
+      uses: actions/checkout@v2
 
     - name: Inject secrets
       env:
@@ -20,6 +22,6 @@ jobs:
         TF_VARS_FILE: ${{ env.TFVARS }}
       run: |
         echo $TF_BACKEND_CONF_FILE | base64 --decode > backend.conf
-        cp backend.conf cloud-devops/terraform/image_gallery/backends/backend.conf
-        cp backend.conf cloud-devops/terraform/node-dev/backends/backend.conf
+        cp backend.conf /home/runner/work/cloud-devops/cloud-devops/cloud-devops/terraform/image_gallery/backends/backend.conf
+        cp backend.conf /home/runner/work/cloud-devops/cloud-devops/cloud-devops/terraform/node-dev/backends/backend.conf
         cat cloud-devops/terraform/node-dev/backends/backend.conf 
