@@ -24,4 +24,4 @@ jobs:
         echo $TF_BACKEND_CONF_FILE | base64 --decode > backend.conf
         cp backend.conf /home/runner/work/cloud-devops/cloud-devops/terraform/image_gallery/backends/backend.conf
         cp backend.conf /home/runner/work/cloud-devops/cloud-devops/terraform/node-dev/backends/backend.conf
-        cat cloud-devops/terraform/node-dev/backends/backend.conf 
+        cat /home/runner/work/cloud-devops/cloud-devops/terraform/node-dev/backends/backend.conf 
