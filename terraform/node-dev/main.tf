@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     azurerm = {
-        source  = "hashicorp/azurerm"
-        version = "3.41.0"
+      source  = "hashicorp/azurerm"
+      version = "3.41.0"
     }
   }
   # can be added by passing specific .conf file while running
@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "azurerm" {
-  features{}
+  features {}
   subscription_id = var.subscription_id
   tenant_id       = var.tenant_id
   client_id       = var.client_id
@@ -25,17 +25,17 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_network_security_rule" "openports-rules" {
-  for_each = var.accepted_ports
-  name                       = "Port_${each.key}"
-  priority                   =  each.value
-  direction                  = "Inbound"
-  access                     = "Allow"
-  protocol                   = "Tcp"
-  source_port_range          = "*"
-  source_address_prefix      = "*"
-  destination_address_prefix = "*"
-  destination_port_range    = each.key
-  resource_group_name = azurerm_resource_group.rg.name
+  for_each                    = var.accepted_ports
+  name                        = "Port_${each.key}"
+  priority                    = each.value
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  destination_port_range      = each.key
+  resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
 
@@ -89,9 +89,9 @@ resource "azurerm_lb" "lb" {
 }
 
 resource "azurerm_lb_backend_address_pool" "main-bpepool" {
-  name                = "LoadBalancer-BackendAddressPool"
+  name = "LoadBalancer-BackendAddressPool"
   #resource_group_name = azurerm_resource_group.rg.name
-  loadbalancer_id     = azurerm_lb.lb.id
+  loadbalancer_id = azurerm_lb.lb.id
 }
 
 resource "azurerm_lb_rule" "lb-rule" {
@@ -106,16 +106,16 @@ resource "azurerm_lb_rule" "lb-rule" {
 }
 
 resource "azurerm_shared_image_gallery" "imagegallery" {
-  name = var.image_gallery_name
+  name                = var.image_gallery_name
   resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
-  description = "Where main node-dev image definition is stored"
+  location            = azurerm_resource_group.rg.location
+  description         = "Where main node-dev image definition is stored"
 
   tags = var.tags
 }
 
 
-data "azurerm_shared_image_version" "main-image"{
+data "azurerm_shared_image_version" "main-image" {
   name                = var.vmss_config.image_version
   image_name          = var.vmss_config.image_name
   gallery_name        = azurerm_shared_image_gallery.imagegallery.name
@@ -139,7 +139,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   }
 
   source_image_id = data.azurerm_shared_image_version.main-image.id
-  
+
   os_disk {
     caching              = "ReadOnly"
     storage_account_type = "Standard_LRS"
