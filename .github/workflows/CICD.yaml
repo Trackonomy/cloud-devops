@@ -49,24 +49,27 @@ jobs:
       run: cd ./image_gallery && terraform plan -no-color
       continue-on-error: true
     - uses: actions/github-script@v6
-      script: |
-        const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-        #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-        #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-        <details><summary>Validation Output</summary>
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        script: |
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          <details><summary>Validation Output</summary>
 
-        \`\`\`\n
-        ${{ steps.validate.outputs.stdout }}
-        \`\`\`
+          \`\`\`\n
+          ${{ steps.validate.outputs.stdout }}
+          \`\`\`
 
-        </details>
+          </details>
 
-        #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-        <details><summary>Show Plan</summary>
+          <details><summary>Show Plan</summary>
 
-        \`\`\`\n
-        ${process.env.PLAN}
-        \`\`\`
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
 
-        </details>
+          </details>
