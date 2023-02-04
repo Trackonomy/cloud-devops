@@ -7,7 +7,10 @@ on:
         required: true
       environment:
         type: environment
-
+defaults:
+  run:
+    shell: bash
+    working-directory: terraform
 jobs:
   inject_secrets:
     runs-on: ubuntu-latest
@@ -20,8 +23,50 @@ jobs:
       env:
         TF_BACKEND_CONF_FILE: ${{ secrets.TFBACKEND }}
         TF_VARS_FILE: ${{ env.TFVARS }}
+        #WORK_DIR: /home/runner/work/cloud-devops/cloud-devops/terraform
       run: |
         echo $TF_BACKEND_CONF_FILE | base64 --decode > backend.conf
-        cp backend.conf /home/runner/work/cloud-devops/cloud-devops/terraform/image_gallery/backends/backend.conf
-        cp backend.conf /home/runner/work/cloud-devops/cloud-devops/terraform/node-dev/backends/backend.conf
-        echo "file=$(cat /home/runner/work/cloud-devops/cloud-devops/terraform/node-dev/backends/backend.conf)" >> $GITHUB_OUTPUT
+        cp backend.conf ./image_gallery/backends/backend.conf
+        cp backend.conf ./node-dev/backends/backend.conf
+        echo $TF_VARS_FILE > terraform.tfvars
+        cp terraform.tfvars ./image_gallery/terraform.tfvars
+        cp terraform.tfvars ./node-dev/terraform.tfvars
+    
+    - name: Init terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.3.7
+    - name: Terraform Init
+      id: init
+      run: cd ./image_gallery && terraform init --backend-config=./backend/
+
+    - name: Terraform Validate
+      id: validate
+      run: cd ./image_gallery && terraform validate -no-color
+
+    - name: Terraform Plan
+      id: plan
+      run: cd ./image_gallery && terraform plan -no-color
+      continue-on-error: true
+    - uses: actions/github-script@v6
+      script: |
+      const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+      #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+      #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+      <details><summary>Validation Output</summary>
+
+      \`\`\`\n
+      ${{ steps.validate.outputs.stdout }}
+      \`\`\`
+
+      </details>
+
+      #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+      <details><summary>Show Plan</summary>
+
+      \`\`\`\n
+      ${process.env.PLAN}
+      \`\`\`
+
+      </details>
