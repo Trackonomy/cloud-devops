@@ -32,38 +32,26 @@ jobs:
         echo "$TFBACKEND" | base64 --decode > $WORK_DIR/node-dev/backends/backend.conf
         echo "$TFVARS" > $WORK_DIR/image_gallery/terraform.tfvars
         echo "$TFVARS" > $WORK_DIR/node-dev/terraform.tfvars
-    - name: test cat
-      id: cat 
-      env:
-        $TEXT: ${{ steps.cat.outputs.text }}
-      uses: pCYSl5EDgo/cat@master
-      with:
-        path: /tmp/terraform/image_gallery/backends/backend.conf
-    - run: ls -la /tmp/terraform/image_gallery/backends && echo $TEXT
     - name: Setup terraform
       env:
-        TF_LOG: trace
         WORK_DIR: /tmp/terraform/image_gallery
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.3.7
     - name: Terraform Init
       env:
-        TF_LOG: trace
         WORK_DIR: /tmp/terraform/image_gallery
       id: init
       run: cd $WORK_DIR && terraform init --backend-config=$WORK_DIR/backends/backend.conf
 
     - name: Terraform Validate
       env:
-        TF_LOG: trace
         WORK_DIR: /tmp/terraform/image_gallery
       id: validate
       run: cd $WORK_DIR && terraform validate -no-color
 
     - name: Terraform Plan
       env:
-        TF_LOG: trace
         WORK_DIR: /tmp/terraform/image_gallery
       id: plan
       run: terraform plan -no-color
@@ -75,7 +63,7 @@ jobs:
         #WORK_DIR: /tmp/terraform/image_gallery
       with:
         script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          const output = `\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
           #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
           <details><summary>Validation Output</summary>
