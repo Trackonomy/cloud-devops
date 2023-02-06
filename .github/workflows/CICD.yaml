@@ -31,11 +31,10 @@ jobs:
     - name: test cat
       id: cat 
       env:
-        WORK_DIR: /tmp/terraform/image_gallery
         $TEXT: ${{ steps.cat.outputs.text }}
       uses: pCYSl5EDgo/cat@master
       with:
-        path: $WORK_DIR/backends/backend.conf
+        path: /tmp/terraform/image_gallery/backends/backend.conf
     - run: echo $TEXT
     - name: Setup terraform
       env:
