@@ -15,7 +15,7 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
     - name: Move terraform folder
-      run: mkdir -p /tmp/terraform && cp -R terraform/* /tmp/terraform
+      run: mkdir -p /tmp/terraform && cp -Rv terraform/* /tmp/terraform
   inject_secrets:
     needs: checkout_repo
     defaults:
