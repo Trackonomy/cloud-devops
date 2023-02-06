@@ -22,10 +22,10 @@ jobs:
         TF_VARS_FILE: ${{ env.TFVARS }}
         WORK_DIR: /tmp/terraform
       run: |
-        echo $TF_BACKEND_CONF_FILE | base64 --decode > $WORK_DIR/image_gallery/backends/backend.conf
-        echo $TF_BACKEND_CONF_FILE | base64 --decode > $WORK_DIR/node-dev/backends/backend.conf
-        echo $TF_VARS_FILE > $WORK_DIR/image_gallery/terraform.tfvars
-        echo $TF_VARS_FILE > $WORK_DIR/node-dev/terraform.tfvars
+        echo "$TF_BACKEND_CONF_FILE" | base64 --decode > $WORK_DIR/image_gallery/backends/backend.conf
+        echo "$TF_BACKEND_CONF_FILE" | base64 --decode > $WORK_DIR/node-dev/backends/backend.conf
+        echo "$TF_VARS_FILE" > $WORK_DIR/image_gallery/terraform.tfvars
+        echo "$TF_VARS_FILE" > $WORK_DIR/node-dev/terraform.tfvars
     - name: test cat
       id: cat 
       env:
