@@ -8,9 +8,9 @@ on:
       environment:
         type: environment
 jobs:
-  deploy_node_dev:
+  deploy_image_gallery:
     runs-on: ubuntu-latest
-    name: Checkout github repo
+    name: Deploy_image_gallery
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
         echo $TF_VARS_FILE > terraform.tfvars
         cp terraform.tfvars $WORK_DIR/image_gallery/terraform.tfvars
         cp terraform.tfvars $WORK_DIR/node-dev/terraform.tfvars
-    - name: Init terraform
+    - name: Setup terraform
       env:
         TF_LOG: trace
         WORK_DIR: /tmp/terraform/image_gallery
@@ -40,7 +40,7 @@ jobs:
         TF_LOG: trace
         WORK_DIR: /tmp/terraform/image_gallery
       id: init
-      run: cd $WORK_DIR && terraform init --backend-config=./backends/backend.conf
+      run: cd $WORK_DIR && terraform init --backend-config=$WORK_DIR/backends/backend.conf
 
     - name: Terraform Validate
       env:
