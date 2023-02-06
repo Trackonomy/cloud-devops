@@ -28,6 +28,15 @@ jobs:
         echo $TF_VARS_FILE > terraform.tfvars
         cp terraform.tfvars $WORK_DIR/image_gallery/terraform.tfvars
         cp terraform.tfvars $WORK_DIR/node-dev/terraform.tfvars
+    - name: test cat
+      id: cat 
+      env:
+        WORK_DIR: /tmp/terraform/image_gallery
+        $TEXT: ${{ steps.cat.outputs.text }}
+      uses: pCYSl5EDgo/cat@master
+      with:
+        path: $WORK_DIR/backends/backend.conf
+      run: echo $TEXT
     - name: Setup terraform
       env:
         TF_LOG: trace
