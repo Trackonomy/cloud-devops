@@ -14,12 +14,14 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
+    - name: Move terraform folder
+      run: cp -r terraform /tmp/terraform
   inject_secrets:
     needs: checkout_repo
     defaults:
       run:
         shell: bash
-        working-directory: terraform
+        working-directory: /tmp/terraform
     runs-on: ubuntu-latest
     name: Inject terraform secrets
     steps:
@@ -42,7 +44,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: terraform/image_gallery
+        working-directory: /tmp/terraform/image_gallery
     steps:
     - name: Init terraform
       env:
@@ -99,3 +101,7 @@ jobs:
           \`\`\`
 
           </details>
+  cleanup:
+    runs-on: ubuntu-latest
+    name: Cleanup
+    run: rm -r /tmp/terraform
