@@ -36,7 +36,7 @@ jobs:
       uses: pCYSl5EDgo/cat@master
       with:
         path: $WORK_DIR/backends/backend.conf
-      run: echo $TEXT
+    - run: echo $TEXT
     - name: Setup terraform
       env:
         TF_LOG: trace
