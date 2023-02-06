@@ -58,10 +58,9 @@ jobs:
       continue-on-error: true
     - uses: actions/github-script@v6
       env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         TF_LOG: trace
         WORK_DIR: /tmp/terraform/inage_gallery
-      env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
         script: |
           const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
