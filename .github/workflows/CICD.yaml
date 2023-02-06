@@ -15,7 +15,7 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
     - name: Move terraform folder
-      run: cp -r terraform /tmp/terraform
+      run: cp -R terraform /tmp/terraform
   inject_secrets:
     needs: checkout_repo
     defaults:
@@ -102,6 +102,7 @@ jobs:
 
           </details>
   cleanup:
+    needs: deploy_image_gallery
     runs-on: ubuntu-latest
     name: Cleanup
     steps:
