@@ -19,14 +19,13 @@ jobs:
       run: mkdir -p /tmp/terraform && cp -Rv terraform/* /tmp/terraform
     - name: Inject secrets
       env:
-        TFBACKEND: '${{ secrets.TFBACKEND }}'
-        TFVARS: '${{ env.TFVARS }}'
+        #TFVARS: '${{ env.TFVARS }}'
         WORK_DIR: /tmp/terraform
       run: |
-        echo "$TFBACKEND" | base64 --decode > $WORK_DIR/image_gallery/backends/backend.conf
-        echo "$TFBACKEND" | base64 --decode > $WORK_DIR/node-dev/backends/backend.conf
-        echo "$TFVARS" > $WORK_DIR/image_gallery/terraform.tfvars
-        echo "$TFVARS" > $WORK_DIR/node-dev/terraform.tfvars
+        echo ${{ secrets.TFBACKEND }} | base64 --decode > $WORK_DIR/image_gallery/backends/backend.conf
+        echo ${{ secrets.TFBACKEND }} | base64 --decode > $WORK_DIR/node-dev/backends/backend.conf
+        echo ${{ env.TFVARS }} > $WORK_DIR/image_gallery/terraform.tfvars
+        echo ${{ env.TFVARS }} > $WORK_DIR/node-dev/terraform.tfvars
     - name: test cat
       id: cat 
       env:
