@@ -10,15 +10,19 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: terraform
+#    working-directory: terraform
 jobs:
-  deploy_node_dev:
+  checkout_repo:
     runs-on: ubuntu-latest
-    name: Deploy node-dev
+    name: Checkout github repo
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
-
+  deploy_node_dev:
+    runs-on: ubuntu-latest
+    name: Deploy node-dev
+    working-directory: terraform
+    steps:
     - name: Inject secrets
       env:
         TF_BACKEND_CONF_FILE: ${{ secrets.TFBACKEND }}
