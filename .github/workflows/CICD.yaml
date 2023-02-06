@@ -10,8 +10,10 @@ on:
     secrets:
       TFBACKEND:
         required: true
-      TFVARS:
-        required: true
+
+env:
+  TFVARS: ${{ vars.TFVARS }}
+
 jobs:
   deploy_image_gallery:
     environment: ${{ inputs.environment }}
@@ -25,7 +27,7 @@ jobs:
     - name: Inject secrets
       env:
         TFBACKEND: '${{ secrets.TFBACKEND }}'
-        TFVARS: '${{ secrets.TFVARS }}'
+        #TFVARS: '${{ secrets.TFVARS }}'
         WORK_DIR: /tmp/terraform
       run: |
         echo "$TFBACKEND" | base64 --decode > $WORK_DIR/image_gallery/backends/backend.conf
@@ -59,7 +61,7 @@ jobs:
     - uses: actions/github-script@v6
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        #TF_LOG: trace
+        TF_LOG: debug
         #WORK_DIR: /tmp/terraform/image_gallery
       with:
         script: |
