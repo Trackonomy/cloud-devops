@@ -14,13 +14,14 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
-  deploy_node_dev:
+  inject_secrets:
+    needs: checkout_repo
     defaults:
       run:
         shell: bash
-      working-directory: terraform
+        working-directory: terraform
     runs-on: ubuntu-latest
-    name: Deploy node-dev
+    name: Inject terraform secrets
     steps:
     - name: Inject secrets
       env:
@@ -34,7 +35,15 @@ jobs:
         echo $TF_VARS_FILE > terraform.tfvars
         cp terraform.tfvars ./image_gallery/terraform.tfvars
         cp terraform.tfvars ./node-dev/terraform.tfvars
-    
+  deploy_image_gallery:
+    needs: inject_secrets
+    name: Deploy image gallery
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: terraform/image_gallery
+    steps:
     - name: Init terraform
       env:
         TF_LOG: trace
@@ -55,15 +64,15 @@ jobs:
           ${{ runner.os }}-terraform-
     - name: Terraform Init
       id: init
-      run: cd ./image_gallery && terraform init --backend-config=./backends/backend.conf
+      run: terraform init --backend-config=./backends/backend.conf
 
     - name: Terraform Validate
       id: validate
-      run: cd ./image_gallery && terraform validate -no-color
+      run: terraform validate -no-color
 
     - name: Terraform Plan
       id: plan
-      run: cd ./image_gallery && terraform plan -no-color
+      run: terraform plan -no-color
       continue-on-error: true
     - uses: actions/github-script@v6
       env:
