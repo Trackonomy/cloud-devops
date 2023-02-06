@@ -54,7 +54,7 @@ jobs:
       env:
         WORK_DIR: /tmp/terraform/image_gallery
       id: plan
-      run: terraform plan -no-color
+      run: cd $WORK_DIR && terraform plan -no-color
       continue-on-error: true
     - uses: actions/github-script@v6
       env:
