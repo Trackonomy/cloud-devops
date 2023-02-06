@@ -7,10 +7,6 @@ on:
         required: true
       environment:
         type: environment
-defaults:
-  run:
-    shell: bash
-#    working-directory: terraform
 jobs:
   checkout_repo:
     runs-on: ubuntu-latest
@@ -19,9 +15,12 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
   deploy_node_dev:
+    defaults:
+      run:
+        shell: bash
+      working-directory: terraform
     runs-on: ubuntu-latest
     name: Deploy node-dev
-    working-directory: terraform
     steps:
     - name: Inject secrets
       env:
