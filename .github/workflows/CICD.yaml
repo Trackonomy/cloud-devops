@@ -9,6 +9,7 @@ on:
         type: environment
 jobs:
   deploy_image_gallery:
+    environment: on.workflow_dispatch.inputs.environment
     runs-on: ubuntu-latest
     name: Deploy_image_gallery
     steps:
