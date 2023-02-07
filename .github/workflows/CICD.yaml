@@ -33,8 +33,8 @@ jobs:
       run: |
         echo "$TFBACKEND" | base64 --decode > $WORK_DIR/image_gallery/backends/backend.conf
         echo "$TFBACKEND" | base64 --decode > $WORK_DIR/node-dev/backends/backend.conf
-        echo "$TFSECRETVARS" | $WORK_DIR/image_gallery/.auto.tfvars
-        echo "$TFSECRETVARS" | $WORK_DIR/node-dev/.auto.tfvars
+        echo "$TFSECRETVARS" > $WORK_DIR/image_gallery/.auto.tfvars
+        echo "$TFSECRETVARS" > $WORK_DIR/node-dev/.auto.tfvars
         echo "$TFVARS" > $WORK_DIR/image_gallery/terraform.tfvars
         echo "$TFVARS" > $WORK_DIR/node-dev/terraform.tfvars
     - name: Setup terraform
@@ -58,35 +58,8 @@ jobs:
     - name: Terraform Plan
       env:
         WORK_DIR: /tmp/terraform/image_gallery
-      id: plan
-      run: cd $WORK_DIR && terraform plan -no-color
+      id: apply
+      run: cd $WORK_DIR && terraform apply --auto-approve -no-color
       continue-on-error: true
-    - uses: actions/github-script@v6
-      env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        TF_LOG: debug
-        #WORK_DIR: /tmp/terraform/image_gallery
-      with:
-        script: |
-          const output = `\`
-          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-          <details><summary>Validation Output</summary>
-
-          \`\`\`\n
-          ${{ steps.validate.outputs.stdout }}
-          \`\`\`
-
-          </details>
-
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-
-          <details><summary>Show Plan</summary>
-
-          \`\`\`\n
-          ${process.env.PLAN}
-          \`\`\`
-
-          </details>
     - name: Clean terraform directory
       run: rm -r /tmp/terraform
