@@ -19,7 +19,7 @@ jobs:
   deploy_image_gallery:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    name: Deploy_image_gallery
+    name: Deploy image gallery
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
@@ -31,8 +31,8 @@ jobs:
         TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
         WORK_DIR: /tmp/terraform
       run: |
-        echo "$TFBACKEND" | base64 --decode > $WORK_DIR/image_gallery/backends/backend.conf
-        echo "$TFBACKEND" | base64 --decode > $WORK_DIR/node-dev/backends/backend.conf
+        echo "$TFBACKEND" > $WORK_DIR/image_gallery/backends/backend.conf
+        echo "$TFBACKEND" > $WORK_DIR/node-dev/backends/backend.conf
         echo "$TFSECRETVARS" > $WORK_DIR/image_gallery/.auto.tfvars
         echo "$TFSECRETVARS" > $WORK_DIR/node-dev/.auto.tfvars
         echo "$TFVARS" > $WORK_DIR/image_gallery/terraform.tfvars
@@ -63,3 +63,69 @@ jobs:
       continue-on-error: true
     - name: Clean terraform directory
       run: rm -r /tmp/terraform
+  
+  create_image_build:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    name: Build virtual machine
+    steps:
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Checkout node-dev repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          repository: Trackonomy/node-dev
+          ref: ${{ inputs.branch_name }}
+          path: node-dev
+      - name: Package node-dev
+        uses: actions/upload-artifact@v2
+        with:
+          name: Packaging
+          path: node-dev
+      - name: Parse needed configuration
+        env:
+          TFBACKEND: '${{ secrets.TFBACKEND }}'
+          TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
+        run: |
+          echo "$TFBACKEND" > backend.conf
+          echo "$TFSECRETVARS" > .auto.tfvars
+          echo "$TFVARS" > terraform.tfvars
+          export PROJECT_LOC=$(awk '/project_loc/ {print $3}' terraform.tfvars)
+          echo "::set-env name=PROJECT_LOC::$PROJECT_LOC"
+          export PROJECT_NAME=$(awk '/project_name/ {print $3}' terraform.tfvars)
+          echo "::set-env name=PROJECT_NAME::$PROJECT_LOC"
+          export SUB_ID=$(awk '/subscription_id/ {print $3}' .auto.tfvars)
+          echo "::set-env name=SUB_ID::$SUB_ID"
+          export IM_GAL_ID=$(awk '/image_gallery_name/ {print $3}' terraform.tfvars)
+          echo "::set-env name=IM_GAL_ID::$IM_GAI_ID"
+          export IM_NAME=$(awk '/image_name/ {print $3}' terraform.tfvars | tr -d ",")
+          echo "::set-env name=IM_NAME::$IM_NAME"
+          export IM_VERSION=$(awk '/image_version/ {print $3}' terraform.tfvars | tr -d ",")
+          echo "::set-env name=IM_VERSION::$IM_VERSION"
+      - name: Create App Baked Image
+        id: ImageBuilder
+        uses: azure/build-vm-image@v0
+        with:
+          location: '${{ PROJECT_LOC }}'
+          resource-group-name: '${{ PROJECT_NAME }}'
+          managed-identity: '{Identity}' # Managed identity
+          source-os-type: 'linux'
+          source-image-type: 'platformImage'
+          source-image: Canonical:UbuntuServer:18.04-LTS:latest #unique identifier of source image
+          dist-type: 'SharedImageGallery'
+          dist-resource-id: '/subscriptions/${{ SUB_ID }}/resourceGroups/${{ PROJECT_NAME }}/providers/Microsoft.Compute/galleries/${{ IM_GAL_ID }}/images/${{ IM_NAME }}/versions/${{ IM_VERSION }}'
+          dist-location: '${{ PROJECT_LOC }}' 
+          customizer-script: |
+            sudo mkdir /apis
+            sudo cp -r node-dev/* /apis/node-dev/*
+            cd /apis/node-dev
+            npm install
+            pm2 flush
+            pm2 restart all
+            pm2 save
+            pm2 startup
+            pm2 save
+        
