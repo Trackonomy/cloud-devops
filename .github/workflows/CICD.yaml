@@ -95,30 +95,31 @@ jobs:
           echo "$TFSECRETVARS" > .auto.tfvars
           echo "$TFVARS" > terraform.tfvars
           export PROJECT_LOC=$(awk '/project_loc/ {print $3}' terraform.tfvars)
-          echo "::set-env name=PROJECT_LOC::$PROJECT_LOC"
+          echo "PROJECT_LOC=$(echo $PROJECT_LOC)" >> $GITHUB_ENV
           export PROJECT_NAME=$(awk '/project_name/ {print $3}' terraform.tfvars)
-          echo "::set-env name=PROJECT_NAME::$PROJECT_NAME"
+          echo "PROJECT_NAME=$(echo $PROJECT_NAME)" >> $GITHUB_ENV
           export SUB_ID=$(awk '/subscription_id/ {print $3}' .auto.tfvars)
-          echo "::set-env name=SUB_ID::$SUB_ID"
+          echo "SUB_ID=$(echo $SUB_ID)" >> $GITHUB_ENV
           export IM_GAL_ID=$(awk '/image_gallery_name/ {print $3}' terraform.tfvars)
-          echo "::set-env name=IM_GAL_ID::$IM_GAI_ID"
+          echo "IM_GAL_ID=$(echo $IM_GAL_ID)" >> $GITHUB_ENV
           export IM_NAME=$(awk '/image_name/ {print $3}' terraform.tfvars | tr -d ",")
-          echo "::set-env name=IM_NAME::$IM_NAME"
+          echo "IM_NAME=$(echo $IM_NAME)" >> $GITHUB_ENV
           export IM_VERSION=$(awk '/image_version/ {print $3}' terraform.tfvars | tr -d ",")
-          echo "::set-env name=IM_VERSION::$IM_VERSION"
+          echo "IM_VERSION=$(echo $IM_VERSION)" >> GITHUB_ENV
+          rm backend.conf .auto.tfvars terraform.tfvars
       - name: Create App Baked Image
         id: ImageBuilder
         uses: azure/build-vm-image@v0
         with:
-          location: '${{ PROJECT_LOC }}'
-          resource-group-name: '${{ PROJECT_NAME }}'
+          location: '${{ env.PROJECT_LOC }}'
+          resource-group-name: '${{ env.PROJECT_NAME }}'
           managed-identity: '{Identity}' # Managed identity
           source-os-type: 'linux'
           source-image-type: 'platformImage'
           source-image: Canonical:UbuntuServer:18.04-LTS:latest #unique identifier of source image
           dist-type: 'SharedImageGallery'
-          dist-resource-id: '/subscriptions/${{ SUB_ID }}/resourceGroups/${{ PROJECT_NAME }}/providers/Microsoft.Compute/galleries/${{ IM_GAL_ID }}/images/${{ IM_NAME }}/versions/${{ IM_VERSION }}'
-          dist-location: '${{ PROJECT_LOC }}' 
+          dist-resource-id: '/subscriptions/${{ env.SUB_ID }}/resourceGroups/${{ env.PROJECT_NAME }}/providers/Microsoft.Compute/galleries/${{ env.IM_GAL_ID }}/images/${{ env.IM_NAME }}/versions/${{ env.IM_VERSION }}'
+          dist-location: '${{ env.PROJECT_LOC }}' 
           customizer-script: |
             sudo mkdir /apis
             sudo cp -r node-dev/* /apis/node-dev/*
