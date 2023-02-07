@@ -33,8 +33,8 @@ jobs:
       run: |
         echo "$TFBACKEND" | base64 --decode > $WORK_DIR/image_gallery/backends/backend.conf
         echo "$TFBACKEND" | base64 --decode > $WORK_DIR/node-dev/backends/backend.conf
-        echo "$TFSECRETVARS" | $WORK_DIR/image_gallery/.auto.tfvars
-        echo "$TFSECRETVARS" | $WORK_DIR/node-dev/.auto.tfvars
+        echo "$TFSECRETVARS" > $WORK_DIR/image_gallery/.auto.tfvars
+        echo "$TFSECRETVARS" > $WORK_DIR/node-dev/.auto.tfvars
         echo "$TFVARS" > $WORK_DIR/image_gallery/terraform.tfvars
         echo "$TFVARS" > $WORK_DIR/node-dev/terraform.tfvars
     - name: Setup terraform
