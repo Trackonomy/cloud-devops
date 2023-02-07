@@ -65,6 +65,7 @@ jobs:
       run: rm -r /tmp/terraform
   
   create_image_build:
+    needs: deploy_image_gallery
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     name: Build virtual machine
@@ -96,7 +97,7 @@ jobs:
           export PROJECT_LOC=$(awk '/project_loc/ {print $3}' terraform.tfvars)
           echo "::set-env name=PROJECT_LOC::$PROJECT_LOC"
           export PROJECT_NAME=$(awk '/project_name/ {print $3}' terraform.tfvars)
-          echo "::set-env name=PROJECT_NAME::$PROJECT_LOC"
+          echo "::set-env name=PROJECT_NAME::$PROJECT_NAME"
           export SUB_ID=$(awk '/subscription_id/ {print $3}' .auto.tfvars)
           echo "::set-env name=SUB_ID::$SUB_ID"
           export IM_GAL_ID=$(awk '/image_gallery_name/ {print $3}' terraform.tfvars)
@@ -128,4 +129,3 @@ jobs:
             pm2 save
             pm2 startup
             pm2 save
-        
