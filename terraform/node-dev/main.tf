@@ -17,11 +17,11 @@ provider "azurerm" {
   client_secret   = var.client_secret
 }
 
-resource "azurerm_resource_group" "rg" {
+data "azurerm_resource_group" "rg" {
   name     = var.project_name
-  location = var.project_loc
+#  location = var.project_loc
 
-  tags = var.tags
+#  tags = var.tags
 }
 
 resource "azurerm_network_security_rule" "openports-rules" {
@@ -35,15 +35,15 @@ resource "azurerm_network_security_rule" "openports-rules" {
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   destination_port_range      = each.key
-  resource_group_name         = azurerm_resource_group.rg.name
+  resource_group_name         = data.azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
 
 # firewall settings
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.project_name}-nsg"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   # CORS policy
 
   tags = var.tags
@@ -51,8 +51,8 @@ resource "azurerm_network_security_group" "nsg" {
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.project_name}-vnet"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   address_space       = ["10.0.0.0/16"]
   dns_servers         = ["10.0.1.4"]
 
@@ -62,14 +62,14 @@ resource "azurerm_virtual_network" "vnet" {
 resource "azurerm_subnet" "subnet" {
   name                 = "${var.project_name}-sub01"
   address_prefixes     = ["10.0.2.0/24"]
-  resource_group_name  = azurerm_resource_group.rg.name
+  resource_group_name  = data.azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
 }
 
 resource "azurerm_public_ip" "main-pubip" {
   name                = "${var.project_name}-publicip"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = "Static"
 
   tags = var.tags
@@ -77,8 +77,8 @@ resource "azurerm_public_ip" "main-pubip" {
 
 resource "azurerm_lb" "lb" {
   name                = "${var.project_name}-loadbalancer"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
 
   frontend_ip_configuration {
     name                 = "LoadBalancer-PublicIPAddress"
@@ -107,8 +107,8 @@ resource "azurerm_lb_rule" "lb-rule" {
 
 resource "azurerm_shared_image_gallery" "imagegallery" {
   name                = var.image_gallery_name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   description         = "Where main node-dev image definition is stored"
 
   tags = var.tags
@@ -119,14 +119,14 @@ data "azurerm_shared_image_version" "main-image" {
   name                = var.vmss_config.image_version
   image_name          = var.vmss_config.image_name
   gallery_name        = azurerm_shared_image_gallery.imagegallery.name
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = data.azurerm_resource_group.rg.name
 }
 
 # image galery should be module
 resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   name                            = "${var.project_name}-scaleset"
   location                        = data.azurerm_shared_image_version.main-image.location
-  resource_group_name             = azurerm_resource_group.rg.name
+  resource_group_name             = data.azurerm_resource_group.rg.name
   sku                             = var.vmss_config.image_sku
   instances                       = var.vmss_config.instances
   admin_username                  = var.vmss_config.admin_username

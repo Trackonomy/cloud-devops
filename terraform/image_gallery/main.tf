@@ -17,17 +17,17 @@ provider "azurerm" {
   client_secret   = var.client_secret
 }
 
-resource "azurerm_resource_group" "rg" {
+data "azurerm_resource_group" "rg" {
   name     = var.project_name
-  location = var.project_loc
+#  location = var.project_loc
 
-  tags = var.tags
+#  tags = var.tags
 }
 
 resource "azurerm_shared_image_gallery" "imagegallery" {
   name = var.image_gallery_name
-  resource_group_name = azurerm_resource_group.rg.name
-  location = azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location = data.azurerm_resource_group.rg.location
   description = "Where main node-dev image definition is stored"
 
   tags = var.tags
