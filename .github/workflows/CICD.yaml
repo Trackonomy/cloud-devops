@@ -85,7 +85,7 @@ jobs:
         with:
           fetch-depth: 0
           repository: Trackonomy/node-dev
-          token: '{{ secrets.GH_PAT }}'
+          token: '${{ secrets.GH_PAT }}'
           ref: ${{ inputs.branch_name }}
           path: node-dev
       - name: Package node-dev
