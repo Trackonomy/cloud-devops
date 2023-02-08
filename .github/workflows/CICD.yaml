@@ -94,6 +94,7 @@ jobs:
           name: Packaging
           path: node-dev
       - name: Parse needed configuration
+        id: parse-conf
         env:
           TFBACKEND: '${{ secrets.TFBACKEND }}'
           TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
@@ -102,30 +103,30 @@ jobs:
           echo "$TFSECRETVARS" > .auto.tfvars
           echo "$TFVARS" > terraform.tfvars
           export PROJECT_LOC=$(awk '/project_loc/ {print $3}' terraform.tfvars)
-          echo "PROJECT_LOC=$(echo $PROJECT_LOC)" >> $GITHUB_ENV
+          echo "PROJECT_LOC=$(echo $PROJECT_LOC)" >> $GITHUB_OUTPUT
           export PROJECT_NAME=$(awk '/project_name/ {print $3}' terraform.tfvars)
-          echo "PROJECT_NAME=$(echo $PROJECT_NAME)" >> $GITHUB_ENV
+          echo "PROJECT_NAME=$(echo $PROJECT_NAME)" >> $GITHUB_OUTPUT
           export SUB_ID=$(awk '/subscription_id/ {print $3}' .auto.tfvars)
-          echo "SUB_ID=$(echo $SUB_ID)" >> $GITHUB_ENV
+          echo "SUB_ID=$(echo $SUB_ID)" >> $GITHUB_OUTPUT
           export IM_GAL_ID=$(awk '/image_gallery_name/ {print $3}' terraform.tfvars)
-          echo "IM_GAL_ID=$(echo $IM_GAL_ID)" >> $GITHUB_ENV
+          echo "IM_GAL_ID=$(echo $IM_GAL_ID)" >> $GITHUB_OUTPUT
           export IM_NAME=$(awk '/image_name/ {print $3}' terraform.tfvars | tr -d ",")
-          echo "IM_NAME=$(echo $IM_NAME)" >> $GITHUB_ENV
+          echo "IM_NAME=$(echo $IM_NAME)" >> $GITHUB_OUTPUT
           export IM_VERSION=$(awk '/image_version/ {print $3}' terraform.tfvars | tr -d ",")
-          echo "IM_VERSION=$(echo $IM_VERSION)" >> GITHUB_ENV
+          echo "IM_VERSION=$(echo $IM_VERSION)" >> $GITHUB_OUTPUT
           rm backend.conf .auto.tfvars terraform.tfvars
       - name: Create App Baked Image
         id: ImageBuilder
         uses: azure/build-vm-image@v0
         with:
-          location: ${{ env.PROJECT_LOC }}
-          resource-group-name: ${{ env.PROJECT_NAME }}
+          location: ${{ steps.parse-conf.outputs.PROJECT_LOC }}
+          resource-group-name: ${{ steps.parse-conf.outputs.PROJECT_NAME }}
           managed-identity: ${{ secrets.MANAGEDIDENTITY }}
           source-os-type: 'linux'
           source-image-type: 'platformImage'
           source-image: Canonical:UbuntuServer:18.04-LTS:latest
           dist-type: 'SharedImageGallery'
-          dist-resource-id: '/subscriptions/${{ env.SUB_ID }}/resourceGroups/${{ env.PROJECT_NAME }}/providers/Microsoft.Compute/galleries/${{ env.IM_GAL_ID }}/images/${{ env.IM_NAME }}/versions/${{ env.IM_VERSION }}'
+          dist-resource-id: '/subscriptions/${{ steps.parse-conf.outputs.SUB_ID }}/resourceGroups/${{ steps.parse-conf.outputs.PROJECT_NAME }}/providers/Microsoft.Compute/galleries/${{ steps.parse-conf.outputs.IM_GAL_ID }}/images/${{ steps.parse-conf.outputs.IM_NAME }}/versions/${{ steps.parse-conf.outputs.IM_VERSION }}'
           dist-location: '${{ env.PROJECT_LOC }}' 
           customizer-script: |
             sudo mkdir /apis
