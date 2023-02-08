@@ -116,19 +116,18 @@ jobs:
         id: ImageBuilder
         uses: azure/build-vm-image@v0
         with:
-          location: ${{ steps.parse-conf.outputs.PROJECT_LOC }}
           resource-group-name: ${{ steps.parse-conf.outputs.PROJECT_NAME }}
           managed-identity: ${{ secrets.MANAGEDIDENTITY }}
+          location: ${{ steps.parse-conf.outputs.PROJECT_LOC }}
           source-os-type: 'linux'
-          #source-image-type: 'platformImage'
+          #source-image-type: PlatformImage
           source-image: Canonical:UbuntuServer:18.04-LTS:latest
-          source-image-type: PlatformImage
-          dist-type: 'SharedImageGallery'
-          dist-resource-id: '/subscriptions/${{ steps.parse-conf.outputs.SUB_ID }}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}'
-          dist-location: '${{ steps.parse-conf.outputs.PROJECT_LOC }}' 
           customizer-script: |
             sudo mkdir -p /apis/node-dev
             sudo cp -r /tmp/* /apis/node-dev
+          dist-type: 'SharedImageGallery'
+          dist-resource-id: '/subscriptions/${{steps.parse-conf.outputs.SUB_ID}}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}/versions/${{steps.parse-conf.outputs.IM_VERSION}}'
+          dist-location: ${{steps.parse-conf.outputs.PROJECT_LOC}} 
   deploy_scaleset:
     needs: create_image_build
     runs-on: ubuntu-latest
