@@ -122,6 +122,7 @@ jobs:
           source-os-type: 'linux'
           #source-image-type: 'platformImage'
           source-image: Canonical:UbuntuServer:18.04-LTS:latest
+          source-image-type: PlatformImage
           dist-type: 'SharedImageGallery'
           dist-resource-id: '/subscriptions/${{ steps.parse-conf.outputs.SUB_ID }}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}/versions/${{steps.parse-conf.outputs.IM_VERSION}}'
           dist-location: '${{ steps.parse-conf.outputs.PROJECT_LOC }}' 
