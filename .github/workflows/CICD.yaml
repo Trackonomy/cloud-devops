@@ -12,6 +12,10 @@ on:
         required: true
       TFSECRETVARS:
         required: true
+      MANAGEDIDENTITY:
+        required: true
+      AZURE_CREDENTIALS:
+        required: true
 env:
   TFVARS: ${{ vars.TFVARS }}
 
@@ -113,7 +117,7 @@ jobs:
         with:
           location: '${{ env.PROJECT_LOC }}'
           resource-group-name: '${{ env.PROJECT_NAME }}'
-          managed-identity: '{Identity}' # Managed identity
+          managed-identity: ${{}} # Managed identity
           source-os-type: 'linux'
           source-image-type: 'platformImage'
           source-image: Canonical:UbuntuServer:18.04-LTS:latest #unique identifier of source image
