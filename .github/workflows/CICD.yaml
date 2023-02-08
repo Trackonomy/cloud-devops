@@ -117,7 +117,7 @@ jobs:
         with:
           location: '${{ env.PROJECT_LOC }}'
           resource-group-name: '${{ env.PROJECT_NAME }}'
-          managed-identity: ${{}} # Managed identity
+          managed-identity: '${{ secrets.MANAGEDIDENTITY }}'
           source-os-type: 'linux'
           source-image-type: 'platformImage'
           source-image: Canonical:UbuntuServer:18.04-LTS:latest #unique identifier of source image
