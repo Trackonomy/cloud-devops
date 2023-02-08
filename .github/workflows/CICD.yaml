@@ -118,12 +118,12 @@ jobs:
         id: ImageBuilder
         uses: azure/build-vm-image@v0
         with:
-          location: '${{ env.PROJECT_LOC }}'
-          resource-group-name: '${{ env.PROJECT_NAME }}'
-          managed-identity: '${{ secrets.MANAGEDIDENTITY }}'
+          location: ${{ env.PROJECT_LOC }}
+          resource-group-name: ${{ env.PROJECT_NAME }}
+          managed-identity: ${{ secrets.MANAGEDIDENTITY }}
           source-os-type: 'linux'
           source-image-type: 'platformImage'
-          source-image: Canonical:UbuntuServer:18.04-LTS:latest #unique identifier of source image
+          source-image: Canonical:UbuntuServer:18.04-LTS:latest
           dist-type: 'SharedImageGallery'
           dist-resource-id: '/subscriptions/${{ env.SUB_ID }}/resourceGroups/${{ env.PROJECT_NAME }}/providers/Microsoft.Compute/galleries/${{ env.IM_GAL_ID }}/images/${{ env.IM_NAME }}/versions/${{ env.IM_VERSION }}'
           dist-location: '${{ env.PROJECT_LOC }}' 
