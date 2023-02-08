@@ -16,6 +16,8 @@ on:
         required: true
       AZURE_CREDENTIALS:
         required: true
+      GH_PAT:
+        required: true
 env:
   TFVARS: ${{ vars.TFVARS }}
 
@@ -83,6 +85,7 @@ jobs:
         with:
           fetch-depth: 0
           repository: Trackonomy/node-dev
+          token: '{{ secrets.GH_PAT }}'
           ref: ${{ inputs.branch_name }}
           path: node-dev
       - name: Package node-dev
