@@ -125,6 +125,13 @@ jobs:
           customizer-script: |
             sudo mkdir -p /apis/node-dev
             sudo cp -r /tmp/* /apis/node-dev
+            cd /apis/node-dev
+            npm install
+            pm2 flush
+            pm2 restart all
+            pm2 save
+            pm2 startup
+            pm2 save
           dist-type: 'SharedImageGallery'
           dist-resource-id: '/subscriptions/${{steps.parse-conf.outputs.SUB_ID}}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}/versions/${{steps.parse-conf.outputs.IM_VERSION}}'
           dist-location: ${{steps.parse-conf.outputs.PROJECT_LOC}} 
