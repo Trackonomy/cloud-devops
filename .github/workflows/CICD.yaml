@@ -92,6 +92,7 @@ jobs:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     name: Build virtual machine
+    timeout-minutes: 30
     steps:
     - name: Checkout node-dev repo
       uses: actions/checkout@v3
@@ -140,6 +141,7 @@ jobs:
         customizer-script: |
           curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
           sudo apt-get install -y nodejs
+          sudo apt-get install -y build-essential
           sudo mkdir -p /apis/node-dev
           sudo cp -r /tmp/node-dev/* /apis/node-dev
           cd /apis/node-dev
