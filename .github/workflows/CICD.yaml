@@ -132,7 +132,7 @@ jobs:
           curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
           sudo apt-get install -y nodejs
           sudo mkdir -p /apis/node-dev
-          cd tmp
+          cd /tmp
           ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
           sudo cp -r /tmp/workflow-artifacts/* /apis/node-dev
           cd /apis/node-dev
