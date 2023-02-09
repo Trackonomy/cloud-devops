@@ -85,7 +85,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: node-dev
-        path: ${{ GITHUB.WORKSPACE }}
+        path: ${{ GITHUB.WORKSPACE }}/node-dev
 
   create_image_build:
     needs: upload_artifact
@@ -134,7 +134,7 @@ jobs:
           sudo mkdir -p /apis/node-dev
           cd /tmp
           ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-          sudo cp -r /tmp/workflow-artifacts/* /apis/node-dev
+          sudo cp -r /tmp/node-dev/* /apis/node-dev
           cd /apis/node-dev
           npm install
           pm2 flush
