@@ -25,3 +25,8 @@ variable "tags" {
   description = "Specify all standard tags you want."
   type = map(string)
 }
+
+variable "vmss_config" {
+  description = "Configuration of VM in scaleset"
+  type        = map(string)
+}

@@ -33,3 +33,17 @@ resource "azurerm_shared_image_gallery" "imagegallery" {
   tags = var.tags
 }
 
+resource "azurerm_shared_image" "sharedimage" {
+  name                = var.vmss_config.image_name
+  gallery_name        = azurerm_shared_image_gallery.imagegallery.name
+  resource_group_name = azurerm_shared_image_gallery.imagegallery.resource_group_name
+  location            = data.azurerm_resource_group.rg.location
+  os_type             = "Linux"
+
+  identifier {
+    publisher = "Trackonomy"
+    offer     = "Node-Dev"
+    sku       = "stable"
+  }
+}
+
