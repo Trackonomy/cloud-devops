@@ -88,7 +88,7 @@ jobs:
   #      path: ${{ GITHUB.WORKSPACE }}/node-dev
 
   create_image_build:
-    #needs: upload_artifact
+    needs: deploy_image_gallery
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     name: Build virtual machine
@@ -140,12 +140,10 @@ jobs:
         customizer-script: |
           curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
           sudo apt-get install -y nodejs
-          sudo apt-get install -y tree
           sudo mkdir -p /apis/node-dev
-          tree /tmp
           sudo cp -r /tmp/node-dev/* /apis/node-dev
           cd /apis/node-dev
-          npm install
+          npm install --unsafe-perm=true --allow-root
           pm2 flush
           pm2 restart all
           pm2 save
