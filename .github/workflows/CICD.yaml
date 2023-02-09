@@ -67,77 +67,84 @@ jobs:
     - name: Clean terraform directory
       run: rm -r /tmp/terraform
   
+  upload_artifact:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    name: Upload node-dev artifact
+    steps:
+    - name: Checkout node-dev repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        repository: Trackonomy/node-dev
+        token: '${{ secrets.GH_PAT }}'
+        ref: ${{ inputs.branch_name }}
+        path: node-dev
+    - name: Package node-dev
+      uses: actions/upload-artifact@v2
+      with:
+        name: node-dev
+        path: ${{ GITHUB.WORKSPACE }}
+
   create_image_build:
-    needs: deploy_image_gallery
+    needs: upload_artifact
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     name: Build virtual machine
     steps:
-      - name: Log in with Azure
-        uses: azure/login@v1
-        with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
-      - name: Checkout node-dev repo
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-          repository: Trackonomy/node-dev
-          token: '${{ secrets.GH_PAT }}'
-          ref: ${{ inputs.branch_name }}
-          path: node-dev
-      - name: Package node-dev
-        uses: actions/upload-artifact@v2
-        with:
-          name: Packaging
-          path: node-dev
-      - name: Parse needed configuration
-        id: parse-conf
-        env:
-          TFBACKEND: '${{ secrets.TFBACKEND }}'
-          TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
-        run: |
-          echo "$TFBACKEND" > backend.conf
-          echo "$TFSECRETVARS" > .auto.tfvars
-          echo "$TFVARS" > terraform.tfvars
-          export PROJECT_LOC=$(awk '/project_loc/ {print $3}' terraform.tfvars)
-          echo "PROJECT_LOC=$(echo $PROJECT_LOC | tr -d '\r"')" >> $GITHUB_OUTPUT
-          export PROJECT_NAME=$(awk '/project_name/ {print $3}' terraform.tfvars)
-          echo "PROJECT_NAME=$(echo $PROJECT_NAME | tr -d '\r"')" >> $GITHUB_OUTPUT
-          export SUB_ID=$(awk '/subscription_id/ {print $3}' .auto.tfvars)
-          echo "SUB_ID=$(echo $SUB_ID | tr -d '\r"')" >> $GITHUB_OUTPUT
-          export IM_GAL_ID=$(awk '/image_gallery_name/ {print $3}' terraform.tfvars)
-          echo "IM_GAL_ID=$(echo $IM_GAL_ID | tr -d '\r"')" >> $GITHUB_OUTPUT
-          export IM_NAME=$(awk '/image_name/ {print $3}' terraform.tfvars | tr -d ",")
-          echo "IM_NAME=$(echo $IM_NAME | tr -d '\r"')" >> $GITHUB_OUTPUT
-          export IM_VERSION=$(awk '/image_version/ {print $3}' terraform.tfvars | tr -d ",")
-          echo "IM_VERSION=$(echo $IM_VERSION | tr -d '\r"')" >> $GITHUB_OUTPUT
-          rm backend.conf .auto.tfvars terraform.tfvars
-      - name: Create App Baked Image
-        id: ImageBuilder
-        uses: azure/build-vm-image@v0
-        with:
-          resource-group-name: ${{ steps.parse-conf.outputs.PROJECT_NAME }}
-          managed-identity: ${{ secrets.MANAGEDIDENTITY }}
-          location: ${{ steps.parse-conf.outputs.PROJECT_LOC }}
-          source-os-type: 'linux'
-          #source-image-type: PlatformImage
-          source-image: Canonical:UbuntuServer:18.04-LTS:latest
-          customizer-script: |
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-            sudo mkdir -p /apis/node-dev
-            sudo cp -r /tmp/* /apis/node-dev
-            cd /apis/node-dev
-            ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-            npm install
-            pm2 flush
-            pm2 restart all
-            pm2 save
-            pm2 startup
-            pm2 save
-          dist-type: 'SharedImageGallery'
-          dist-resource-id: '/subscriptions/${{steps.parse-conf.outputs.SUB_ID}}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}/versions/${{steps.parse-conf.outputs.IM_VERSION}}'
-          dist-location: ${{steps.parse-conf.outputs.PROJECT_LOC}} 
+    - name: Log in with Azure
+      uses: azure/login@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+    - name: Parse needed configuration
+      id: parse-conf
+      env:
+        TFBACKEND: '${{ secrets.TFBACKEND }}'
+        TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
+      run: |
+        echo "$TFBACKEND" > backend.conf
+        echo "$TFSECRETVARS" > .auto.tfvars
+        echo "$TFVARS" > terraform.tfvars
+        export PROJECT_LOC=$(awk '/project_loc/ {print $3}' terraform.tfvars)
+        echo "PROJECT_LOC=$(echo $PROJECT_LOC | tr -d '\r"')" >> $GITHUB_OUTPUT
+        export PROJECT_NAME=$(awk '/project_name/ {print $3}' terraform.tfvars)
+        echo "PROJECT_NAME=$(echo $PROJECT_NAME | tr -d '\r"')" >> $GITHUB_OUTPUT
+        export SUB_ID=$(awk '/subscription_id/ {print $3}' .auto.tfvars)
+        echo "SUB_ID=$(echo $SUB_ID | tr -d '\r"')" >> $GITHUB_OUTPUT
+        export IM_GAL_ID=$(awk '/image_gallery_name/ {print $3}' terraform.tfvars)
+        echo "IM_GAL_ID=$(echo $IM_GAL_ID | tr -d '\r"')" >> $GITHUB_OUTPUT
+        export IM_NAME=$(awk '/image_name/ {print $3}' terraform.tfvars | tr -d ",")
+        echo "IM_NAME=$(echo $IM_NAME | tr -d '\r"')" >> $GITHUB_OUTPUT
+        export IM_VERSION=$(awk '/image_version/ {print $3}' terraform.tfvars | tr -d ",")
+        echo "IM_VERSION=$(echo $IM_VERSION | tr -d '\r"')" >> $GITHUB_OUTPUT
+        rm backend.conf .auto.tfvars terraform.tfvars
+    - name: Create App Baked Image
+      id: ImageBuilder
+      uses: azure/build-vm-image@v0
+      with:
+        resource-group-name: ${{ steps.parse-conf.outputs.PROJECT_NAME }}
+        managed-identity: ${{ secrets.MANAGEDIDENTITY }}
+        location: ${{ steps.parse-conf.outputs.PROJECT_LOC }}
+        source-os-type: 'linux'
+        source-image: Canonical:UbuntuServer:18.04-LTS:latest
+        customizer-script: |
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+          sudo mkdir -p /apis/node-dev
+          cd tmp
+          ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+          sudo cp -r /tmp/workflow-artifacts/* /apis/node-dev
+          cd /apis/node-dev
+          npm install
+          pm2 flush
+          pm2 restart all
+          pm2 save
+          pm2 startup
+          pm2 save
+        dist-type: 'SharedImageGallery'
+        dist-resource-id: '/subscriptions/${{steps.parse-conf.outputs.SUB_ID}}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}/versions/${{steps.parse-conf.outputs.IM_VERSION}}'
+        dist-location: ${{steps.parse-conf.outputs.PROJECT_LOC}}
+
   deploy_scaleset:
     needs: create_image_build
     runs-on: ubuntu-latest
