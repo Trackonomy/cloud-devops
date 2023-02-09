@@ -68,6 +68,7 @@ jobs:
       run: rm -r /tmp/terraform
   
   upload_artifact:
+    needs: deploy_image_gallery
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     name: Upload node-dev artifact
