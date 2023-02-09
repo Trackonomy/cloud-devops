@@ -128,6 +128,7 @@ jobs:
         location: ${{ steps.parse-conf.outputs.PROJECT_LOC }}
         source-os-type: 'linux'
         source-image: Canonical:UbuntuServer:18.04-LTS:latest
+        customizer-source: ${{ GITHUB.WORKSPACE }}/node-dev
         customizer-script: |
           curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
           sudo apt-get install -y nodejs
