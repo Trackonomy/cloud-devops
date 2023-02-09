@@ -67,11 +67,31 @@ jobs:
     - name: Clean terraform directory
       run: rm -r /tmp/terraform
   
-  upload_artifact:
-    needs: deploy_image_gallery
+  #upload_artifact:
+  #  needs: deploy_image_gallery
+  #  environment: ${{ inputs.environment }}
+  #  runs-on: ubuntu-latest
+  #  name: Upload node-dev artifact
+  #  steps:
+  #  - name: Checkout node-dev repo
+  #    uses: actions/checkout@v3
+  #    with:
+  #      fetch-depth: 1
+  #      repository: Trackonomy/node-dev
+  #      token: '${{ secrets.GH_PAT }}'
+  #      ref: ${{ inputs.branch_name }}
+  #      path: node-dev
+  #  - name: Package node-dev
+  #    uses: actions/upload-artifact@v2
+  #    with:
+  #      name: node-dev
+  #      path: ${{ GITHUB.WORKSPACE }}/node-dev
+
+  create_image_build:
+    #needs: upload_artifact
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    name: Upload node-dev artifact
+    name: Build virtual machine
     steps:
     - name: Checkout node-dev repo
       uses: actions/checkout@v3
@@ -81,18 +101,6 @@ jobs:
         token: '${{ secrets.GH_PAT }}'
         ref: ${{ inputs.branch_name }}
         path: node-dev
-    - name: Package node-dev
-      uses: actions/upload-artifact@v2
-      with:
-        name: node-dev
-        path: ${{ GITHUB.WORKSPACE }}/node-dev
-
-  create_image_build:
-    needs: upload_artifact
-    environment: ${{ inputs.environment }}
-    runs-on: ubuntu-latest
-    name: Build virtual machine
-    steps:
     - name: Log in with Azure
       uses: azure/login@v1
       with:
