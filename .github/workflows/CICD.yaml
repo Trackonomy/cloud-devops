@@ -145,10 +145,14 @@ jobs:
           sudo mkdir -p /apis/node-dev
           sudo cp -r /tmp/node-dev/* /apis/node-dev
           cd /apis/node-dev
-          npm install pm2 -g --unsafe-perm=true --allow-root
-          npm install --unsafe-perm=true --allow-root
-          pm2 flush
-          pm2 restart all
+          sudo npm install pm2 -g --unsafe-perm=true --allow-root
+          sudo npm install --unsafe-perm=true --allow-root
+          pm2 start filter/nodeapp.js --name filter
+          pm2 start mobile/nodeapp.js --name mobile
+          pm2 start util/nodeapp.js --name util
+          pm2 start external/nodeapp.js --name external
+          pm2 start health-dash/nodeapp.js --name health-dash
+          pm2 start tapeevents/nodeapp.js --name tapeevents
           pm2 save
           pm2 startup
           pm2 save
