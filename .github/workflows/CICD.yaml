@@ -92,7 +92,7 @@ jobs:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     name: Build virtual machine
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
     - name: Checkout node-dev repo
       uses: actions/checkout@v3
