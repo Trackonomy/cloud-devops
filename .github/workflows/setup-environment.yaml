@@ -21,7 +21,7 @@ on:
 
 jobs:
   deploy_image_gallery:
-    uses: ./.github/workflows/deploy-image-gallery.yaml@main
+    uses: ./.github/workflows/deploy-image-gallery.yaml
     with:
       environment: ${{ inputs.environment }}
     secrets:
@@ -29,7 +29,7 @@ jobs:
       TFSECRETVARS: ${{ secrets.TFSECRETVARS }}
   build_image:
     needs: deploy_image_gallery
-    uses: ./.github/workflows/build-image.yaml@main
+    uses: ./.github/workflows/build-image.yaml
     with:
       branch_name: ${{ inputs.branch_name }}
       environment: ${{ inputs.environment }}
@@ -40,7 +40,7 @@ jobs:
       TFSECRETVARS: ${{ secrets.TFSECRETVARS }}
   deploy_scaleset:
     needs: build_image
-    uses: ./github/workflows/deploy-scaleset.yaml@main
+    uses: ./github/workflows/deploy-scaleset.yaml
     with:
       environment: ${{ inputs.environment }}
     secrets:

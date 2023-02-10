@@ -4,11 +4,11 @@ on:
     inputs:
       environment:
         type: environment
-  secrets:
-    TFBACKEND:
-      required: true
-    TFSECRETVARS:
-      required: true
+    secrets:
+      TFBACKEND:
+        required: true
+      TFSECRETVARS:
+        required: true
 env:
   TFVARS: ${{ vars.TFVARS }}
 
