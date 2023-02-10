@@ -19,7 +19,7 @@ on:
       TFSECRETVARS:
         required: true
 env:
-  TFVARS: $${{ vars.TFVARS }}
+  TFVARS: ${{ vars.TFVARS }}
 
 jobs:
   deploy_scaleset:
