@@ -6,7 +6,8 @@ on:
         description: "node-dev branch name"
         required: true
       environment:
-        type: environment
+        type: string
+        required: true
       vm_size:
         description: "Virtual machine series"
         type: string
