@@ -6,7 +6,7 @@ on:
         description: "node-dev branch name"
         required: true
       environment:
-        type: environment
+        type: string
     secrets:
       GH_PAT:
         required: true
@@ -37,7 +37,6 @@ env:
 
 jobs:
   create_image_build:
-      needs: deploy_image_gallery
       environment: ${{ inputs.environment }}
       runs-on: ubuntu-latest
       name: Build virtual machine
