@@ -27,7 +27,7 @@ data "azurerm_resource_group" "rg" {
 resource "azurerm_shared_image_gallery" "imagegallery" {
   name = var.image_gallery_name
   resource_group_name = data.azurerm_resource_group.rg.name
-  location = data.azurerm_resource_group.rg.location
+  location = var.project_loc
   description = "Where main node-dev image definition is stored"
 
   tags = var.tags
@@ -37,7 +37,7 @@ resource "azurerm_shared_image" "sharedimage" {
   name                = var.vmss_config.image_name
   gallery_name        = azurerm_shared_image_gallery.imagegallery.name
   resource_group_name = azurerm_shared_image_gallery.imagegallery.resource_group_name
-  location            = data.azurerm_resource_group.rg.location
+  location            = var.project_loc
   os_type             = "Linux"
 
   identifier {

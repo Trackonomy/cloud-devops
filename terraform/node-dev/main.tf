@@ -42,7 +42,7 @@ resource "azurerm_network_security_rule" "openports-rules" {
 # firewall settings
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.project_name}-nsg"
-  location            = data.azurerm_resource_group.rg.location
+  location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   # CORS policy
 
@@ -51,7 +51,7 @@ resource "azurerm_network_security_group" "nsg" {
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.project_name}-vnet"
-  location            = data.azurerm_resource_group.rg.location
+  location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   address_space       = ["10.0.0.0/16"]
   dns_servers         = ["10.0.1.4"]
@@ -68,7 +68,7 @@ resource "azurerm_subnet" "subnet" {
 
 resource "azurerm_public_ip" "main-pubip" {
   name                = "${var.project_name}-publicip"
-  location            = data.azurerm_resource_group.rg.location
+  location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = "Static"
 
@@ -77,7 +77,7 @@ resource "azurerm_public_ip" "main-pubip" {
 
 resource "azurerm_lb" "lb" {
   name                = "${var.project_name}-loadbalancer"
-  location            = data.azurerm_resource_group.rg.location
+  location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
 
   frontend_ip_configuration {
@@ -108,7 +108,7 @@ resource "azurerm_lb_rule" "lb-rule" {
 resource "azurerm_shared_image_gallery" "imagegallery" {
   name                = var.image_gallery_name
   resource_group_name = data.azurerm_resource_group.rg.name
-  location            = data.azurerm_resource_group.rg.location
+  location            = var.project_loc
   description         = "Where main node-dev image definition is stored"
 
   tags = var.tags
@@ -126,7 +126,7 @@ resource "azurerm_shared_image" "sharedimage" {
   name                = var.vmss_config.image_name
   gallery_name        = azurerm_shared_image_gallery.imagegallery.name
   resource_group_name = azurerm_shared_image_gallery.imagegallery.resource_group_name
-  location            = data.azurerm_resource_group.rg.location
+  location            = var.project_loc
   os_type             = "Linux"
 
   identifier {
