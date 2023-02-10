@@ -7,6 +7,10 @@ on:
         required: true
       environment:
         type: string
+      vm_size:
+        description: "Virtual machine series"
+        type: string
+        required: true
     secrets:
       GH_PAT:
         required: true
@@ -23,6 +27,10 @@ on:
         required: true
       environment:
         type: environment
+      vm_size:
+        description: "Virtual machine series"
+        type: string
+        required: true
     secrets:
       GH_PAT:
         required: true
@@ -107,3 +115,4 @@ jobs:
           dist-type: 'SharedImageGallery'
           dist-resource-id: '/subscriptions/${{steps.parse-conf.outputs.SUB_ID}}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}/versions/${{steps.parse-conf.outputs.IM_VERSION}}'
           dist-location: ${{steps.parse-conf.outputs.PROJECT_LOC}}
+          vm-size: ${{ inputs.vm_size }}
