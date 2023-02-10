@@ -9,6 +9,15 @@ on:
         required: true
       TFSECRETVARS:
         required: true
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+    secrets:
+      TFBACKEND:
+        required: true
+      TFSECRETVARS:
+        required: true
 env:
   TFVARS: $${{ vars.TFVARS }}
 

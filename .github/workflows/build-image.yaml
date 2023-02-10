@@ -16,6 +16,22 @@ on:
         required: true
       TFSECRETVARS:
         required: true
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: "node-dev branch name"
+        required: true
+      environment:
+        type: environment
+    secrets:
+      GH_PAT:
+        required: true
+      AZURE_CREDENTIALS:
+        required: true
+      TFBACKEND:
+        required: true
+      TFSECRETVARS:
+        required: true
 env:
   TFVARS: ${{ vars.TFVARS }}
 
