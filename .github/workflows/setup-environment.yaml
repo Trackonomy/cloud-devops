@@ -1,0 +1,48 @@
+name: Setup complete environment
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: "node-dev branch name"
+        required: true
+      environment:
+        type: environment
+    secrets:
+      TFBACKEND:
+        required: true
+      TFSECRETVARS:
+        required: true
+      MANAGEDIDENTITY:
+        required: true
+      AZURE_CREDENTIALS:
+        required: true
+      GH_PAT:
+        required: true
+
+jobs:
+  deploy_image_gallery:
+    uses: ./.github/workflows/deploy-image-gallery.yaml@main
+    with:
+      environment: ${{ inputs.environment }}
+    secrets:
+      TFBACKEND: ${{ secrets.TFBACKEND }}
+      TFSECRETVARS: ${{ secrets.TFSECRETVARS }}
+  build_image:
+    needs: deploy_image_gallery
+    uses: ./.github/workflows/build-image.yaml@main
+    with:
+      branch_name: ${{ inputs.branch_name }}
+      environment: ${{ inputs.environment }}
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      TFBACKEND: ${{ secrets.TFBACKEND }}
+      TFSECRETVARS: ${{ secrets.TFSECRETVARS }}
+  deploy_scaleset:
+    needs: build_image
+    uses: ./github/workflows/deploy-scaleset.yaml@main
+    with:
+      environment: ${{ inputs.environment }}
+    secrets:
+      TFBACKEND: ${{ secrets.TFBACKEND }}
+      TFSECRETVARS: ${{ secrets.TFSECRETVARS }}

@@ -147,10 +147,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   admin_password                  = var.vmss_config.admin_password
   disable_password_authentication = var.vmss_config.disable_password_authentication
 
-  #admin_ssh_key {
-    #username   = var.vmss_config.admin_username
-    #public_key = var.vmss_config.admin_ssh_key
- # }
+  admin_ssh_key {
+    username   = var.vmss_config.admin_username
+    public_key = var.vmss_config.admin_ssh_key
+  }
 
   source_image_id = data.azurerm_shared_image_version.main-image.id
 
