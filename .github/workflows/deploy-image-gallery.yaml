@@ -67,7 +67,7 @@ jobs:
       - name: Clean terraform directory
         run: rm -r /tmp/terraform
       - name: Fail pipeline
-      if: steps.apply.outcome != 'success'
-      run: |
-        echo "Terraform apply failed. Please, review logs"
-        exit 1
+        if: steps.apply.outcome != 'success'
+        run: |
+          echo "Terraform apply failed. Please, review logs"
+          exit 1
