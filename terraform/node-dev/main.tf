@@ -102,7 +102,7 @@ resource "azurerm_lb_rule" "lb-rule" {
   frontend_port                  = each.key
   backend_port                   = each.key
   frontend_ip_configuration_name = "LoadBalancer-PublicIPAddress"
-  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.main-bpepool.id]
+  backend_address_pool_ids       = [ azurerm_lb_backend_address_pool.main-bpepool.id ]
 }
 
 resource "azurerm_shared_image_gallery" "imagegallery" {
@@ -167,6 +167,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
       name      = "ip-internal"
       primary   = true
       subnet_id = azurerm_subnet.subnet.id
+      load_balancer_backend_address_pool_ids = [ azurerm_lb_backend_address_pool.main-bpepool.id ]
     }
   }
   boot_diagnostics {
