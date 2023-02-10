@@ -122,6 +122,20 @@ data "azurerm_shared_image_version" "main-image" {
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
+resource "azurerm_shared_image" "sharedimage" {
+  name                = var.vmss_config.image_name
+  gallery_name        = azurerm_shared_image_gallery.imagegallery.name
+  resource_group_name = azurerm_shared_image_gallery.imagegallery.resource_group_name
+  location            = data.azurerm_resource_group.rg.location
+  os_type             = "Linux"
+
+  identifier {
+    publisher = "Trackonomy"
+    offer     = "Node-Dev"
+    sku       = "stable"
+  }
+}
+
 # image galery should be module
 resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   name                            = "${var.project_name}-scaleset"
@@ -133,10 +147,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   admin_password                  = var.vmss_config.admin_password
   disable_password_authentication = var.vmss_config.disable_password_authentication
 
-  admin_ssh_key {
-    username   = var.vmss_config.admin_username
-    public_key = var.vmss_config.admin_ssh_key
-  }
+  #admin_ssh_key {
+    #username   = var.vmss_config.admin_username
+    #public_key = var.vmss_config.admin_ssh_key
+ # }
 
   source_image_id = data.azurerm_shared_image_version.main-image.id
 
