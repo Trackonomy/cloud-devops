@@ -4,8 +4,10 @@ on:
     inputs:
       branch_name:
         description: "node-dev branch name"
+        type: string
         required: true
       environment:
+        required: true
         type: string
       vm_size:
         description: "Virtual machine series"
