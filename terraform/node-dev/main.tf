@@ -169,4 +169,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
       subnet_id = azurerm_subnet.subnet.id
     }
   }
+  boot_diagnostics {
+    
+  }
 }
