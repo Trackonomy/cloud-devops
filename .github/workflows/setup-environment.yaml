@@ -40,7 +40,7 @@ jobs:
       TFSECRETVARS: ${{ secrets.TFSECRETVARS }}
   deploy_scaleset:
     needs: build_image
-    uses: ./github/workflows/deploy-scaleset.yaml
+    uses: ./.github/workflows/deploy-scaleset.yaml
     with:
       environment: ${{ inputs.environment }}
     secrets:
