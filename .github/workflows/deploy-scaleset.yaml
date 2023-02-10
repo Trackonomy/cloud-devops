@@ -3,7 +3,7 @@ on:
   workflow_call:
     inputs:
       environment:
-        type: environment
+        type: string
     secrets:
       TFBACKEND:
         required: true
@@ -23,7 +23,6 @@ env:
 
 jobs:
   deploy_scaleset:
-    needs: create_image_build
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     name: Deploy Scaleset
