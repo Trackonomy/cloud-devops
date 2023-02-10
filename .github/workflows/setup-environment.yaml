@@ -44,6 +44,7 @@ jobs:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       TFBACKEND: ${{ secrets.TFBACKEND }}
       TFSECRETVARS: ${{ secrets.TFSECRETVARS }}
+      MANAGEDIDENTITY: ${{ secrets.MANAGEDIDENTITY }}
   deploy_scaleset:
     needs: build_image
     uses: ./.github/workflows/deploy-scaleset.yaml
