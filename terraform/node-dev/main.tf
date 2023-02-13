@@ -24,9 +24,9 @@ data "azurerm_resource_group" "rg" {
 #  tags = var.tags
 }
 
-resource "azurerm_network_security_rule" "openports-rules" {
+resource "azurerm_network_security_rule" "openports-rules-inbound" {
   for_each                    = var.accepted_ports
-  name                        = "Port_${each.key}"
+  name                        = "Port_${each.key}_inbound"
   priority                    = each.value
   direction                   = "Inbound"
   access                      = "Allow"
@@ -39,6 +39,20 @@ resource "azurerm_network_security_rule" "openports-rules" {
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
 
+resource "azurerm_network_security_rule" "openports-rules-outbound" {
+  for_each                    = var.accepted_ports
+  name                        = "Port_${each.key}_outbound"
+  priority                    = each.value
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  destination_port_range      = each.key
+  resource_group_name         = data.azurerm_resource_group.rg.name
+  network_security_group_name = azurerm_network_security_group.nsg.name
+}
 # firewall settings
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.project_name}-nsg"
@@ -54,7 +68,6 @@ resource "azurerm_virtual_network" "vnet" {
   location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   address_space       = ["10.0.0.0/16"]
-  dns_servers         = ["10.0.1.4"]
 
   tags                = var.tags
 }
