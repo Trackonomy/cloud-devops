@@ -71,8 +71,22 @@ resource "azurerm_public_ip" "main-pubip" {
   location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = "Static"
-
+  domain_name_label = var.dns_prefix
   tags = var.tags
+}
+
+resource "azurerm_nat_gateway" "nat" {
+  name = "NAT"
+  location = var.project_loc
+  resource_group_name = data.azurerm_resource_group.rg.name
+  sku_name = "Standard"
+  idle_timeout_in_minutes = 10
+  zones = ["1"]
+}
+
+resource "azurerm_nat_gateway_public_ip_association" "ip-nat" {
+  nat_gateway_id = azurerm_nat_gateway.nat.id
+  public_ip_address_id = azurerm_public_ip.main-pubip.id
 }
 
 resource "azurerm_lb" "lb" {

@@ -55,3 +55,9 @@ variable "vmss_config" {
     admin_password                  = "qwerty12345"
   }
 }
+
+variable "dns_prefix" {
+  description = "DNS prefix of public ip"
+  type = string
+  required = true
+}
