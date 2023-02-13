@@ -19,9 +19,6 @@ provider "azurerm" {
 
 data "azurerm_resource_group" "rg" {
   name     = var.project_name
-#  location = var.project_loc
-
-#  tags = var.tags
 }
 
 resource "azurerm_network_security_rule" "openports-rules-inbound" {
@@ -204,7 +201,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   network_interface {
     name    = "vm-network-internal"
     primary = true
-
+    network_security_group_id = azurerm_network_security_group.nsg.id
     ip_configuration {
       name      = "ip-internal"
       primary   = true
