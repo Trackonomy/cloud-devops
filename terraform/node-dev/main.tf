@@ -213,6 +213,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
     
   }
   depends_on = [
-    azurerm_lb.lbrule
+    azurerm_lb_rule.lb-rule
   ]
 }
