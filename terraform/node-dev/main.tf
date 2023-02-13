@@ -212,4 +212,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   boot_diagnostics {
     
   }
+  depends_on = [
+    azurerm_lb.lbrule
+  ]
 }
