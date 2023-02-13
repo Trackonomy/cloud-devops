@@ -72,6 +72,7 @@ resource "azurerm_public_ip" "main-pubip" {
   resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = "Static"
   domain_name_label   = var.dns_prefix
+  sku                 = "Standard"
   tags                = var.tags
 }
 
@@ -105,6 +106,7 @@ resource "azurerm_lb" "lb" {
   name                = "${var.project_name}-loadbalancer"
   location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
+  sku                 = "Standard"
 
   frontend_ip_configuration {
     name                 = "LoadBalancer-PublicIPAddress"
