@@ -81,7 +81,6 @@ resource "azurerm_nat_gateway" "nat" {
   resource_group_name = data.azurerm_resource_group.rg.name
   sku_name = "Standard"
   idle_timeout_in_minutes = 10
-  zones = ["1"]
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "ip-nat" {
