@@ -89,6 +89,7 @@ resource "azurerm_public_ip" "nat-ip" {
   location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = "Static"
+  sku                 = "Standard"
   tags                = var.tags
 }
 
