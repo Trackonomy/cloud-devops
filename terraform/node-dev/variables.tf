@@ -59,5 +59,4 @@ variable "vmss_config" {
 variable "dns_prefix" {
   description = "DNS prefix of public ip"
   type = string
-  required = true
 }

@@ -110,12 +110,12 @@ jobs:
             cd /apis/node-dev
             sudo npm install pm2 -g --unsafe-perm=true --allow-root
             sudo npm install --unsafe-perm=true --allow-root
-            sudo pm2 start filter/nodeapp.js --name filter
-            sudo pm2 start mobile/nodeapp.js --name mobile
-            sudo pm2 start util/nodeapp.js --name util
-            sudo pm2 start external/nodeapp.js --name external
-            sudo pm2 start health-dash/nodeapp.js --name health-dash
-            sudo pm2 start tapeevents/nodeapp.js --name tapeevents
+            sudo pm2 start filter/www --name filter
+            sudo pm2 start mobile/www --name mobile
+            sudo pm2 start util/www --name util
+            sudo pm2 start external/www --name external
+            sudo pm2 start health-dash/www --name health-dash
+            sudo pm2 start tapeevents/www --name tapeevents
             sudo pm2 save
             sudo pm2 startup
             sudo pm2 save
