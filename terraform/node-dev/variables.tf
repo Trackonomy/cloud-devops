@@ -46,9 +46,9 @@ variable "vmss_config" {
   type        = map(string)
   default = {
     instances                       = 1,
-    image_sku                       = "Standard_F2",
+    image_sku                       = "Standard_D2s_v3",
     image_name                      = "test",
-    image_version                   = "1.0.0",
+    image_version                   = "1.4.0",
     admin_username                  = "azureadm",
     disable_password_authentication = false,
     admin_ssh_key                   = "ssh-rsa key",
