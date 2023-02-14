@@ -1,0 +1,50 @@
+name: Build node-dev image and deploy
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: "node-dev branch name"
+        required: true
+      environment:
+        type: environment
+      vm_size:
+        description: "Virtual machine series"
+        type: string
+        required: true
+    secrets:
+      GH_PAT:
+        required: true
+      AZURE_CREDENTIALS:
+        required: true
+      TFBACKEND:
+        required: true
+      TFSECRETVARS:
+        required: true
+      MANAGEDIDENTITY:
+        required: true
+env:
+  TFVARS: ${{ vars.TFVARS }}
+
+jobs:
+  build_image:
+    name: Build node-dev image
+    uses: ./.github/workflows/build-image.yaml
+    with:
+      branch_name: ${{ inputs.branch_name }}
+      environment: ${{ inputs.environment }}
+      vm_size: ${{ inputs.vm_size }}
+    secrets:
+      GH_PAT: ${{ secrets.GH_PAT }}
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      TFBACKEND: ${{ secrets.TFBACKEND }}
+      TFSECRETVARS: ${{ secrets.TFSECRETVARS }}
+      MANAGEDIDENTITY: ${{ secrets.MANAGEDIDENTITY }}
+  deploy_scaleset:
+    name: Deploy image in scaleset
+    needs: build_image
+    uses: ./.github/workflows/deploy-scaleset.yaml
+    with:
+      environment: ${{ inputs.environment }}
+    secrets:
+      TFBACKEND: ${{ secrets.TFBACKEND }}
+      TFSECRETVARS: ${{ secrets.TFSECRETVARS }}
