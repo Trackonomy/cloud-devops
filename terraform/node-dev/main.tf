@@ -189,6 +189,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   instances                       = var.vmss_config.instances
   admin_username                  = var.vmss_config.admin_username
   admin_password                  = var.vmss_config.admin_password
+  custom_data                     = base64encode(file("${path.module}/startup.sh"))
   disable_password_authentication = var.vmss_config.disable_password_authentication
 
   admin_ssh_key {
@@ -222,13 +223,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   ]
 }
 
-resource "azurerm_virtual_machine_scale_set_extension" "startup-script" {
-  name                         = azurerm_linux_virtual_machine_scale_set.scaleset.name
-  virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.scaleset.id
-  publisher                    = "Microsoft.Azure.Extensions"
-  type                         = "CustomScript"
-  type_handler_version         = "2.0"
-  settings = jsonencode({
-    "script" = base64encode(file("${path.module}/startup.sh"))
-  })
-}
+#resource "azurerm_virtual_machine_scale_set_extension" "startup-script" {
+#  name                         = azurerm_linux_virtual_machine_scale_set.scaleset.name
+#  virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.scaleset.id
+#  publisher                    = "Microsoft.Azure.Extensions"
+#  type                         = "CustomScript"
+#  type_handler_version         = "2.0"
+#  settings = jsonencode({
+#    "script" = base64encode(file("${path.module}/startup.sh"))
+#  })
+#}
