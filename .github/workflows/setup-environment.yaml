@@ -8,10 +8,6 @@ on:
       environment:
         type: string
         required: true
-      vm_size:
-        description: "Virtual machine series"
-        type: string
-        required: true
     secrets:
       TFBACKEND:
         required: true
@@ -38,7 +34,6 @@ jobs:
     with:
       branch_name: ${{ inputs.branch_name }}
       environment: ${{ inputs.environment }}
-      vm_size: ${{ inputs.vm_size }}
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

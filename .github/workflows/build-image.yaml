@@ -9,10 +9,6 @@ on:
       environment:
         required: true
         type: string
-      vm_size:
-        description: "Virtual machine series"
-        type: string
-        required: true
     secrets:
       GH_PAT:
         required: true
@@ -32,10 +28,6 @@ on:
         required: true
       environment:
         type: environment
-      vm_size:
-        description: "Virtual machine series"
-        type: string
-        required: true
     secrets:
       GH_PAT:
         required: true
@@ -88,6 +80,8 @@ jobs:
           echo "IM_GAL_ID=$(echo $IM_GAL_ID | tr -d '\r"')" >> $GITHUB_OUTPUT
           export IM_NAME=$(awk '/image_name/ {print $3}' terraform.tfvars | tr -d ",")
           echo "IM_NAME=$(echo $IM_NAME | tr -d '\r"')" >> $GITHUB_OUTPUT
+          export IM_SKU=$(awk '/image_sku/ {print $3}' terraform.tfvars | tr -d ",")
+          echo "IM_SKU=$(echo $IM_SKU | tr -d '\r"')" >> $GITHUB_OUTPUT
           export IM_VERSION=$(awk '/image_version/ {print $3}' terraform.tfvars | tr -d ",")
           echo "IM_VERSION=$(echo $IM_VERSION | tr -d '\r"')" >> $GITHUB_OUTPUT
           rm backend.conf .auto.tfvars terraform.tfvars
@@ -110,20 +104,7 @@ jobs:
             cd /apis/node-dev
             sudo npm install pm2 -g --unsafe-perm=true --allow-root
             sudo npm install --unsafe-perm=true --allow-root
-            #sudo pm2 start filter/bin/www --name filter
-            #sudo pm2 start mobile/bin/www --name mobile
-            #sudo pm2 start util/bin/www --name util
-            #sudo pm2 start external/bin/www --name external
-            #sudo pm2 start health-dash/bin/www --name health-dash
-            #sudo pm2 start tapeevents/bin/www --name tapeevents
-            #sudo pm2 save
-            #sudo su -c "pm2 startup systemd"
-            #sudo pm2 save
-            #sudo systemctl reload-or-restart pm2-root
-            #sudo systemctl enable pm2-root
-            #sudo su -c "pm2 startup systemd"
-            #sudo pm2 save
           dist-type: 'SharedImageGallery'
           dist-resource-id: '/subscriptions/${{steps.parse-conf.outputs.SUB_ID}}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}/versions/${{steps.parse-conf.outputs.IM_VERSION}}'
           dist-location: ${{steps.parse-conf.outputs.PROJECT_LOC}}
-          vm-size: ${{ inputs.vm_size }}
+          vm-size: ${{ steps.parse-conf.outputs.IM_SKU }}
