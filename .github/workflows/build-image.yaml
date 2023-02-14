@@ -110,15 +110,15 @@ jobs:
             cd /apis/node-dev
             sudo npm install pm2 -g --unsafe-perm=true --allow-root
             sudo npm install --unsafe-perm=true --allow-root
-            pm2 start filter/bin/www --name filter
-            pm2 start mobile/bin/www --name mobile
-            pm2 start util/bin/www --name util
-            pm2 start external/bin/www --name external
-            pm2 start health-dash/bin/www --name health-dash
-            pm2 start tapeevents/bin/www --name tapeevents
-            pm2 save
-            pm2 startup
-            pm2 save
+            sudo pm2 start filter/bin/www --name filter
+            sudo pm2 start mobile/bin/www --name mobile
+            sudo pm2 start util/bin/www --name util
+            sudo pm2 start external/bin/www --name external
+            sudo pm2 start health-dash/bin/www --name health-dash
+            sudo pm2 start tapeevents/bin/www --name tapeevents
+            sudo pm2 save
+            sudo pm2 startup
+            sudo pm2 save
           dist-type: 'SharedImageGallery'
           dist-resource-id: '/subscriptions/${{steps.parse-conf.outputs.SUB_ID}}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}/versions/${{steps.parse-conf.outputs.IM_VERSION}}'
           dist-location: ${{steps.parse-conf.outputs.PROJECT_LOC}}
