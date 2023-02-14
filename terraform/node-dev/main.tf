@@ -76,6 +76,11 @@ resource "azurerm_subnet" "subnet" {
   virtual_network_name = azurerm_virtual_network.vnet.name
 }
 
+resource "azurerm_subnet_network_security_group_association" "sub-nsg-assoc" {
+  subnet_id = azurerm_subnet.subnet.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+
 resource "azurerm_public_ip" "main-pubip" {
   name                = "${var.project_name}-publicip"
   location            = var.project_loc
@@ -103,12 +108,12 @@ resource "azurerm_public_ip" "nat-ip" {
   tags                = var.tags
 }
 
-resource "azurerm_nat_gateway_public_ip_association" "ip-nat" {
+resource "azurerm_nat_gateway_public_ip_association" "ip-nat-assoc" {
   nat_gateway_id       = azurerm_nat_gateway.nat.id
   public_ip_address_id = azurerm_public_ip.nat-ip.id
 }
 
-resource "azurerm_subnet_nat_gateway_association" "sub-nat" {
+resource "azurerm_subnet_nat_gateway_association" "sub-nat-assoc" {
   nat_gateway_id = azurerm_nat_gateway.nat.id
   subnet_id = azurerm_subnet.subnet.id
 }
@@ -199,11 +204,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   }
 
   network_interface {
-    name    = "vm-network-internal"
+    name    = "${azurerm_virtual_network.vnet.name}-nic"
     primary = true
     network_security_group_id = azurerm_network_security_group.nsg.id
     ip_configuration {
-      name      = "ip-internal"
+      name      = "${azurerm_virtual_network.vnet.name}-nic-defaultIpConfiguration"
       primary   = true
       subnet_id = azurerm_subnet.subnet.id
       load_balancer_backend_address_pool_ids = [ azurerm_lb_backend_address_pool.main-bpepool.id ]
