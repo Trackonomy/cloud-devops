@@ -206,7 +206,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   network_interface {
     name    = "${azurerm_virtual_network.vnet.name}-nic"
     primary = true
-    network_security_group_id = azurerm_network_security_group.nsg.id
+    #network_security_group_id = azurerm_network_security_group.nsg.id
     ip_configuration {
       name      = "${azurerm_virtual_network.vnet.name}-nic-defaultIpConfiguration"
       primary   = true
