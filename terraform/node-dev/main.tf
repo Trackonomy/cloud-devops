@@ -154,6 +154,7 @@ resource "azurerm_lb_rule" "lb-rule" {
   backend_port                   = each.key
   frontend_ip_configuration_name = "LoadBalancer-PublicIPAddress"
   backend_address_pool_ids       = [ azurerm_lb_backend_address_pool.main-bpepool.id ]
+  probe_id                       = [ for healthprobe in azurerm_lb_probe.healthprobes: healthprobe.id if healthprobe.name == "${each.key}_probe"][0]
 }
 
 resource "azurerm_shared_image_gallery" "imagegallery" {
