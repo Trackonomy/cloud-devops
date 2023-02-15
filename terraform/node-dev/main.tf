@@ -132,6 +132,13 @@ resource "azurerm_lb" "lb" {
   tags = var.tags
 }
 
+resource "azurerm_lb_probe" "healthprobes" {
+  for_each = var.accepted_ports
+  loadbalancer_id = azurerm_lb.lb.id
+  name = "${each.key}_probe"
+  port = each.key
+}
+
 resource "azurerm_lb_backend_address_pool" "main-bpepool" {
   name = "LoadBalancer-BackendAddressPool"
   #resource_group_name = azurerm_resource_group.rg.name
@@ -192,11 +199,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   custom_data                     = base64encode(file("${path.module}/startup.sh"))
   disable_password_authentication = false
 
-  #admin_ssh_key {
-    #username   = var.vmss_config.admin_username
-    #public_key = var.vmss_config.admin_ssh_key
-  #}
-
   source_image_id = data.azurerm_shared_image_version.main-image.id
 
   os_disk {
@@ -222,14 +224,3 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
     azurerm_lb_rule.lb-rule
   ]
 }
-
-#resource "azurerm_virtual_machine_scale_set_extension" "startup-script" {
-#  name                         = azurerm_linux_virtual_machine_scale_set.scaleset.name
-#  virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.scaleset.id
-#  publisher                    = "Microsoft.Azure.Extensions"
-#  type                         = "CustomScript"
-#  type_handler_version         = "2.0"
-#  settings = jsonencode({
-#    "script" = base64encode(file("${path.module}/startup.sh"))
-#  })
-#}
