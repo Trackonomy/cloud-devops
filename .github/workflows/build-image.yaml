@@ -32,6 +32,10 @@ on:
         required: true
       environment:
         type: environment
+      node_version:
+        description: "node.js verison"
+        type: string
+        required: true
     secrets:
       GH_PAT:
         required: true
