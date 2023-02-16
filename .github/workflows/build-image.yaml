@@ -105,7 +105,8 @@ jobs:
           customizer-source: ${{ GITHUB.WORKSPACE }}/node-dev
           customizer-script: |
             curl -fsSL https://rpm.nodesource.com/setup_${{ inputs.node_version }}.x | sudo bash -
-            sudo yum install gcc gcc-c++ kernel-devel make
+            sudo yum install -y nodejs
+            sudo yum install gcc-c++ make
             sudo mkdir -p /apis/node-dev
             sudo cp -r /tmp/node-dev/* /apis/node-dev
             cd /apis/node-dev
