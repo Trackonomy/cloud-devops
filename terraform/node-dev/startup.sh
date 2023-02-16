@@ -8,6 +8,7 @@ pm2 start external/bin/www --name external &&
 pm2 start health-dash/bin/www --name health-dash && 
 pm2 start tapeevents/bin/www --name tapeevents && 
 pm2 save && 
+#save output to env
 pm2 startup && 
 pm2 save" 
 exit 0
