@@ -8,10 +8,6 @@ on:
       environment:
         type: string
         required: true
-      node_version:
-        description: "node.js verison"
-        type: string
-        default: "14"
     secrets:
       TFBACKEND:
         required: true
@@ -38,7 +34,6 @@ jobs:
     with:
       branch_name: ${{ inputs.branch_name }}
       environment: ${{ inputs.environment }}
-      node_version: ${{ inputs.node_version }}
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
