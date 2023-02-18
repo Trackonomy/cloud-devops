@@ -8,7 +8,7 @@ pm2 start external/bin/www --name external &&
 pm2 start health-dash/bin/www --name health-dash && 
 pm2 start tapeevents/bin/www --name tapeevents && 
 pm2 save && 
-tee -a /etc/systemd/system/pm2-azureadm.service <<EOF
+sudo tee -a /etc/systemd/system/pm2-azureadm.service <<EOF
 [Unit]
 Description=PM2 process manager
 Documentation=https://pm2.keymetrics.io/
