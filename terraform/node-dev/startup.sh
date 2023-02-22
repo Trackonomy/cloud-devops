@@ -42,5 +42,5 @@ pm2 save
 export -f start_all
 echo "Starting apps"
 
-su - azureadm -c "bash -c start_all" 
+su azureadm -c "bash -c start_all" 
 exit 0
