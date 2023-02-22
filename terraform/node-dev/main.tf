@@ -18,7 +18,7 @@ provider "azurerm" {
 }
 
 data "azurerm_resource_group" "rg" {
-  name     = var.project_name
+  name = var.project_name
 }
 
 resource "azurerm_network_security_rule" "openports-rules-inbound" {
@@ -66,7 +66,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = data.azurerm_resource_group.rg.name
   address_space       = ["10.0.0.0/16"]
 
-  tags                = var.tags
+  tags = var.tags
 }
 
 resource "azurerm_subnet" "subnet" {
@@ -77,7 +77,7 @@ resource "azurerm_subnet" "subnet" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "sub-nsg-assoc" {
-  subnet_id = azurerm_subnet.subnet.id
+  subnet_id                 = azurerm_subnet.subnet.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
@@ -115,7 +115,7 @@ resource "azurerm_nat_gateway_public_ip_association" "ip-nat-assoc" {
 
 resource "azurerm_subnet_nat_gateway_association" "sub-nat-assoc" {
   nat_gateway_id = azurerm_nat_gateway.nat.id
-  subnet_id = azurerm_subnet.subnet.id
+  subnet_id      = azurerm_subnet.subnet.id
 }
 
 resource "azurerm_lb" "lb" {
@@ -133,10 +133,10 @@ resource "azurerm_lb" "lb" {
 }
 
 resource "azurerm_lb_probe" "healthprobes" {
-  for_each = var.accepted_ports
+  for_each        = var.accepted_ports
   loadbalancer_id = azurerm_lb.lb.id
-  name = "${each.key}_probe"
-  port = each.key
+  name            = "${each.key}_probe"
+  port            = each.key
 }
 
 resource "azurerm_lb_backend_address_pool" "main-bpepool" {
@@ -153,8 +153,8 @@ resource "azurerm_lb_rule" "lb-rule" {
   frontend_port                  = each.key
   backend_port                   = each.key
   frontend_ip_configuration_name = "LoadBalancer-PublicIPAddress"
-  backend_address_pool_ids       = [ azurerm_lb_backend_address_pool.main-bpepool.id ]
-  probe_id                       = [ for healthprobe in azurerm_lb_probe.healthprobes: healthprobe.id if healthprobe.name == "${each.key}_probe"][0]
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.main-bpepool.id]
+  probe_id                       = [for healthprobe in azurerm_lb_probe.healthprobes : healthprobe.id if healthprobe.name == "${each.key}_probe"][0]
 }
 
 resource "azurerm_shared_image_gallery" "imagegallery" {
@@ -199,7 +199,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
   admin_password                  = var.vmss_config.admin_password
   custom_data                     = base64encode(file("${path.module}/startup.sh"))
   disable_password_authentication = false
-
+  zones                           = var.availability_zones
   source_image_id = data.azurerm_shared_image_version.main-image.id
 
   os_disk {
@@ -212,14 +212,14 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
     primary = true
     #network_security_group_id = azurerm_network_security_group.nsg.id
     ip_configuration {
-      name      = "${azurerm_virtual_network.vnet.name}-nic-defaultIpConfiguration"
-      primary   = true
-      subnet_id = azurerm_subnet.subnet.id
-      load_balancer_backend_address_pool_ids = [ azurerm_lb_backend_address_pool.main-bpepool.id ]
+      name                                   = "${azurerm_virtual_network.vnet.name}-nic-defaultIpConfiguration"
+      primary                                = true
+      subnet_id                              = azurerm_subnet.subnet.id
+      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.main-bpepool.id]
     }
   }
   boot_diagnostics {
-    
+
   }
   depends_on = [
     azurerm_lb_rule.lb-rule
