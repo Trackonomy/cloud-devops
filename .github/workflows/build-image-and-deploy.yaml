@@ -7,6 +7,10 @@ on:
         required: true
       environment:
         type: environment
+      node_version:
+        description: "Node.js version"
+        default: "14"
+        type: string
     secrets:
       GH_PAT:
         required: true
@@ -28,6 +32,7 @@ jobs:
     with:
       branch_name: ${{ inputs.branch_name }}
       environment: ${{ inputs.environment }}
+      node_version: ${{ inputs.node_version }}
     secrets:
       GH_PAT: ${{ secrets.GH_PAT }}
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

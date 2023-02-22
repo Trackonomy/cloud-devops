@@ -58,5 +58,11 @@ variable "vmss_config" {
 
 variable "dns_prefix" {
   description = "DNS prefix of public ip"
-  type = string
+  type        = string
+}
+
+variable "availability_zones" {
+  description = "Availability zones of virtual machines"
+  type        = set(string)
+  default     = null
 }

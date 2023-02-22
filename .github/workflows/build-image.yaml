@@ -9,6 +9,10 @@ on:
       environment:
         required: true
         type: string
+      node_version:
+        description: "Node.js version"
+        default: "14"
+        type: string
     secrets:
       GH_PAT:
         required: true
@@ -28,6 +32,10 @@ on:
         required: true
       environment:
         type: environment
+      node_version:
+        description: "Node.js version"
+        default: "14"
+        type: string
     secrets:
       GH_PAT:
         required: true
@@ -96,7 +104,7 @@ jobs:
           source-image: Canonical:UbuntuServer:18.04-LTS:latest
           customizer-source: ${{ GITHUB.WORKSPACE }}/node-dev
           customizer-script: |
-            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            curl -sL https://deb.nodesource.com/setup_${{ inputs.node_version }}.x | sudo -E bash -
             sudo apt-get install -y nodejs
             sudo apt-get install -y build-essential
             sudo mkdir -p /apis/node-dev
