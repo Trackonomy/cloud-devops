@@ -1,14 +1,8 @@
 #!/bin/bash
 
-echo "Starting apps"
-su - azureadm -c "cd /apis/node-dev && pm2 start filter/bin/www --name filter && 
-pm2 start mobile/bin/www --name mobile && 
-pm2 start util/bin/www --name util && 
-pm2 start external/bin/www --name external && 
-pm2 start health-dash/bin/www --name health-dash && 
-pm2 start tapeevents/bin/www --name tapeevents && 
-pm2 save && 
-sudo tee -a /etc/systemd/system/pm2-azureadm.service <<EOF
+start_all() {
+  save_startup_file() {
+    sudo tee -a /etc/systemd/system/pm2-azureadm.service <<- EOF
 [Unit]
 Description=PM2 process manager
 Documentation=https://pm2.keymetrics.io/
@@ -31,7 +25,22 @@ ExecStop=/usr/lib/node_modules/pm2/bin/pm2 kill
 
 [Install]
 WantedBy=multi-user.target
-EOF &&
-systemctl enable pm2-azureadm.service && 
-pm2 save" 
+EOF
+}
+
+cd /apis/node-dev && pm2 start filter/bin/www --name filter
+pm2 start mobile/bin/www --name mobile
+pm2 start util/bin/www --name util
+pm2 start external/bin/www --name external
+pm2 start health-dash/bin/www --name health-dash
+pm2 start tapeevents/bin/www --name tapeevents
+pm2 save
+save_startup_file
+sudo systemctl enable pm2-azureadm.service
+pm2 save
+}
+export -f start_all
+echo "Starting apps"
+
+su azureadm -c "bash -c start_all" 
 exit 0
