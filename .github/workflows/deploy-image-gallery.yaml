@@ -35,32 +35,32 @@ jobs:
         env:
           TFBACKEND: '${{ secrets.TFBACKEND }}'
           TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
-          WORK_DIR: /tmp/terraform
+          WORK_DIR: /tmp/terraform/node-dev
         run: |
           echo "$TFBACKEND" > $WORK_DIR/image_gallery/backends/backend.conf
           echo "$TFSECRETVARS" > $WORK_DIR/image_gallery/.auto.tfvars
           echo "$TFVARS" > $WORK_DIR/image_gallery/terraform.tfvars
       - name: Setup terraform
         env:
-          WORK_DIR: /tmp/terraform/image_gallery
+          WORK_DIR: /tmp/terraform/node-dev/image_gallery
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.3.7
       - name: Terraform Init
         env:
-          WORK_DIR: /tmp/terraform/image_gallery
+          WORK_DIR: /tmp/terraform/node-dev/image_gallery
         id: init
         run: cd $WORK_DIR && terraform init --backend-config=$WORK_DIR/backends/backend.conf
 
       - name: Terraform Validate
         env:
-          WORK_DIR: /tmp/terraform/image_gallery
+          WORK_DIR: /tmp/terraform/node-dev/image_gallery
         id: validate
         run: cd $WORK_DIR && terraform validate -no-color
 
       - name: Terraform Apply
         env:
-          WORK_DIR: /tmp/terraform/image_gallery
+          WORK_DIR: /tmp/terraform/node-dev/image_gallery
         id: apply
         run: cd $WORK_DIR && terraform apply --auto-approve -no-color
         continue-on-error: true

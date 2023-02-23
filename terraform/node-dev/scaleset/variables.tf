@@ -78,3 +78,9 @@ variable "pubip_name" {
   type        = string
   default     = ""
 }
+
+variable "nsg_name" {
+  description = "Network security group name"
+  type        = string
+  default     = ""
+}
