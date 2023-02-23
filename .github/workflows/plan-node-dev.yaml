@@ -3,8 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        type: string
-        required: true
+        type: environment
     secrets:
       TFBACKEND:
         required: true
