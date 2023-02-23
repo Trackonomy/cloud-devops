@@ -59,38 +59,12 @@ resource "azurerm_subnet_network_security_group_association" "sub-nsg-assoc" {
 }
 
 resource "azurerm_public_ip" "main-pubip" {
-  name                = "${var.project_name}-publicip"
+  name                = var.pubip_name == "" ? "${var.project_name}-publicip" : var.pubip_name
   location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = "Static"
   domain_name_label   = var.dns_prefix
   sku                 = "Standard"
+  zones               = var.availability_zones
   tags                = var.tags
-}
-
-resource "azurerm_nat_gateway" "nat" {
-  name                    = "NAT"
-  location                = var.project_loc
-  resource_group_name     = data.azurerm_resource_group.rg.name
-  sku_name                = "Standard"
-  idle_timeout_in_minutes = 10
-}
-
-resource "azurerm_public_ip" "nat-ip" {
-  name                = "${var.project_name}-natgatewayip"
-  location            = var.project_loc
-  resource_group_name = data.azurerm_resource_group.rg.name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-  tags                = var.tags
-}
-
-resource "azurerm_nat_gateway_public_ip_association" "ip-nat-assoc" {
-  nat_gateway_id       = azurerm_nat_gateway.nat.id
-  public_ip_address_id = azurerm_public_ip.nat-ip.id
-}
-
-resource "azurerm_subnet_nat_gateway_association" "sub-nat-assoc" {
-  nat_gateway_id = azurerm_nat_gateway.nat.id
-  subnet_id      = azurerm_subnet.subnet.id
 }

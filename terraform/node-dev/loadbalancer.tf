@@ -1,5 +1,5 @@
 resource "azurerm_lb" "lb" {
-  name                = "${var.project_name}-loadbalancer"
+  name                = var.lb_name == "" ? "${var.project_name}-loadbalancer" : var.lb_name
   location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   sku                 = "Standard"

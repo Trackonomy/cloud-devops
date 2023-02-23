@@ -66,3 +66,15 @@ variable "availability_zones" {
   type        = set(string)
   default     = null
 }
+
+variable "lb_name" {
+  description = "Load balancer name for the scaleset."
+  type        = string
+  default     = ""
+}
+
+variable "pubip_name" {
+  description = "Public ip name of the scaleset"
+  type        = string
+  default     = ""
+}
