@@ -43,7 +43,7 @@ data "azurerm_lb" "main-lb" {
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
-data "azurerm_lb_backend_address_pool" "main-bpepool" {
+resource "azurerm_lb_backend_address_pool" "main-bpepool" {
   name = var.bepool_name
   loadbalancer_id = data.azurerm_lb.main-lb.id
 }
@@ -75,7 +75,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
       name                                   = var.ipconf_name
       primary                                = true
       subnet_id                              = data.azurerm_subnet.subnet.id
-      load_balancer_backend_address_pool_ids = [data.azurerm_lb_backend_address_pool.main-bpepool.id]
+      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.main-bpepool.id]
     }
   }
   boot_diagnostics {
