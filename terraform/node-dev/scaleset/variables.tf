@@ -84,3 +84,9 @@ variable "nsg_name" {
   type        = string
   default     = ""
 }
+
+variable "scaleset_name" {
+  description = "Name of the scaleset"
+  type        = string
+  default     = ""
+}
