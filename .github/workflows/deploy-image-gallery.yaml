@@ -30,16 +30,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: Move terraform folder
-        run: mkdir -p /tmp/terraform && cp -Rv terraform/* /tmp/terraform
+        run: mkdir -p /tmp/terraform && cp -Rv terraform/node-dev/image_gallery/* /tmp/terraform/node-dev/image_gallery
       - name: Inject secrets
         env:
           TFBACKENDIG: '${{ secrets.TFBACKENDIG }}'
           TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
-          WORK_DIR: /tmp/terraform/node-dev
+          WORK_DIR: /tmp/terraform/node-dev/image_gallery
         run: |
-          echo "$TFBACKENDIG" > $WORK_DIR/image_gallery/backends/backend.conf
-          echo "$TFSECRETVARS" > $WORK_DIR/image_gallery/.auto.tfvars
-          echo "$TFVARS" > $WORK_DIR/image_gallery/terraform.tfvars
+          echo "$TFBACKENDIG" > $WORK_DIR/backends/backend.conf
+          echo "$TFSECRETVARS" > $WORK_DIR/.auto.tfvars
+          echo "$TFVARS" > $WORK_DIR/terraform.tfvars
       - name: Setup terraform
         env:
           WORK_DIR: /tmp/terraform/node-dev/image_gallery
