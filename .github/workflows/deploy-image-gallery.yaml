@@ -5,7 +5,7 @@ on:
       environment:
         type: string
     secrets:
-      TFBACKEND:
+      TFBACKENDIG:
         required: true
       TFSECRETVARS:
         required: true
