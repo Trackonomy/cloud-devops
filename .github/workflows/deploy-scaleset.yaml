@@ -30,7 +30,7 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
     - name: Move terraform folder
-      run: mkdir -p /tmp/terraform && cp -Rv terraform/node-dev/scaleset/* /tmp/terraform/node-dev/scaleset
+      run: mkdir -p /tmp/terraform/node-dev/scaleset && cp -Rv terraform/node-dev/scaleset/* /tmp/terraform/node-dev/scaleset
     - name: Inject secrets
       env:
         TFBACKEND: '${{ secrets.TFBACKEND }}'

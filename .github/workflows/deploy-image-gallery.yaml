@@ -30,7 +30,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: Move terraform folder
-        run: mkdir -p /tmp/terraform && cp -Rv terraform/node-dev/image_gallery/* /tmp/terraform/node-dev/image_gallery
+        run: mkdir -p /tmp/terraform/node-dev/image_gallery && cp -Rv terraform/node-dev/image_gallery/* /tmp/terraform/node-dev/image_gallery
       - name: Inject secrets
         env:
           TFBACKENDIG: '${{ secrets.TFBACKENDIG }}'
