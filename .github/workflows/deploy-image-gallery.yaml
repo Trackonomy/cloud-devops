@@ -33,7 +33,7 @@ jobs:
         run: mkdir -p /tmp/terraform && cp -Rv terraform/* /tmp/terraform
       - name: Inject secrets
         env:
-          TFBACKEND: '${{ secrets.TFBACKENDIG }}'
+          TFBACKENDIG: '${{ secrets.TFBACKENDIG }}'
           TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
           WORK_DIR: /tmp/terraform/node-dev
         run: |
