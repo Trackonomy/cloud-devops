@@ -13,6 +13,8 @@ on:
         default: "14"
         type: string
     secrets:
+      TFBACKENDIG:
+        required: true
       TFBACKEND:
         required: true
       TFSECRETVARS:
@@ -30,7 +32,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
     secrets:
-      TFBACKEND: ${{ secrets.TFBACKEND }}
+      TFBACKENDIG: ${{ secrets.TFBACKENDIG }}
       TFSECRETVARS: ${{ secrets.TFSECRETVARS }}
   build_image:
     needs: deploy_image_gallery

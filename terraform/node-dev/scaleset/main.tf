@@ -23,7 +23,7 @@ data "azurerm_resource_group" "rg" {
 
 # image galery should be module
 resource "azurerm_linux_virtual_machine_scale_set" "scaleset" {
-  name                            = "${var.project_name}-scaleset"
+  name                            = var.scaleset_name == "" ? "${var.project_name}-scaleset" : var.scaleset_name
   location                        = data.azurerm_shared_image_version.main-image.location
   resource_group_name             = data.azurerm_resource_group.rg.name
   sku                             = var.vmss_config.image_sku

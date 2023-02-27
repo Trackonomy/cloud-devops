@@ -30,37 +30,37 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
     - name: Move terraform folder
-      run: mkdir -p /tmp/terraform && cp -Rv terraform/* /tmp/terraform
+      run: mkdir -p /tmp/terraform/node-dev/scaleset && cp -Rv terraform/node-dev/scaleset/* /tmp/terraform/node-dev/scaleset
     - name: Inject secrets
       env:
         TFBACKEND: '${{ secrets.TFBACKEND }}'
         TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
-        WORK_DIR: /tmp/terraform
+        WORK_DIR: /tmp/terraform/node-dev/scaleset
       run: |
-        echo "$TFBACKEND" > $WORK_DIR/node-dev/backends/backend.conf
-        echo "$TFSECRETVARS" > $WORK_DIR/node-dev/.auto.tfvars
-        echo "$TFVARS" > $WORK_DIR/node-dev/terraform.tfvars
+        echo "$TFBACKEND" > $WORK_DIR/backends/backend.conf
+        echo "$TFSECRETVARS" > $WORK_DIR/.auto.tfvars
+        echo "$TFVARS" > $WORK_DIR/terraform.tfvars
     - name: Setup terraform
       env:
-        WORK_DIR: /tmp/terraform/node-dev
+        WORK_DIR: /tmp/terraform/node-dev/scaleset
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.3.7
     - name: Terraform Init
       env:
-        WORK_DIR: /tmp/terraform/node-dev
+        WORK_DIR: /tmp/terraform/node-dev/scaleset
       id: init
       run: cd $WORK_DIR && terraform init --backend-config=$WORK_DIR/backends/backend.conf
 
     - name: Terraform Validate
       env:
-        WORK_DIR: /tmp/terraform/node-dev
+        WORK_DIR: /tmp/terraform/node-dev/scaleset
       id: validate
       run: cd $WORK_DIR && terraform validate -no-color
 
     - name: Terraform Apply
       env:
-        WORK_DIR: /tmp/terraform/node-dev
+        WORK_DIR: /tmp/terraform/node-dev/scaleset
       id: apply
       run: cd $WORK_DIR && terraform apply --auto-approve -no-color
       continue-on-error: true

@@ -1,6 +1,6 @@
 # define resource group
 project_name = "trk-ppe-sbx"
-project_loc  = "eastus"
+project_loc  = "westcentralus"
 
 image_gallery_name = "trk_ppe_sbx_img_gallery"
 tags = {
@@ -14,6 +14,3 @@ vmss_config = {
   image_version  = "1.0.0",
   admin_username = "azureadm"
 }
-
-
-#8122, 4183, 8123
