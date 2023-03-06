@@ -28,7 +28,7 @@ WantedBy=multi-user.target
 EOF
 }
 
-cd /apis/node-dev && pm2 start filter/bin/www --name filter
+cd /apis/node-dev && pm2 start filter/bin/www --name filter -i max
 pm2 start mobile/bin/www --name mobile
 pm2 start util/bin/www --name util
 pm2 start external/bin/www --name external
