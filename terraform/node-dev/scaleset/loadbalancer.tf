@@ -28,7 +28,7 @@ resource "azurerm_lb_backend_address_pool" "main-bpepool" {
 resource "azurerm_lb_rule" "lb-rule" {
   loadbalancer_id                = azurerm_lb.lb.id
   for_each                       = var.accepted_ports
-  name                           = "${var.project_name}-lbrule-${each.key}"
+  name                           = "${azurerm_lb.lb.name}-lbrule-${each.key}"
   protocol                       = "Tcp"
   frontend_port                  = each.key
   backend_port                   = each.key

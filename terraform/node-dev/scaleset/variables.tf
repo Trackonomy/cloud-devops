@@ -90,3 +90,15 @@ variable "scaleset_name" {
   type        = string
   default     = ""
 }
+
+variable "vnet_name" {
+  description = "Name of the virtual network"
+  type        = string
+  default     = ""
+}
+
+variable "sub_name" {
+  description = "Name of the subnet"
+  type        = string
+  default     = ""
+}
