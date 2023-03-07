@@ -2,7 +2,7 @@
 
 start_all() {
   save_startup_file() {
-    sudo tee -a /etc/systemd/system/pm2-azureadm.service <<- EOF
+    sudo tee -a /etc/systemd/system/pm2-prdazureadmin.service <<- EOF
 [Unit]
 Description=PM2 process manager
 Documentation=https://pm2.keymetrics.io/
@@ -10,13 +10,13 @@ After=network.target
 
 [Service]
 Type=forking
-User=azureadm
+User=prdazureadmin
 LimitNOFILE=infinity
 LimitNPROC=infinity
 LimitCORE=infinity
 Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
-Environment=PM2_HOME=/home/azureadm/.pm2
-PIDFile=/home/azureadm/.pm2/pm2.pid
+Environment=PM2_HOME=/home/prdazureadmin/.pm2
+PIDFile=/home/prdazureadmin/.pm2/pm2.pid
 Restart=on-failure
 
 ExecStart=/usr/lib/node_modules/pm2/bin/pm2 resurrect
@@ -36,11 +36,11 @@ pm2 start health-dash/bin/www --name health-dash
 pm2 start tapeevents/bin/www --name tapeevents
 pm2 save
 save_startup_file
-sudo systemctl enable pm2-azureadm.service
+sudo systemctl enable pm2-prdazureadmin.service
 pm2 save
 }
 export -f start_all
 echo "Starting apps"
 
-su azureadm -c "bash -c start_all" 
+su prdazureadmin -c "bash -c start_all" 
 exit 0
