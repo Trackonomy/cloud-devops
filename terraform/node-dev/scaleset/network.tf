@@ -67,4 +67,11 @@ resource "azurerm_public_ip" "main-pubip" {
   sku                 = "Standard"
   zones               = var.availability_zones
   tags                = var.tags
+  lifecycle {
+    ignore_changes = [
+      tags,
+      zones
+    ]
+
+  }
 }
