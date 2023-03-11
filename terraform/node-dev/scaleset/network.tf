@@ -29,7 +29,7 @@ resource "azurerm_network_security_rule" "openports-rules-outbound" {
 }
 # firewall settings
 resource "azurerm_network_security_group" "nsg" {
-  name                = "${var.project_name}-nsg"
+  name                = var.nsg_name == "" ? "${var.project_name}-nsg" : var.nsg_name
   location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   # CORS policy
@@ -38,7 +38,7 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.project_name}-vnet"
+  name                = var.vnet_name == "" ? "${var.project_name}-vnet" : var.vnet_name
   location            = var.project_loc
   resource_group_name = data.azurerm_resource_group.rg.name
   address_space       = ["10.0.0.0/16"]
@@ -47,7 +47,7 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "subnet" {
-  name                 = "${var.project_name}-sub01"
+  name                 = var.sub_name == "" ? "${var.project_name}-sub01" : var.sub_name
   address_prefixes     = ["10.0.2.0/24"]
   resource_group_name  = data.azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -67,4 +67,11 @@ resource "azurerm_public_ip" "main-pubip" {
   sku                 = "Standard"
   zones               = var.availability_zones
   tags                = var.tags
+  lifecycle {
+    ignore_changes = [
+      tags,
+      zones
+    ]
+
+  }
 }
