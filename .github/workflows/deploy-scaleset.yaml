@@ -56,7 +56,7 @@ jobs:
         sed -i "s/{filter.params}/$FILTER_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s/{mobile.params}/$MOBILE_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s/{util.params}/$UTIL_PARAMS/" $WORK_DIR/startup.sh
-        sed -i "s/{external.params}/$EXTERNAL_PARAMS/" $WORK_DIR/tartup.sh
+        sed -i "s/{external.params}/$EXTERNAL_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s/{health-dash.params}/$HEALTH_DASH_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s/{tapeevents.params}/$TAPEEVENTS_PARAMS/" $WORK_DIR/startup.sh
     - name: Setup terraform
