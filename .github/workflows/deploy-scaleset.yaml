@@ -59,6 +59,11 @@ jobs:
         sed -i "s/{external.params}/$EXTERNAL_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s/{health-dash.params}/$HEALTH_DASH_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s/{tapeevents.params}/$TAPEEVENTS_PARAMS/" $WORK_DIR/startup.sh
+    - name: Upload startup script for verification
+      uses: actions/upload-artifact@v3
+      with:
+        name: startup_script
+        path: /tmp/terraform/node-dev/scaleset/startup.sh
     - name: Setup terraform
       env:
         WORK_DIR: /tmp/terraform/node-dev/scaleset
