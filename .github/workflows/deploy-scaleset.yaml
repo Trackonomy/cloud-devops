@@ -51,15 +51,14 @@ jobs:
         HEALTH_DASH_PARAMS: ${{ vars.HEALTH_DASH_PARAMS }}
         TAPEEVENTS_PARAMS: ${{ vars.TAPEEVENTS_PARAMS }}
       run: |
-        cd $WORK_DIR
-        export USERNAME=$(awk '/admin_username/ {print $3}' terraform.tfvars | tr -d ",")
-        sed -i "s/{username}/$USERNAME/" startup.sh
-        sed -i "s/{filter.params}/$FILTER_PARAMS/" startup.sh
-        sed -i "s/{mobile.params}/$MOBILE_PARAMS/" startup.sh
-        sed -i "s/{util.params}/$UTIL_PARAMS/" startup.sh
-        sed -i "s/{external.params}/$EXTERNAL_PARAMS/" startup.sh
-        sed -i "s/{health-dash.params}/$HEALTH_DASH_PARAMS/" startup.sh
-        sed -i "s/{tapeevents.params}/$TAPEEVENTS_PARAMS/" startup.sh
+        export USERNAME=$(awk '/admin_username/ {print $3}' $WORK_DIR/terraform.tfvars | tr -d ",")
+        sed -i "s/{username}/$USERNAME/" $WORK_DIR/startup.sh
+        sed -i "s/{filter.params}/$FILTER_PARAMS/" $WORK_DIR/startup.sh
+        sed -i "s/{mobile.params}/$MOBILE_PARAMS/" $WORK_DIR/startup.sh
+        sed -i "s/{util.params}/$UTIL_PARAMS/" $WORK_DIR/startup.sh
+        sed -i "s/{external.params}/$EXTERNAL_PARAMS/" $WORK_DIR/tartup.sh
+        sed -i "s/{health-dash.params}/$HEALTH_DASH_PARAMS/" $WORK_DIR/startup.sh
+        sed -i "s/{tapeevents.params}/$TAPEEVENTS_PARAMS/" $WORK_DIR/startup.sh
     - name: Setup terraform
       env:
         WORK_DIR: /tmp/terraform/node-dev/scaleset
