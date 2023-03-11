@@ -21,6 +21,7 @@ on:
 env:
   TFVARS: ${{ vars.TFVARS }}
 
+
 jobs:
   deploy_scaleset:
     runs-on: ubuntu-latest
@@ -40,6 +41,24 @@ jobs:
         echo "$TFBACKEND" > $WORK_DIR/backends/backend.conf
         echo "$TFSECRETVARS" > $WORK_DIR/.auto.tfvars
         echo "$TFVARS" > $WORK_DIR/terraform.tfvars
+    - name: Inject settings for startup script
+      env:
+        WORK_DIR: /tmp/terraform/node-dev/scaleset
+        FILTER_PARAMS: ${{ vars.FILTER_PARAMS }}
+        MOBILE_PARAMS: ${{ vars.MOBILE_PARAMS }}
+        UTIL_PARAMS: ${{ vars.UTIL_PARAMS }}
+        EXTERNAL_PARAMS: ${{ vars.EXTERNAL_PARAMS }}
+        HEALTH_DASH_PARAMS: ${{ vars.HEALTH_DASH_PARAMS }}
+        TAPEEVENTS_PARAMS: ${{ vars.TAPEEVENTS_PARAMS }}
+      run: |
+        export USERNAME=$(awk '/admin_username/ {print $3}' terraform.tfvars | tr -d ",")
+        sed -i "s/{username}/$USERNAME/" startup.sh
+        sed -i "s/{filter.params}/$FILTER_PARAMS/" startup.sh
+        sed -i "s/{mobile.params}/$MOBILE_PARAMS/" startup.sh
+        sed -i "s/{util.params}/$UTIL_PARAMS/" startup.sh
+        sed -i "s/{external.params}/$EXTERNAL_PARAMS/" startup.sh
+        sed -i "s/{health-dash.params}/$HEALTH_DASH_PARAMS/" startup.sh
+        sed -i "s/{tapeevents.params}/$TAPEEVENTS_PARAMS/" startup.sh
     - name: Setup terraform
       env:
         WORK_DIR: /tmp/terraform/node-dev/scaleset
