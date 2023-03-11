@@ -51,6 +51,7 @@ jobs:
         HEALTH_DASH_PARAMS: ${{ vars.HEALTH_DASH_PARAMS }}
         TAPEEVENTS_PARAMS: ${{ vars.TAPEEVENTS_PARAMS }}
       run: |
+        cd $WORK_DIR
         export USERNAME=$(awk '/admin_username/ {print $3}' terraform.tfvars | tr -d ",")
         sed -i "s/{username}/$USERNAME/" startup.sh
         sed -i "s/{filter.params}/$FILTER_PARAMS/" startup.sh
