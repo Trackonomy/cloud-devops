@@ -27,7 +27,10 @@ ExecStop=/usr/lib/node_modules/pm2/bin/pm2 kill
 WantedBy=multi-user.target
 EOF
 }
-
+pm2 install pm2-logrotate
+pm2 set pm2-logrotate:max_size 50M
+pm2 set pm2-logrotate:retain 10
+pm2 set pm2-logrotate:compress true
 cd /apis/node-dev && pm2 start filter/bin/www --name filter {filter.params}
 pm2 start mobile/bin/www --name mobile {mobile.params}
 pm2 start util/bin/www --name util {util.params}
