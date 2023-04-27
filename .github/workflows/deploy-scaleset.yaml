@@ -50,6 +50,7 @@ jobs:
         EXTERNAL_PARAMS: ${{ vars.EXTERNAL_PARAMS }}
         HEALTH_DASH_PARAMS: ${{ vars.HEALTH_DASH_PARAMS }}
         TAPEEVENTS_PARAMS: ${{ vars.TAPEEVENTS_PARAMS }}
+        ADDITIONAL_PARAMS: ${{ vars.ADDITIONAL_PARAMS }}
       run: |
         export USERNAME=$(awk '/admin_username/ {print $3}' $WORK_DIR/terraform.tfvars | tr -d ",\"\r\n")
         sed -i "s/{username}/$USERNAME/" $WORK_DIR/startup.sh
@@ -59,6 +60,7 @@ jobs:
         sed -i "s/{external.params}/$EXTERNAL_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s/{health-dash.params}/$HEALTH_DASH_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s/{tapeevents.params}/$TAPEEVENTS_PARAMS/" $WORK_DIR/startup.sh
+        sed -i "s|{additional.params}|$ADDITIONAL_PARAMS|" $WORK_DIR/startup.sh
     - name: Upload startup script for verification
       uses: actions/upload-artifact@v3
       with:

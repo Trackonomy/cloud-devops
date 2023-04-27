@@ -37,6 +37,7 @@ pm2 start util/bin/www --name util {util.params}
 pm2 start external/bin/www --name external {external.params}
 pm2 start health-dash/bin/www --name health-dash {health-dash.params}
 pm2 start tapeevents/bin/www --name tapeevents {tapeevents.params}
+{additional.params}
 pm2 save
 save_startup_file
 sudo systemctl enable pm2-{username}.service
