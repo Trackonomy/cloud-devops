@@ -28,11 +28,11 @@ jobs:
     environment: ${{ inputs.environment }}
     name: Deploy Scaleset
     steps:
-    - name: Checkout repo
+    - name: Checkout repo ✅
       uses: actions/checkout@v2
-    - name: Move terraform folder
+    - name: Move terraform folder ✅
       run: mkdir -p /tmp/terraform/node-dev/scaleset && cp -Rv terraform/node-dev/scaleset/* /tmp/terraform/node-dev/scaleset
-    - name: Inject secrets
+    - name: Inject secrets ⚙️
       env:
         TFBACKEND: '${{ secrets.TFBACKEND }}'
         TFSECRETVARS: '${{ secrets.TFSECRETVARS }}'
@@ -41,7 +41,7 @@ jobs:
         echo "$TFBACKEND" > $WORK_DIR/backends/backend.conf
         echo "$TFSECRETVARS" > $WORK_DIR/.auto.tfvars
         echo "$TFVARS" > $WORK_DIR/terraform.tfvars
-    - name: Inject settings for startup script
+    - name: Inject settings for startup script ⚙️
       env:
         WORK_DIR: /tmp/terraform/node-dev/scaleset
         FILTER_PARAMS: ${{ vars.FILTER_PARAMS }}
@@ -51,6 +51,7 @@ jobs:
         HEALTH_DASH_PARAMS: ${{ vars.HEALTH_DASH_PARAMS }}
         TAPEEVENTS_PARAMS: ${{ vars.TAPEEVENTS_PARAMS }}
         ADDITIONAL_PARAMS: ${{ vars.ADDITIONAL_PARAMS }}
+        REGION: ${{ vars.REGION }}
       run: |
         export USERNAME=$(awk '/admin_username/ {print $3}' $WORK_DIR/terraform.tfvars | tr -d ",\"\r\n")
         sed -i "s/{username}/$USERNAME/" $WORK_DIR/startup.sh
@@ -61,36 +62,37 @@ jobs:
         sed -i "s/{health-dash.params}/$HEALTH_DASH_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s/{tapeevents.params}/$TAPEEVENTS_PARAMS/" $WORK_DIR/startup.sh
         sed -i "s|{additional.params}|$ADDITIONAL_PARAMS|" $WORK_DIR/startup.sh
-    - name: Upload startup script for verification
+        sed -i "s|{region}|$REGION" $WORK_DIR/startup.sh
+    - name: Upload startup script for verification ✅
       uses: actions/upload-artifact@v3
       with:
         name: startup_script
         path: /tmp/terraform/node-dev/scaleset/startup.sh
-    - name: Setup terraform
+    - name: Setup terraform ⚙️
       env:
         WORK_DIR: /tmp/terraform/node-dev/scaleset
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.3.7
-    - name: Terraform Init
+    - name: Terraform Init ✅
       env:
         WORK_DIR: /tmp/terraform/node-dev/scaleset
       id: init
       run: cd $WORK_DIR && terraform init --backend-config=$WORK_DIR/backends/backend.conf
 
-    - name: Terraform Validate
+    - name: Terraform Validate ✅
       env:
         WORK_DIR: /tmp/terraform/node-dev/scaleset
       id: validate
       run: cd $WORK_DIR && terraform validate -no-color
 
-    - name: Terraform Apply
+    - name: Terraform Apply ✅
       env:
         WORK_DIR: /tmp/terraform/node-dev/scaleset
       id: apply
       run: cd $WORK_DIR && terraform apply --auto-approve -no-color
       continue-on-error: true
-    - name: Clean terraform directory
+    - name: Clean terraform directory 🧹
       run: rm -r /tmp/terraform
     - name: Fail pipeline
       if: steps.apply.outcome != 'success'
