@@ -31,13 +31,14 @@ pm2 install pm2-logrotate
 pm2 set pm2-logrotate:max_size 50M
 pm2 set pm2-logrotate:retain 10
 pm2 set pm2-logrotate:compress true
-cd /apis/node-dev && pm2 start filter/bin/www --name filter {filter.params}
+cd /apis/node-dev
+{additional.params}
+pm2 start filter/bin/www --name filter {filter.params}
 pm2 start mobile/bin/www --name mobile {mobile.params}
 pm2 start util/bin/www --name util {util.params}
 pm2 start external/bin/www --name external {external.params}
 pm2 start health-dash/bin/www --name health-dash {health-dash.params}
 pm2 start tapeevents/bin/www --name tapeevents {tapeevents.params}
-{additional.params}
 pm2 save
 save_startup_file
 sudo systemctl enable pm2-{username}.service
