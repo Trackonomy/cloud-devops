@@ -57,7 +57,7 @@ jobs:
       name: Build virtual machine
       timeout-minutes: 120
       steps:
-      - name: Checkout node-dev repo
+      - name: Checkout node-dev repo ✅
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
@@ -65,11 +65,11 @@ jobs:
           token: '${{ secrets.GH_PAT }}'
           ref: ${{ inputs.branch_name }}
           path: node-dev
-      - name: Log in with Azure
+      - name: Log in with Azure ✅
         uses: azure/login@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
-      - name: Parse needed configuration
+      - name: Parse needed configuration ⚙️
         id: parse-conf
         env:
           TFBACKEND: '${{ secrets.TFBACKEND }}'
@@ -93,7 +93,7 @@ jobs:
           export IM_VERSION=$(awk '/image_version/ {print $3}' terraform.tfvars | tr -d ",")
           echo "IM_VERSION=$(echo $IM_VERSION | tr -d '\r"')" >> $GITHUB_OUTPUT
           rm backend.conf .auto.tfvars terraform.tfvars
-      - name: Create App Baked Image
+      - name: Create App Baked Image ✅
         id: ImageBuilder
         uses: azure/build-vm-image@v0
         with:
