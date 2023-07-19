@@ -1,0 +1,105 @@
+name: Build image and deploy on old environment
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        description: environment
+      image_version:
+        type: string
+        description: image version
+
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+      MANAGEDIDENTITY:
+        required: true
+env:
+  RG_NAME: ${{ vars.PROJECT_NAME }}
+  RG_LOC: ${{ vars.PROJECT_LOC }}
+  IM_GAL_ID: ${{ vars.IM_GAL_ID }}
+  IM_NAME: ${{ vars.IM_NAME }}
+  SUB_ID: ${{ vars.SUBSCRIPTION_ID }}
+  SKU: ${{ vars.SKU }}
+  VMSS_NAME: ${{ vars.VMSS_NAME }}
+  IM_VERSION: ${{ inputs.image_version }}
+  FILTER_PARAMS: ${{ vars.FILTER_PARAMS }}
+  MOBILE_PARAMS: ${{ vars.MOBILE_PARAMS }}
+  UTIL_PARAMS: ${{ vars.UTIL_PARAMS }}
+  EXTERNAL_PARAMS: ${{ vars.EXTERNAL_PARAMS }}
+  HEALTH_DASH_PARAMS: ${{ vars.HEALTH_DASH_PARAMS }}
+  TAPEEVENTS_PARAMS: ${{ vars.TAPEEVENTS_PARAMS }}
+  ADDITIONAL_PARAMS: ${{ vars.ADDITIONAL_PARAMS }}
+  USERNAME: ${{ vars.USERNAME }}
+  REGION: ${{ vars.REGION }}
+jobs:
+  build_image:
+    name: Build node-dev image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in with Azure ✅
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+      - name: Create App Baked Image ✅
+        id: ImageBuilder
+        uses: azure/build-vm-image@v0
+        with:
+          resource-group-name: ${{ env.RG_NAME }}
+          managed-identity: ${{ secrets.MANAGEDIDENTITY }}
+          location: ${{ env.RG_LOC }}
+          source-os-type: 'linux'
+          source-image: Canonical:UbuntuServer:18.04-LTS:latest
+          customizer-source: ${{ GITHUB.WORKSPACE }}/node-dev
+          customizer-script: |
+            curl -sL https://deb.nodesource.com/setup_${{ inputs.node_version }}.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo apt-get install -y build-essential
+            sudo mkdir -p /apis/node-dev
+            sudo cp -r /tmp/node-dev/* /apis/node-dev
+            cd /apis/node-dev
+            sudo npm install pm2 -g --unsafe-perm=true --allow-root
+            sudo npm install --unsafe-perm=true --allow-root
+          dist-type: 'SharedImageGallery'
+          dist-resource-id: '/subscriptions/${{env.SUB_ID}}/resourceGroups/${{env.RG_NAME}}/providers/Microsoft.Compute/galleries/${{env.IM_GAL_ID}}/images/${{env.IM_NAME}}/versions/${{env.IM_VERSION}}'
+          dist-location: ${{ env.RG_LOC}}
+          vm-size: ${{ env.SKU }}
+  deploy_image:
+    name: Deploy node-dev image
+    runs-on: ubuntu-latest
+    needs: build_image
+    steps:
+    - name: Checkout repo ✅
+      uses: actions/checkout@v2
+    - name: Move terraform folder ✅
+      run: mkdir -p /tmp/terraform/node-dev/scaleset && cp -Rv terraform/node-dev/scaleset/* /tmp/terraform/node-dev/scaleset
+    - name: Inject settings for startup script ⚙️
+      env:
+        WORK_DIR: /tmp/terraform/node-dev/scaleset
+      run: |
+        sed -i "s/{username}/${{ env.USERNAME }}/" $WORK_DIR/startup.sh
+        sed -i "s/{filter.params}/${{ env.FILTER_PARAMS }}/" $WORK_DIR/startup.sh
+        sed -i "s/{mobile.params}/${{ env.MOBILE_PARAMS }}/" $WORK_DIR/startup.sh
+        sed -i "s/{util.params}/${{ env.UTIL_PARAMS }}/" $WORK_DIR/startup.sh
+        sed -i "s/{external.params}/${{ env.EXTERNAL_PARAMS }}/" $WORK_DIR/startup.sh
+        sed -i "s/{health-dash.params}/${{ env.HEALTH_DASH_PARAMS }}/" $WORK_DIR/startup.sh
+        sed -i "s/{tapeevents.params}/${{ env.TAPEEVENTS_PARAMS }}/" $WORK_DIR/startup.sh
+        sed -i "s|{additional.params}|${{ env.ADDITIONAL_PARAMS}}|" $WORK_DIR/startup.sh
+        sed -i "s|{region}|${{ env.REGION }}|" $WORK_DIR/startup.sh
+    - name: Upload startup script for verification ✅
+      uses: actions/upload-artifact@v3
+      with:
+        name: startup_script
+        path: /tmp/terraform/node-dev/scaleset/startup.sh
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Update VMSS
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az vmss update --custom-data=/tmp/terraform/node-dev/scaleset/startup.sh \
+            --resource-group=${{ env.RG_NAME }} --name=${{ env.VMSS_NAME }} \
+            --set virtualMachineProfile.storageProfile.imageReference.id=/subscriptions/${{env.SUB_ID}}/resourceGroups/${{env.RG_NAME}}/providers/Microsoft.Compute/galleries/${{env.IM_GAL_ID}}/images/${{env.IM_NAME}}/versions/${{env.IM_VERSION}}
