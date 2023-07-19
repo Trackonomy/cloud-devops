@@ -8,11 +8,16 @@ on:
       image_version:
         type: string
         description: image version
+      branch_name:
+        type: string
+        description: Name of branch to deploy
 
     secrets:
       AZURE_CREDENTIALS:
         required: true
       MANAGEDIDENTITY:
+        required: true
+      GH_PAT:
         required: true
 env:
   RG_NAME: ${{ vars.PROJECT_NAME }}
@@ -37,6 +42,15 @@ jobs:
     name: Build node-dev image
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout node-dev repo ✅
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          repository: Trackonomy/node-dev
+          token: '${{ secrets.GH_PAT }}'
+          ref: ${{ inputs.branch_name }}
+          path: node-dev
+
       - name: Log in with Azure ✅
         uses: azure/login@v1
         with:
