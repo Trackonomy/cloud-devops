@@ -1,0 +1,16 @@
+appName: util
+environment: us-stress
+replicaCount: 5
+loadBalancerIP: 172.176.84.24
+image:
+  name: trkuniusstressacr.azurecr.io/util
+  tag: "latest"
+  port: 8191
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

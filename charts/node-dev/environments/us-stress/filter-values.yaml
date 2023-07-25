@@ -1,0 +1,16 @@
+appName: filter
+environment: us-stress
+replicaCount: 5
+loadBalancerIP: 20.242.5.53
+image:
+  name: trkuniusstressacr.azurecr.io/filter
+  tag: "latest"
+  port: 8098
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
