@@ -1,0 +1,119 @@
+---
+replicas: 1
+logstashConfig: 
+  logstash.yml: |
+    http.host: 0.0.0.0
+# Allows you to add any pattern files in your custom pattern dir
+logstashPatternDir: "/usr/share/logstash/patterns/"
+logstashPattern: {}
+#    pattern.conf: |
+#      DPKG_VERSION [-+~<>\.0-9a-zA-Z]+
+
+# todo -> add filter 
+logstashPipeline: 
+ logstash.conf: |
+    input {
+      beats {
+        port => 5044
+        ssl => false
+      }
+    }
+    filter {
+      if [kubernetes][container][name] in ["external", "filter", "health-dash", "mobile", "tapeevents", "util"] {
+        mutate{ add_field => { "[@metadata][target_index]" => "filebeat-unicorn-%{[kubernetes][namespace]}-%{[kubernetes][container][name]}-%{+YYYY.MM.dd}"} }
+      }else {
+        drop {}
+      }
+    }
+    output {
+     elasticsearch {
+      cloud_id => "elastic-elk-mt:ZWFzdHVzLmF6dXJlLmVsYXN0aWMtY2xvdWQuY29tOjQ0MyQyMmM1MWUwZDgyYTE0ZDgyYmUwZWViYzAyNGM4NDQ4NiQ4ZDIzOGVhZDFlNWY0MWQxYTQ5Yjg4ZjZkYzNkYTAxZA=="
+      cloud_auth => "eck_logstash_user:2u^8G_C-4>}SsB*"
+      index => "%{[@metadata][target_index]}"
+      action => "create"
+     }
+     stdout { codec => rubydebug }
+    }
+image: "docker.elastic.co/logstash/logstash"
+imageTag: "8.8.1"
+imagePullPolicy: "IfNotPresent"
+imagePullSecrets: []
+
+logstashJavaOpts: "-Xmx256m -Xms256m"
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+
+rbac:
+  create: false
+
+podSecurityPolicy:
+  create: false
+  name: ""
+  spec:
+    privileged: false
+    fsGroup:
+      rule: RunAsAny
+    runAsUser:
+      rule: RunAsAny
+    seLinux:
+      rule: RunAsAny
+    supplementalGroups:
+      rule: RunAsAny
+    volumes:
+      - secret
+      - configMap
+      - persistentVolumeClaim
+
+persistence:
+  enabled: false
+  annotations: {}
+
+antiAffinityTopologyKey: "kubernetes.io/hostname"
+
+antiAffinity: "hard"
+
+podManagementPolicy: "Parallel"
+
+httpPort: 9600
+
+updateStrategy: RollingUpdate
+
+maxUnavailable: 1
+
+podSecurityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 1000
+
+terminationGracePeriod: 30
+
+extraPorts: 
+- name: tcp
+  containerPort: 5044
+service:
+  ports:
+    - name: beats
+      port: 5044
+      protocol: TCP
+      targetPort: 5044
+
+ingress:
+  enabled: false

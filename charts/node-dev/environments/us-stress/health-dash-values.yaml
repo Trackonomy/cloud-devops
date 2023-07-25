@@ -1,0 +1,16 @@
+appName: health-dash
+environment: us-stress
+replicaCount: 5
+loadBalancerIP: 172.177.35.210
+image:
+  name: trkuniusstressacr.azurecr.io/health-dash
+  tag: "latest"
+  port: 9111
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
