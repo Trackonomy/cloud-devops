@@ -1,0 +1,16 @@
+appName: filter
+environment: dev2
+replicaCount: 1
+loadBalancerIP: 20.25.13.117
+image:
+  name: multitenantdev2.azurecr.io/filter
+  tag: "latest"
+  port: 8098
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

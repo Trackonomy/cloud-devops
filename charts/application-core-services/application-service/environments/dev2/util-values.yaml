@@ -1,0 +1,16 @@
+appName: util
+environment: dev2
+replicaCount: 1
+loadBalancerIP: 20.228.253.239
+image:
+  name: multitenantdev2.azurecr.io/util
+  tag: "latest"
+  port: 8191
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

@@ -1,0 +1,16 @@
+appName: health-dash
+environment: dev2
+replicaCount: 1
+loadBalancerIP: 20.228.253.85
+image:
+  name: multitenantdev2.azurecr.io/health-dash
+  tag: "latest"
+  port: 9111
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
