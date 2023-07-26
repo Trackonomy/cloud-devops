@@ -1,0 +1,9 @@
+# THIS IS AN EXAMPLE - DO NOT USE IT IN PIPELINES!!!!
+appName: exampleapp # name of the application
+environment: stage # environment name - should be corresponding namespace in AKS
+replicaCount: 1 # how many replicas of container we want
+
+image:
+  name: exampleacr.azurecr.io/exampleapp # acr image name
+  tag: "latest" # tag we want to use - in pipeline will be overriden
+  port: 9005 # port we want to listen on

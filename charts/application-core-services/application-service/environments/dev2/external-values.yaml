@@ -1,0 +1,16 @@
+appName: external
+environment: dev2
+replicaCount: 1
+loadBalancerIP: 20.228.131.210
+image:
+  name: multitenantdev2.azurecr.io/external
+  tag: "latest"
+  port: 9000
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

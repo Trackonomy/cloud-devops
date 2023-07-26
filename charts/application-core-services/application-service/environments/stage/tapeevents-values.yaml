@@ -1,0 +1,16 @@
+appName: tapeevents
+environment: stage
+replicaCount: 1
+loadBalancerIP: 172.190.142.213
+image:
+  name: multitenantacr.azurecr.io/tapeevents
+  tag: "latest"
+  port: 9002
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

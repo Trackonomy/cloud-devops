@@ -1,0 +1,16 @@
+appName: filter
+environment: stage
+replicaCount: 3
+loadBalancerIP: 74.235.253.39
+image:
+  name: multitenantacr.azurecr.io/filter
+  tag: "latest"
+  port: 8098
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

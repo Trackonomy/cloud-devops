@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.appName }}-{{ .Values.environment }}-deployment"
+  namespace: {{ .Values.environment }}
+  labels:
+    app: "{{ .Values.appName }}-{{ .Values.environment }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: "{{ .Values.appName }}-{{ .Values.environment }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.appName }}-{{ .Values.environment }}"
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      volumes:
+      - name: variables 
+        configMap:
+          name: "application-core-services-{{ .Values.environment }}-configmap"
+          items:
+          - key: variables.env
+            path: variables.env
+      containers:
+      - name: "{{ .Values.appName }}"
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.image.port }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.image.port }}
+        resources:
+            requests:
+              cpu: {{ default "100m" .Values.requests.cpu }}
+              memory: {{ default "256Mi" .Values.requests.memory  }}
+            limits:
+              cpu: {{  default "200m" .Values.requests.cpu }}
+              memory: {{ default "512Mi" .Values.requests.memory }}
+        volumeMounts:
+        - name: variables
+          mountPath: /home/node/app/variables.env
+          subPath: variables.env
+
+
+          

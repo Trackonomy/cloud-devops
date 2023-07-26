@@ -1,0 +1,16 @@
+appName: auth0
+environment: dev2
+replicaCount: 1
+loadBalancerIP: 20.25.15.159
+image:
+  name: multitenantdev2.azurecr.io/auth0
+  tag: "latest"
+  port: 9005
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

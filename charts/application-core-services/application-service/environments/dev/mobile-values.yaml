@@ -1,0 +1,16 @@
+appName: mobile
+environment: dev
+replicaCount: 1
+loadBalancerIP: 20.232.29.20
+image:
+  name: multitenantacrdev.azurecr.io/mobile
+  tag: "latest"
+  port: 9091
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
