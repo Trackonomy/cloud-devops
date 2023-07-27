@@ -18,13 +18,13 @@ spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
-      volumes:
-      - name: variables 
-        configMap:
-          name: "node-dev-{{ .Values.environment }}-configmap"
-          items:
-          - key: variables.env
-            path: variables.env
+      #volumes:
+      #- name: variables 
+        #configMap:
+          #name: "node-dev-{{ .Values.environment }}-configmap"
+          #items:
+          #- key: variables.env
+            #path: variables.env
       containers:
       - name: "{{ .Values.appName }}"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
@@ -42,10 +42,10 @@ spec:
             limits:
               cpu: {{  default "200m" .Values.requests.cpu }}
               memory: {{ default "512Mi" .Values.requests.memory }}
-        volumeMounts:
-        - name: variables
-          mountPath: /home/node/app/variables.env
-          subPath: variables.env
+        #volumeMounts:
+        #- name: variables
+          #mountPath: /home/node/app/variables.env
+          #subPath: variables.env
 
 
           
