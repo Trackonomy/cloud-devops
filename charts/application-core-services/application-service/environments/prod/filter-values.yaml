@@ -1,0 +1,16 @@
+appName: filter
+environment: prod
+replicaCount: 1
+loadBalancerIP: 168.62.174.187
+image:
+  name: multitenantacrprod.azurecr.io/filter
+  tag: "latest"
+  port: 8098
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
