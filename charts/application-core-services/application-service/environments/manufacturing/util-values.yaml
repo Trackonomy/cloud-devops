@@ -1,0 +1,16 @@
+appName: util
+environment: prod
+replicaCount: 1
+loadBalancerIP: 172.190.243.67
+image:
+  name: multitenantacrprod.azurecr.io/util
+  tag: "latest"
+  port: 8191
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

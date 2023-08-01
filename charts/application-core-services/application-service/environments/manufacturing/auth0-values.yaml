@@ -1,0 +1,16 @@
+appName: auth0
+environment: manufacturing
+replicaCount: 1
+loadBalancerIP: 74.235.59.249
+image:
+  name: multitenantacrprod.azurecr.io/auth0
+  tag: "latest"
+  port: 9005
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
