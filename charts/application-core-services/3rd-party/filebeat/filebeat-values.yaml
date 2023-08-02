@@ -44,4 +44,5 @@ daemonset:
 deployment:
   enabled: false
 
-
+livenessProbe: {}
+readinessProbe: {}

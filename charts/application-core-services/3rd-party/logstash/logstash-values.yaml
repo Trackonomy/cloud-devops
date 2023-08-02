@@ -40,7 +40,8 @@ imagePullPolicy: "IfNotPresent"
 imagePullSecrets: []
 
 logstashJavaOpts: "-Xmx256m -Xms256m"
-
+livenessProbe: {}
+readinessProbe: {}
 resources:
   requests:
     cpu: "100m"
