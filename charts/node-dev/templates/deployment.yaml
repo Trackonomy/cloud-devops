@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         app: "{{ .Values.appName }}-{{ .Values.environment }}"
+      annotations:
+        timestamp: "{{ now | date "20060102150405" }}"
     spec:
       securityContext:
         runAsUser: 1000
