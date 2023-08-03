@@ -17,7 +17,8 @@ local-*-credentials.tfvars
 **/.auto.tfvars
 *.tfvars.json
 **/backends/local-*.conf
-
+scripts/*/*.env
+__pycache__
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
 override.tf
@@ -34,3 +35,5 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+.venv
+.vscode
