@@ -1,4 +1,4 @@
-secrets=[
+secret_names=[
   "FILTER-PORT",
   "UTIL-PORT",
   "PUTIL-PORT",
@@ -34,7 +34,7 @@ secrets=[
   "EMAIL-CLIENT-ID",
   "EMAIL-SECRET-KEY",
   "EMAIL-REFRESH-TOKEN",
-  "SEND-EMAIL",
+  "SEND-EMAILS",
   "IDENTITY-METADATA",
   "REDIS-ACCESS-KEY",
   "REDIS-HOST-NAME",
