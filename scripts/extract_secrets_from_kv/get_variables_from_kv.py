@@ -15,7 +15,7 @@ def get_kv_client():
 def main():
     client = get_kv_client()
     logger = logging.getLogger('azure')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     handler = logging.StreamHandler(stream=sys.stdout)
     logger.addHandler(handler)
     with open("variables.env", "w") as f:
