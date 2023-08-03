@@ -15,7 +15,7 @@ def get_kv_client():
 def main():
     client = get_kv_client()
     logger = logging.getLogger('azure')
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.ERROR)
     handler = logging.StreamHandler(stream=sys.stdout)
     logger.addHandler(handler)
     with open("variables.env", "w") as f:
@@ -23,6 +23,7 @@ def main():
             value = client.get_secret(secret).value
             secret_transformed = secret.replace("-", "_")
             f.write(f"{secret_transformed}={value}")
+            print(f"Extracted {secret_transformed}")
         f.close()
 
 if __name__=="__main__":
