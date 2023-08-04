@@ -1,5 +1,5 @@
 def get_secret_names(env):
-    if env == "stage":
+    if env == "stage" or env == "dev":
         return secret_names_stage
     elif env == "dev2":
         return secret_names_dev2

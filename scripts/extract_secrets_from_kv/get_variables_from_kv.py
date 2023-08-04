@@ -9,7 +9,7 @@ def get_kv_client():
     keyVaultName = os.environ["KEY_VAULT_NAME"]
     KVUri = f"https://{keyVaultName}.vault.azure.net"
     credential = DefaultAzureCredential(exclude_interactive_browser_credential=False)
-    client = SecretClient(vault_url=KVUri, credential=credential,logging_enable=True)
+    client = SecretClient(vault_url=KVUri, credential=credential)
     return client
 
 def main():
