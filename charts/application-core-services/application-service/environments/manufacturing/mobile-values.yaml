@@ -1,5 +1,5 @@
 appName: mobile
-environment: prod
+environment: manufacturing
 replicaCount: 1
 loadBalancerIP: 20.172.135.184
 image:
