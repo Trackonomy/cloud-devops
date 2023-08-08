@@ -1,9 +1,8 @@
 // root properties
-param cacheLoc string = resourceGroup().location
+param location string = resourceGroup().location
 param env string
-param project string
 param customer string = 'unicorn'
-param cacheName string = 'redis-${project}-${env}'
+param cacheName string = 'redis-${customer}-${env}'
 @description('Availability zones')
 param zones array = []
 
@@ -67,10 +66,9 @@ var cacheProperties = {
   }
 }
 resource rediscache 'Microsoft.Cache/redis@2022-06-01' = {
-  location: cacheLoc
+  location: location
   name: cacheName
   tags: {
-    project: project
     env: env
     customer: customer
   }
@@ -94,7 +92,7 @@ resource redispatches 'Microsoft.Cache/redis/patchSchedules@2023-04-01' = {
 }
 
 resource redisstoragerdbbackup 'Microsoft.Storage/storageAccounts@2022-09-01' = if (backupEnabled) {
-  location: cacheLoc
+  location: location
   name: storageName == '' ? 'staccredisback${substring(uniqueString(resourceGroup().id), 0, 5)}' : storageName
   sku: {
     name: 'Standard_LRS'
@@ -111,7 +109,6 @@ resource redisstoragerdbbackup 'Microsoft.Storage/storageAccounts@2022-09-01' = 
     allowSharedKeyAccess: true
   }
   tags: {
-    project: project
     env: env
     customer: customer
     backup: 'backup'
