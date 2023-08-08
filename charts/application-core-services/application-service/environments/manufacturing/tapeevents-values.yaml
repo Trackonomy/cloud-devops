@@ -1,5 +1,5 @@
 appName: tapeevents
-environment: prod
+environment: manufacturing
 replicaCount: 1
 loadBalancerIP: 20.228.250.146
 image:

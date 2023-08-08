@@ -1,6 +1,6 @@
 appName: filter
 environment: qa
-replicaCount: 5
+replicaCount: 10
 loadBalancerIP: 172.190.184.163
 image:
   name: multitenantdev2.azurecr.io/filter

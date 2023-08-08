@@ -1,5 +1,5 @@
 appName: util
-environment: prod
+environment: manufacturing
 replicaCount: 1
 loadBalancerIP: 172.190.243.67
 image:

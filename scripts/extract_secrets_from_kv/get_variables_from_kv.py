@@ -27,7 +27,7 @@ def main():
         for secret in secret_names:
             value = client.get_secret(secret).value
             secret_transformed = secret.replace("-", "_")
-            f.write(f"{secret_transformed}={value}")
+            f.write(f"{secret_transformed}={value}"  + "\n")
             print(f"Extracted {secret_transformed}")
         f.close()
 

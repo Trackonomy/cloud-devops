@@ -1,5 +1,5 @@
 appName: health-dash
-environment: prod
+environment: manufacturing
 replicaCount: 1
 loadBalancerIP: 20.120.39.85
 image:
