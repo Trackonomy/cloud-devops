@@ -3,6 +3,7 @@ param location string
 param env string
 param customer string = 'unicorn'
 param deployFunctions bool = true 
+param deploySB bool = true
 
 // aks && acr
 param aksName string
@@ -26,6 +27,15 @@ param aspZoneRedundant bool
 param filterFuncName string
 param cacheFuncName string
 
+// service bus
+param numOfSBQueues int = 2
+@allowed([1, 2, 4, 8, 16])
+param sbCapacity int = 16
+param sbNSName string
+param sbQueuesName string
+@allowed(['Basic', 'Premium', 'Standard'])
+param sbSku string
+param sbZoneRedundant bool
 module aks 'aks/aks.bicep' = {
   name: 'deployAks'
   params: {
@@ -94,5 +104,20 @@ module cacheFunction 'functions/cachefunc.bicep' = if (deployFunctions) {
     location: location
     customer: customer
     cacheFuncName: cacheFuncName
+  }
+}
+
+module serviceBus 'servicebus/servicebus.bicep' = if (deploySB) {
+  name: 'deploy Service bus'
+  params: {
+    env: env
+    location: location
+    customer: customer
+    numOfQueues: 2
+    sbCapacity: sbCapacity
+    sbNamespaceName: sbNSName
+    sbQueuesName: sbQueuesName
+    sbSku: sbSku
+    zoneRedundant: sbZoneRedundant
   }
 }
