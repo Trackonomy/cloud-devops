@@ -113,7 +113,7 @@ module serviceBus 'servicebus/servicebus.bicep' = if (deploySB) {
     env: env
     location: location
     customer: customer
-    numOfQueues: 2
+    numOfQueues: numOfSBQueues
     sbCapacity: sbCapacity
     sbNamespaceName: sbNSName
     sbQueuesName: sbQueuesName
