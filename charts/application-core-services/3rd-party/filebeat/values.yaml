@@ -33,11 +33,11 @@ daemonset:
     privileged: false
   resources:
     requests:
-      cpu: "100m"
+      cpu: "50m"
       memory: "100Mi"
     limits:
-      cpu: "100m"
-      memory: "200Mi"
+      cpu: "200m"
+      memory: "512Mi"
   tolerations: []
   secretMounts: []
   extraEnvs:
