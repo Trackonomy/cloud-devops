@@ -24,6 +24,9 @@ logstashPipeline:
       }else {
         drop {}
       }
+      prune {
+        whitelist_names = ["message", "kubernetes.pod.name", "kubernetes.container.name", "kubernetes.namespace"]
+      }
     }
     output {
      elasticsearch {
