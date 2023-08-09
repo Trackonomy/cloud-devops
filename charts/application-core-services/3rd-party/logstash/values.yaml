@@ -20,12 +20,12 @@ logstashPipeline:
     }
     filter {
       if [kubernetes][container][name] in ["auth0", "external", "filter", "health-dash", "mobile", "tapeevents", "util"] {
-        mutate{ add_field => { "[@metadata][target_index]" => "filebeat-%{[kubernetes][namespace]}-%{[kubernetes][container][name]}-%{+YYYY.MM.dd}"} }
+        prune {
+          whitelist_names = ["message", "kubernetes.pod.name", "kubernetes.container.name", "kubernetes.namespace"]
+        }
+        mutate { add_field => { "[@metadata][target_index]" => "filebeat-%{[kubernetes][namespace]}-%{[kubernetes][container][name]}-%{+YYYY.MM.dd}"} }
       }else {
         drop {}
-      }
-      prune {
-        whitelist_names = ["message", "kubernetes.pod.name", "kubernetes.container.name", "kubernetes.namespace"]
       }
     }
     output {
