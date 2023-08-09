@@ -1,4 +1,5 @@
 ---
+managedServiceAccount: true
 imageTag: "8.8.1"
 replicas: 1
 daemonset:
