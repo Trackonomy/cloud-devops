@@ -1,5 +1,6 @@
 ---
 managedServiceAccount: true
+image: "docker.elastic.co/beats/filebeat"
 imageTag: "8.8.1"
 replicas: 1
 daemonset:
