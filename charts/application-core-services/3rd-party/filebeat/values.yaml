@@ -17,6 +17,8 @@ daemonset:
         processors:
         - add_kubernetes_metadata:
             host: ${NODE_NAME}
+            default_indexers.enabled: false
+            default_matchers.enabled: false
             matchers:
             - logs_path:
                 logs_path: "/var/log/containers/"
@@ -44,5 +46,3 @@ daemonset:
 deployment:
   enabled: false
 
-livenessProbe: {}
-readinessProbe: {}
