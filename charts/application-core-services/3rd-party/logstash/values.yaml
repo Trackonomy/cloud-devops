@@ -20,7 +20,15 @@ logstashPipeline:
     }
     filter {
       if [kubernetes][container][name] in ["auth0", "external", "filter", "health-dash", "mobile", "tapeevents", "util"] {
-        mutate{ add_field => { "[@metadata][target_index]" => "filebeat-%{[kubernetes][namespace]}-%{[kubernetes][container][name]}-%{+YYYY.MM.dd}"} }
+        mutate { copy => { "[kubernetes][pod][name]" => "kuberentes_pod_name" } }
+        mutate { copy => { "[kubernetes][container][name]" => "kuberentes_container_name" } }
+        mutate { copy => { "[kubernetes][namespace]" => "kuberentes_namespace" } }
+        mutate { add_field => { "target_index" => "filebeat-%{[kubernetes][namespace]}-%{[kubernetes][container][name]}-%{+YYYY.MM.dd}"} }
+        prune { whitelist_names => ["message", "target_index", "kuberentes_pod_name", "kuberentes_container_name", "kuberentes_namespace"] }
+        mutate { rename => { "target_index" => "[@metadata][target_index]" }}
+        mutate { rename => { "kuberentes_pod_name" => "[kubernetes][pod][name]" }}
+        mutate { rename => { "kuberentes_container_name" => "[kubernetes][container][name]" }}
+        mutate { rename => { "kuberentes_namespace" => "[kubernetes][namespace]" }}
       }else {
         drop {}
       }
