@@ -4,6 +4,7 @@ param env string
 param customer string = 'unicorn'
 param deployFunctions bool = true 
 param deploySB bool = true
+param deployGetTapeeventsAppService bool = true
 
 // aks && acr
 param aksName string
@@ -19,11 +20,9 @@ param redisSkuCap int
 @allowed(['Basic', 'Premium', 'Standard'])
 param redisSkuName string
 
-// asp
-param aspName string
-param aspZoneRedundant bool
-
 // functions
+param funcAspName string
+param aspZoneRedundant bool
 param filterFuncName string
 param cacheFuncName string
 
@@ -36,6 +35,13 @@ param sbQueuesName string
 @allowed(['Basic', 'Premium', 'Standard'])
 param sbSku string
 param sbZoneRedundant bool
+
+// app service gettapeevents
+param numOfGetTapeEventsServices int = 2
+@description('Array of app service names that will be created. Values should be the same as num of services to remove confusion.')
+param getTapeEventsServiceNames array = []
+param getTapeeventsASPName string
+
 module aks 'aks/aks.bicep' = {
   name: 'deployAks'
   params: {
@@ -73,10 +79,10 @@ module cache 'caching/cache.bicep' = {
   }
 }
 
-module asp 'functions/asp.bicep' = if (deployFunctions) {
-  name: 'deploy App Service Plan'
+module func_asp 'functions/asp.bicep' = if (deployFunctions) {
+  name: 'deploy Functions App Service Plan'
   params: {
-    aspName: aspName
+    aspName: funcAspName
     customer: customer
     env: env
     zoneredundant: aspZoneRedundant
@@ -86,9 +92,9 @@ module asp 'functions/asp.bicep' = if (deployFunctions) {
 
 module filterFunction 'functions/filterfunc.bicep' = if (deployFunctions) {
   name: 'deploy Filter Function'
-  dependsOn: [asp]
+  dependsOn: [func_asp]
   params: {
-    aspId: asp.outputs.aspId
+    aspId: func_asp.outputs.aspId
     env: env
     location: location
     customer: customer
@@ -97,9 +103,9 @@ module filterFunction 'functions/filterfunc.bicep' = if (deployFunctions) {
 }
 module cacheFunction 'functions/cachefunc.bicep' = if (deployFunctions) {
   name: 'deploy Cache Function'
-  dependsOn: [asp]
+  dependsOn: [func_asp]
   params: {
-    aspId: asp.outputs.aspId
+    aspId: func_asp.outputs.aspId
     env: env
     location: location
     customer: customer
@@ -121,3 +127,24 @@ module serviceBus 'servicebus/servicebus.bicep' = if (deploySB) {
     zoneRedundant: sbZoneRedundant
   }
 }
+
+module gettapeeventsAsp 'appservice/site-asp.bicep' = if (deployGetTapeeventsAppService) {
+  name: 'deploy Site App Service Plan'
+  params: {
+    env: env
+    location: location
+    customer: customer
+    aspName: getTapeeventsASPName
+  }
+}
+
+module gettapeeventsAppServices 'appservice/appservice.bicep' =  [ for i in range(0, numOfGetTapeEventsServices): if(deployGetTapeeventsAppService) {
+  name: 'deploy ${getTapeEventsServiceNames[i]}'
+  params: {
+    location: location
+    appServiceName: getTapeEventsServiceNames[i]
+    aspId: gettapeeventsAsp.outputs.aspId
+    customer: customer
+    env: env
+  }
+}]

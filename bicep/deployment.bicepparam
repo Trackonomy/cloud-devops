@@ -20,7 +20,7 @@ param redisSkuCap = 1
 param redisSkuName = 'Premium'
 
 // asp
-param aspName = 'ASP-functions-trk-sbx-unicorn'
+param funcAspName = 'ASP-functions-trk-sbx-unicorn'
 param aspZoneRedundant = true
 
 // functions
@@ -34,3 +34,6 @@ param sbNSName = 'sb-unicorn-sbx-iat'
 param sbQueuesName = 'queue-unicorn-sbx-iat'
 param sbSku = 'Premium'
 param sbZoneRedundant = true
+param getTapeeventsASPName = 'ASP-getTapeEvents-sbx'
+param numOfGetTapeEventsServices = 2
+param getTapeEventsServiceNames = ['iatgettapeeventsunisbx', 'healthgettapeeventsunisbx']
