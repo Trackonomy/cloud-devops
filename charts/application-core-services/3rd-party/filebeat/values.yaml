@@ -1,4 +1,6 @@
 ---
+managedServiceAccount: true
+image: "docker.elastic.co/beats/filebeat"
 imageTag: "8.8.1"
 replicas: 1
 daemonset:
@@ -29,11 +31,11 @@ daemonset:
     privileged: false
   resources:
     requests:
-      cpu: "100m"
+      cpu: "50m"
       memory: "100Mi"
     limits:
-      cpu: "100m"
-      memory: "200Mi"
+      cpu: "200m"
+      memory: "512Mi"
   tolerations: []
   secretMounts: []
   extraEnvs:
@@ -44,5 +46,3 @@ daemonset:
 deployment:
   enabled: false
 
-livenessProbe: {}
-readinessProbe: {}
