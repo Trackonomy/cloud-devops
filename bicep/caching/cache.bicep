@@ -84,7 +84,7 @@ resource redispatches 'Microsoft.Cache/redis/patchSchedules@2023-04-01' = {
     scheduleEntries: [
       {
         dayOfWeek: 'Everyday'
-        maintenanceWindow: '5H'
+        maintenanceWindow: 'PT2H'
         startHourUtc: 0
       }
     ]
