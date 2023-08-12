@@ -16,6 +16,7 @@ resource siteAppServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   sku: {
     name: skuName
     tier: skuTier
+    capacity: 1
     skuCapacity: {
       default: 1
       elasticMaximum: 1
