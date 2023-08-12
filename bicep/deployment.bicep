@@ -55,7 +55,7 @@ module aks 'aks/aks.bicep' = {
   }
 }
 module acr 'aks/acr.bicep' = {
-  name: 'deploy Acr and create role'
+  name: 'deployAcrAndCreateRole'
   params: {
     aksPrincipalId: aks.outputs.clusterPrincipalID
     env: env
@@ -67,7 +67,7 @@ module acr 'aks/acr.bicep' = {
 }
 
 module cache 'caching/cache.bicep' = {
-  name: 'deploy Redis cache'
+  name: 'deployRedisCache'
   params: {
     env: env
     customer: customer
@@ -80,7 +80,7 @@ module cache 'caching/cache.bicep' = {
 }
 
 module func_asp 'functions/asp.bicep' = if (deployFunctions) {
-  name: 'deploy Functions App Service Plan'
+  name: 'deployFunctionsAppServicePlan'
   params: {
     aspName: funcAspName
     customer: customer
@@ -91,7 +91,7 @@ module func_asp 'functions/asp.bicep' = if (deployFunctions) {
 }
 
 module filterFunction 'functions/filterfunc.bicep' = if (deployFunctions) {
-  name: 'deploy Filter Function'
+  name: 'deployFilterFunction'
   dependsOn: [func_asp]
   params: {
     aspId: func_asp.outputs.aspId
@@ -102,7 +102,7 @@ module filterFunction 'functions/filterfunc.bicep' = if (deployFunctions) {
   }
 }
 module cacheFunction 'functions/cachefunc.bicep' = if (deployFunctions) {
-  name: 'deploy Cache Function'
+  name: 'deployCacheFunction'
   dependsOn: [func_asp]
   params: {
     aspId: func_asp.outputs.aspId
@@ -114,7 +114,7 @@ module cacheFunction 'functions/cachefunc.bicep' = if (deployFunctions) {
 }
 
 module serviceBus 'servicebus/servicebus.bicep' = if (deploySB) {
-  name: 'deploy Service bus'
+  name: 'deployServicebus'
   params: {
     env: env
     location: location
@@ -129,7 +129,7 @@ module serviceBus 'servicebus/servicebus.bicep' = if (deploySB) {
 }
 
 module gettapeeventsAsp 'appservice/site-asp.bicep' = if (deployGetTapeeventsAppService) {
-  name: 'deploy Site App Service Plan'
+  name: 'deploySiteAppServicePlan'
   params: {
     env: env
     location: location
@@ -139,7 +139,7 @@ module gettapeeventsAsp 'appservice/site-asp.bicep' = if (deployGetTapeeventsApp
 }
 
 module gettapeeventsAppServices 'appservice/appservice.bicep' =  [ for i in range(0, numOfGetTapeEventsServices): if(deployGetTapeeventsAppService) {
-  name: 'deploy ${getTapeEventsServiceNames[i]}'
+  name: 'deploy${getTapeEventsServiceNames[i]}'
   params: {
     location: location
     appServiceName: getTapeEventsServiceNames[i]
