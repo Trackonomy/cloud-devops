@@ -40,11 +40,9 @@ resource sbQueues 'Microsoft.ServiceBus/namespaces/queues@2022-10-01-preview' = 
     autoDeleteOnIdle: 'P10675199DT2H48M5.4775807S'
     deadLetteringOnMessageExpiration: false
     defaultMessageTimeToLive: 'P14D'
-    duplicateDetectionHistoryTimeWindow: 'string'
     enableBatchedOperations: true
     enableExpress: false
     enablePartitioning: false
-    forwardDeadLetteredMessagesTo: 'string'
     lockDuration: 'PT30S'
     maxDeliveryCount: 10
     maxMessageSizeInKilobytes: 1024

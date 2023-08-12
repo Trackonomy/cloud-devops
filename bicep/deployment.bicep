@@ -5,6 +5,7 @@ param customer string = 'unicorn'
 param deployFunctions bool = true 
 param deploySB bool = true
 param deployGetTapeeventsAppService bool = true
+param deployCache bool = true
 
 // aks && acr
 param aksName string
@@ -66,7 +67,7 @@ module acr 'aks/acr.bicep' = {
   dependsOn: [aks]
 }
 
-module cache 'caching/cache.bicep' = {
+module cache 'caching/cache.bicep' =  if (deployCache) {
   name: 'deployRedisCache'
   params: {
     env: env
