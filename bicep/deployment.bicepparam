@@ -3,10 +3,11 @@ using 'deployment.bicep'
 param location = 'eastus'
 param env = 'sbx'
 param customer  = 'unicorn'
-param deployFunctions = false 
-param deploySB = false
-param deployGetTapeeventsAppService = false
-param deployCache = true
+param deployFunctions = true 
+param deploySB = true
+param deployGetTapeeventsAppService = true
+param deployCache = false
+param deployACRAndAKS = false
 
 // aks && acr
 param aksName = 'aks-trk-sbx-unicorn'

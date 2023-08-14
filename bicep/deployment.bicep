@@ -6,6 +6,7 @@ param deployFunctions bool = true
 param deploySB bool = true
 param deployGetTapeeventsAppService bool = true
 param deployCache bool = true
+param deployACRAndAKS bool = true
 
 // aks && acr
 param aksName string
@@ -43,7 +44,7 @@ param numOfGetTapeEventsServices int = 2
 param getTapeEventsServiceNames array = []
 param getTapeeventsASPName string
 
-module aks 'aks/aks.bicep' = {
+module aks 'aks/aks.bicep' = if (deployACRAndAKS) {
   name: 'deployAks'
   params: {
     aksName: aksName
@@ -55,7 +56,7 @@ module aks 'aks/aks.bicep' = {
     userPoolScale: aksUserPoolScale
   }
 }
-module acr 'aks/acr.bicep' = {
+module acr 'aks/acr.bicep' = if(deployACRAndAKS) {
   name: 'deployAcrAndCreateRole'
   params: {
     aksPrincipalId: aks.outputs.clusterPrincipalID
