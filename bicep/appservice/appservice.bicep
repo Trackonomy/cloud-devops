@@ -16,7 +16,11 @@ resource appService 'Microsoft.Web/sites@2022-09-01' = {
     serverFarmId: aspId
     reserved: true
     siteConfig: {
-      linuxFxVersion: 'NODE:16-lts'
+      minTlsVersion: '1.2'
+      appSettings: [
+
+      ]
+      linuxFxVersion: 'node|16-lts'
     }
   }
 }
