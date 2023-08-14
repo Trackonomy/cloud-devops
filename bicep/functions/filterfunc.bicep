@@ -3,7 +3,7 @@ param env string
 param customer string = 'unicorn'
 param aspId string
 param filterFuncName string
-param filterFuncStorageAccountName string = filterFuncName
+param filterFuncStorageAccountName string = 'filterfuncstacc${substring(uniqueString(resourceGroup().id), 0, 6)}'
 param filterFuncAppInsightsName string = filterFuncName
 var runtime = 'node'
 

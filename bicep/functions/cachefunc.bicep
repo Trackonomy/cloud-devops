@@ -3,7 +3,7 @@ param env string
 param customer string = 'unicorn'
 param aspId string
 param cacheFuncName string
-param cacheFuncStorageAccountName string = cacheFuncName
+param cacheFuncStorageAccountName string = 'cachefuncstacc${substring(uniqueString(resourceGroup().id), 0, 6)}'
 param cacheFuncAppInsightsName string = cacheFuncName 
 var runtime = 'node'
 
