@@ -22,6 +22,7 @@ resource siteAppServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
     elasticScaleEnabled: false
     maximumElasticWorkerCount: 1
     zoneRedundant: false
+    reserved: true
   }
   kind: 'linux'
 }
