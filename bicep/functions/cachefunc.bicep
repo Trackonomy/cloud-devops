@@ -11,7 +11,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: cacheFuncStorageAccountName
   location: location
   sku: {
-    name: cacheFuncStorageAccountName
+    name: 'Standard_LRS'
   }
   kind: 'Storage'
   properties: {
