@@ -17,10 +17,7 @@ resource appService 'Microsoft.Web/sites@2022-09-01' = {
     reserved: true
     siteConfig: {
       minTlsVersion: '1.2'
-      appSettings: [
-
-      ]
-      linuxFxVersion: 'node|16-lts'
+      linuxFxVersion: 'NODE|16-LTS'
     }
   }
 }
