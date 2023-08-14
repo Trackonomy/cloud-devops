@@ -45,6 +45,8 @@ param numOfGetTapeEventsServices int = 2
 param getTapeEventsServiceNames array = []
 param getTapeeventsASPName string
 
+var aksRG = resourceGroup().name
+
 module aks 'aks/aks.bicep' = if (deployACRAndAKS) {
   name: 'deployAks'
   params: {
@@ -55,8 +57,22 @@ module aks 'aks/aks.bicep' = if (deployACRAndAKS) {
     linuxAdminUsername: linuxAdminUsername
     sshRSAPublicKey: aksSshRSAPubliKey
     userPoolScale: aksUserPoolScale
+    aksRG: aksRG
   }
 }
+
+module aksPubIps 'aks/pubips.bicep' = if (deployACRAndAKS) {
+  name: 'deployAksPubIps'
+  dependsOn: [
+    aks
+  ]
+  params: {
+    env: env
+    customer: customer
+    location: location
+  }
+}
+
 module acr 'aks/acr.bicep' = if(deployACRAndAKS) {
   name: 'deployAcrAndCreateRole'
   params: {
