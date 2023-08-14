@@ -11,8 +11,10 @@ resource appService 'Microsoft.Web/sites@2022-09-01' = {
     env: env
     customer: customer
   }
+  kind: 'app,linux'
   properties: { 
     serverFarmId: aspId
+    reserved: true
     siteConfig: {
       linuxFxVersion: 'NODE|16-lts'
     }
