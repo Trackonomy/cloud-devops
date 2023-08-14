@@ -77,14 +77,14 @@ resource rediscache 'Microsoft.Cache/redis@2022-06-01' = {
   properties: skuName != 'Basic' ? union(cacheProperties, {shardCount: shardCount}) : cacheProperties // on basic sku we cannot specify shardCount
 }
 
-resource redispatches 'Microsoft.Cache/redis/patchSchedules@2023-04-01' = {
+resource redispatches 'Microsoft.Cache/redis/patchSchedules@2022-06-01' = {
   name: 'default'
   parent: rediscache
   properties: {
     scheduleEntries: [
       {
         dayOfWeek: 'Everyday'
-        maintenanceWindow: 'PT2H'
+        maintenanceWindow: 'PT5H'
         startHourUtc: 0
       }
     ]
