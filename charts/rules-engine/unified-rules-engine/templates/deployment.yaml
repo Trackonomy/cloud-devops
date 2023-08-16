@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: unified-rules-engine-${{ .Values.env }}
+  namespace: ${{ .Values.env }}
+spec:
+  
