@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mssql-deployment
-  namespace: ${{ .Values.env }}
+  namespace: {{ .Values.env }}
 spec:
   selector:
     app: mssql
