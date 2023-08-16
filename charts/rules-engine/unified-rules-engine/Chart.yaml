@@ -1,0 +1,9 @@
+apiVersion: v2
+name: unified-rules-engine
+description: A Helm chart for Unified-Rules-Engine
+
+type: application
+
+version: 0.1.0
+
+appVersion: "1.16.0"
