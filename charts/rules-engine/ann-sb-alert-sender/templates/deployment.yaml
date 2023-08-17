@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ann-sb-alert-sender-{{ .Values.env }}
+  namespace: {{ .Values.env }}
+  labels:
+    app: "ann-sb-alert-sender-{{ .Values.env }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: "ann-sb-alert-sender-{{ .Values.env }}"
+  template:
+    metadata:
+      labels:
+        app: "ann-sb-alert-sender-{{ .Values.env }}"
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+      - name: "ann-sb-alert-sender"
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.image.port }}
+        env:
+        - name: CONNECTION_STRING
+          value: {{ .Values.image.env.sbUrl }}
+        - name: TOPIC
+          value: {{ .Values.image.env.sbTopic }}
+        resources:
+            requests:
+              cpu: {{ default "100m" .Values.requests.cpu }}
+              memory: {{ default "256Mi" .Values.requests.memory  }}
+            limits:
+              cpu: {{  default "200m" .Values.requests.cpu }}
+              memory: {{ default "512Mi" .Values.requests.memory }}
