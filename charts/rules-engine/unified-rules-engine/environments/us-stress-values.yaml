@@ -1,0 +1,8 @@
+env: us-stress
+loadBalancerIP: 20.114.227.163
+image:
+  port: 8080
+  targetPort: 8080
+  name: trkuniusstressacr.azurecr.io/us-stress/unified-rules-engine # acr image name
+  tag: "latest"
+replicaCount: 2
