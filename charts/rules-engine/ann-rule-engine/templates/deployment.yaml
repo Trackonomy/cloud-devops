@@ -14,8 +14,6 @@ spec:
     metadata:
       labels:
         app: "unified-rules-engine-{{ .Values.env }}"
-      annotations:
-        timestamp: "{{ now | date "20060102150405" }}"
     spec:
       securityContext:
         runAsUser: 1000
