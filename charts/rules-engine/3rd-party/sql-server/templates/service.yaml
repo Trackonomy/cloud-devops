@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: mssql-deployment
   namespace: {{ .Values.env }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: {{ .Values.loadBalancerIP }}
 spec:
   selector:
     app: mssql
