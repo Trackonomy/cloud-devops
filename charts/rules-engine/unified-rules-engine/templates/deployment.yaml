@@ -4,16 +4,16 @@ metadata:
   name: unified-rules-engine-{{ .Values.env }}
   namespace: {{ .Values.env }}
   labels:
-    app: "unified-rules-engine-{{ .Values.environment }}"
+    app: "unified-rules-engine-{{ .Values.env }}"
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: "unified-rules-engine-{{ .Values.environment }}"
+      app: "unified-rules-engine-{{ .Values.env }}"
   template:
     metadata:
       labels:
-        app: "unified-rules-engine-{{ .Values.environment }}"
+        app: "unified-rules-engine-{{ .Values.env }}"
       annotations:
         timestamp: "{{ now | date "20060102150405" }}"
     spec:
