@@ -3,7 +3,7 @@ loadBalancerIP: 20.114.227.163
 image:
   port: 8080
   targetPort: 8080
-  name: trkuniusstressacr.azurecr.io/us-stress/unified-rules-engine # acr image name
+  name: trkuniusstressacr.azurecr.io/us-stress/ann-rule-engine # acr image name
 replicaCount: 3
 requests:
   cpu:
