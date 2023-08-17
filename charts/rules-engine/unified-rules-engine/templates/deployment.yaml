@@ -28,7 +28,7 @@ spec:
         - containerPort: {{ .Values.image.port }}
         env:
         - name: DATABASE_URL
-          value: {{ .Values.dbUrl }}
+          value: {{ .Values.image.env.dbUrl }}
         resources:
             requests:
               cpu: {{ default "100m" .Values.requests.cpu }}

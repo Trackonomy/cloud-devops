@@ -5,5 +5,6 @@ image:
   targetPort: 8080
   name: exampleacr.azurecr.io/env/unified-rules-engine # acr image name
   tag: "latest"
+  env:
+    dbUrl: sqlserver://sqlserver:1433;database=db;user=user;password=password;trustServerCertificate=true
 replicaCount: 1 
-dbUrl: sqlserver://sqlserver:1433;database=db;user=user;password=password;trustServerCertificate=true
