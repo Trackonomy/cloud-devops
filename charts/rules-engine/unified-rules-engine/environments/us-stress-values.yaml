@@ -5,4 +5,11 @@ image:
   targetPort: 8080
   name: trkuniusstressacr.azurecr.io/us-stress/unified-rules-engine # acr image name
   tag: "latest"
-replicaCount: 2
+replicaCount: 3
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
