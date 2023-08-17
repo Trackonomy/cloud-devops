@@ -26,6 +26,9 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.image.port }}
+        env:
+        - name: DATABASE_URL
+          value: {{ .Values.dbUrl }}
         resources:
             requests:
               cpu: {{ default "100m" .Values.requests.cpu }}

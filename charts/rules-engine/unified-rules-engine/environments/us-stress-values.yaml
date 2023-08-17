@@ -13,3 +13,4 @@ requests:
 limits:
   cpu:
   memory:
+dbUrl: override

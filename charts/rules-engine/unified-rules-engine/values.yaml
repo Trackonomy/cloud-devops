@@ -6,3 +6,4 @@ image:
   name: exampleacr.azurecr.io/env/unified-rules-engine # acr image name
   tag: "latest"
 replicaCount: 1 
+dbUrl: sqlserver://sqlserver:1433;database=db;user=user;password=password;trustServerCertificate=true
