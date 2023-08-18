@@ -29,8 +29,6 @@ spec:
       - name: "ann-message-service"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
-        ports:
-        - containerPort: {{ .Values.image.port.email }}
         resources:
             requests:
               cpu: {{ default "100m" .Values.email.requests.cpu }}
@@ -75,8 +73,6 @@ spec:
       - name: "ann-message-service"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
-        ports:
-        - containerPort: {{ .Values.image.port.sms }}
         resources:
             requests:
               cpu: {{ default "100m" .Values.sms.requests.cpu }}
