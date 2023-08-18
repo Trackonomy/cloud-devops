@@ -1,0 +1,23 @@
+env: us-stress
+image:
+  name:  trkuniusstressacr.azurecr.io/us-stress/ann-message-service
+  tag: latest
+  port:
+    sms: 9000
+    email: 9001
+
+sms:
+  requests:
+    cpu:
+    memory:
+  limits:
+    cpu:
+    memory:
+
+email:
+  requests:
+    cpu:
+    memory:
+  limits:
+    cpu:
+    memory:

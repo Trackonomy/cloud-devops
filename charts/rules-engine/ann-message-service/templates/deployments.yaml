@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ann-message-service-email-{{ .Values.env }}
+  namespace: {{ .Values.env }}
+  labels:
+    app: "ann-message-service-email-{{ .Values.env }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "ann-message-service-email-{{ .Values.env }}"
+  template:
+    metadata:
+      labels:
+        app: "ann-message-service-email-{{ .Values.env }}"
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      volumes:
+      - name: variables-email
+        configMap:
+          name: "ann-message-service-email-{{ .Values.env }}-configmap"
+          items:
+          - key: .env
+            path: .env
+      containers:
+      - name: "ann-message-service"
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.image.port.email }}
+        resources:
+            requests:
+              cpu: {{ default "100m" .Values.email.requests.cpu }}
+              memory: {{ default "256Mi" .Values.email.requests.memory  }}
+            limits:
+              cpu: {{  default "200m" .Values.email.limits.cpu }}
+              memory: {{ default "512Mi" .Values.email.limits.memory }}
+        volumeMounts:
+        - name: variables-email
+          mountPath: /app/.env
+          subPath: .env
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ann-message-service-sms-{{ .Values.env }}
+  namespace: {{ .Values.env }}
+  labels:
+    app: "ann-message-service-sms-{{ .Values.env }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "ann-message-service-sms-{{ .Values.env }}"
+  template:
+    metadata:
+      labels:
+        app: "ann-message-service-sms-{{ .Values.env }}"
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      volumes:
+      - name: variables-sms
+        configMap:
+          name: "ann-message-service-sms-{{ .Values.env }}-configmap"
+          items:
+          - key: .env
+            path: .env
+      containers:
+      - name: "ann-message-service"
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.image.port.sms }}
+        resources:
+            requests:
+              cpu: {{ default "100m" .Values.sms.requests.cpu }}
+              memory: {{ default "256Mi" .Values.sms.requests.memory  }}
+            limits:
+              cpu: {{  default "200m" .Values.sms.limits.cpu }}
+              memory: {{ default "512Mi" .Values.sms.limits.memory }}
+        volumeMounts:
+        - name: variables-sms
+          mountPath: /app/.env
+          subPath: .env

@@ -1,0 +1,21 @@
+apiVersion: v1
+metadata:
+  name: ann-message-service-email-{{ .Values.env }}-configmap
+  namespace: {{ .Values.env }}
+data:
+  .env: |
+  {{- range $line := .Files.Get "email.env" | split "\n" }}
+  {{ $line | indent 2}}
+  {{- end}}
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ann-message-service-sms-{{ .Values.env }}-configmap
+  namespace: {{ .Values.env }}
+data:
+  .env: |
+  {{- range $line := .Files.Get "sms.env" | split "\n" }}
+  {{ $line | indent 2}}
+  {{- end}}
