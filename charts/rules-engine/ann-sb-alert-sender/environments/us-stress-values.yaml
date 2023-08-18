@@ -3,7 +3,7 @@ loadBalancerIP: 172.172.61.65
 image:
   port: 3333
   name: trkuniusstressacr.azurecr.io/us-stress/ann-sb-alert-sender # acr image name
-replicaCount: 3
+replicaCount: 1
 
 requests:
   cpu:
