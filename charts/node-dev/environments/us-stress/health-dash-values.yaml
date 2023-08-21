@@ -1,7 +1,7 @@
 appName: health-dash
 environment: us-stress
 replicaCount: 5
-loadBalancerIP: 172.177.35.210
+loadBalancerIP: 172.177.35.171
 image:
   name: trkuniusstressacr.azurecr.io/health-dash
   tag: "latest"
