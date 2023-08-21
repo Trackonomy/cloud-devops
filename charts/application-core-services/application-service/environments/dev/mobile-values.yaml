@@ -1,7 +1,7 @@
 appName: mobile
 environment: dev
 replicaCount: 1
-loadBalancerIP: 20.232.29.20
+loadBalancerIP: 172.171.217.29
 image:
   name: multitenantacrdev.azurecr.io/mobile
   tag: "latest"

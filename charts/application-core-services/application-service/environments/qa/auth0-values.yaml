@@ -1,7 +1,7 @@
 appName: auth0
 environment: qa
 replicaCount: 1
-loadBalancerIP: 13.82.147.148
+loadBalancerIP: 172.190.184.163
 image:
   name: multitenantdev2.azurecr.io/auth0
   tag: "latest"

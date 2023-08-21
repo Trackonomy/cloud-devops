@@ -1,7 +1,7 @@
 appName: external
 environment: qa
 replicaCount: 1
-loadBalancerIP: 52.186.158.77
+loadBalancerIP: 172.190.184.163
 image:
   name: multitenantdev2.azurecr.io/external
   tag: "latest"
