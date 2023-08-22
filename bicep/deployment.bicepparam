@@ -13,6 +13,7 @@ param deployACRAndAKS = true
 param aksName = 'aks-trk-sbx-unicorn'
 param aksRegistryName = 'acrtrksbxunicorn'
 param linuxAdminUsername = 'Admin01'
+param aksSshRSAPublicKey = ''
 param aksUserPoolScale = 1
 
 // redis
