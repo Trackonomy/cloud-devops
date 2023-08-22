@@ -10,42 +10,59 @@ param deployCache bool = true
 param deployACRAndAKS bool = true
 
 // aks && acr
-param aksName string
-param aksRegistryName string
+param aksName string = 'aks-${customer}-${env}-${location}'
+param aksRegistryName string = 'acr${customer}${env}'
 param linuxAdminUsername string = 'Admin01'
-param aksSshRSAPubliKey string
+param aksSshRSAPublicKey string = ''
 param aksUserPoolScale int = 3
 
 // redis
-param redisShardCount int
-param redisBackupEnabled bool
+@description('Number of shards for redis cache.')
+param redisShardCount int = 0
+@description('Enable RDB backup. Must be Premium SKU!')
+param redisBackupEnabled bool = false
+@allowed([0,1,2,3,4,5,6])
+@description('SKU Capacity. 0-6 for basic/standard, 0-4 for premium. Reference: https://azure.microsoft.com/en-us/pricing/details/cache/')
 param redisSkuCap int
 @allowed(['Basic', 'Premium', 'Standard'])
 param redisSkuName string
 
 // functions
-param funcAspName string
-param aspZoneRedundant bool
-param filterFuncName string
-param cacheFuncName string
+@description('Name of app service plan which will be used for cache function')
+param funcAspName string = 'ASP-func-${customer}-${env}-${location}'
+@description('If app service plans should be zone-redundant')
+param aspZoneRedundant bool = false
+@description('Name of filter function')
+param filterFuncName string = 'func-filter-${customer}-${env}-${location}'
+@description('Name of cache function')
+param cacheFuncName string = 'func-filter-${customer}-${env}-${location}'
 
 // service bus
+@description('Number of service bus queues')
+@allowed([1, 2])
 param numOfSBQueues int = 2
+@description('Capacity of service bus in processing units.')
 @allowed([1, 2, 4, 8, 16])
 param sbCapacity int = 16
-param sbNSName string
-param sbQueuesName string
+@description('Name of service bus namespace')
+param sbNSName string = 'svbus-trk-${customer}-${env}-${location}'
+@description('Name of service bus queues. Queues names will be {name}-{number}.')
+param sbQueuesName string = 'events-${customer}-${env}-${location}'
 @allowed(['Basic', 'Premium', 'Standard'])
-param sbSku string
-param sbZoneRedundant bool
+@description('Sku of service bus.')
+param sbSku string = 'Standard'
+@description('If service bus is zone-redundant')
+param sbZoneRedundant bool = false
 
 // app service gettapeevents
+@description('Homw many getTapeEvents Service Apps to deploy')
+@allowed([1,2])
 param numOfGetTapeEventsServices int = 2
 @description('Array of app service names that will be created. Values should be the same as num of services to remove confusion.')
-param getTapeEventsServiceNames array = []
-param getTapeeventsASPName string
+param getTapeEventsServiceNames array = ['trk${customer}${env}tapeevent', 'trkiat${customer}${env}tapeevent']
+@description('Array of ASP names that will be created. Values should be the same as num of services to remove confusion.')
+param getTapeEventsASPNames array = ['ASP-trk${customer}${env}tapeevent', 'ASP-trkiat${customer}${env}tapeevent']
 
-var aksRG = resourceGroup().name
 
 module aks 'aks/aks.bicep' = if (deployACRAndAKS) {
   name: 'deployAks'
@@ -55,9 +72,8 @@ module aks 'aks/aks.bicep' = if (deployACRAndAKS) {
     location: location
     customer: customer
     linuxAdminUsername: linuxAdminUsername
-    sshRSAPublicKey: aksSshRSAPubliKey
+    sshRSAPublicKey: aksSshRSAPublicKey
     userPoolScale: aksUserPoolScale
-    aksRG: aksRG
   }
 }
 
@@ -86,8 +102,8 @@ module cache 'caching/cache.bicep' =  if (deployCache) {
   }
 }
 
-module func_asp 'functions/asp.bicep' = if (deployFunctions) {
-  name: 'deployFunctionsAppServicePlan'
+module func_asp 'functions/funcasp.bicep' = if (deployFunctions) {
+  name: 'deployFunctionAppServicePlan'
   params: {
     aspName: funcAspName
     customer: customer
@@ -135,22 +151,22 @@ module serviceBus 'servicebus/servicebus.bicep' = if (deploySB) {
   }
 }
 
-module gettapeeventsAsp 'appservice/site-asp.bicep' = if (deployGetTapeeventsAppService) {
+module gettapeeventsAsp 'appservice/site-asp.bicep' = [ for i in range (0, numOfGetTapeEventsServices) : if(deployGetTapeeventsAppService) {
   name: 'deploySiteAppServicePlan'
   params: {
     env: env
     location: location
     customer: customer
-    aspName: getTapeeventsASPName
+    aspName: getTapeEventsASPNames[i]
   }
-}
+}]
 
 module gettapeeventsAppServices 'appservice/appservice.bicep' =  [ for i in range(0, numOfGetTapeEventsServices): if(deployGetTapeeventsAppService) {
   name: 'deploy${getTapeEventsServiceNames[i]}'
   params: {
     location: location
     appServiceName: getTapeEventsServiceNames[i]
-    aspId: gettapeeventsAsp.outputs.aspId
+    aspId: gettapeeventsAsp[i].outputs.aspId
     customer: customer
     env: env
   }

@@ -6,7 +6,6 @@ param availabilityZones array = []
 param systemPoolScale int = 1
 param userPoolScale int
 param dnsPrefix string = '${customer}-${env}'
-param aksRG string = resourceGroup().name
 @allowed([
   'Free'
   'Standard'
@@ -60,7 +59,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
     type: 'SystemAssigned'
   }
   properties: {
-    nodeResourceGroup: aksRG
     dnsPrefix: dnsPrefix
     agentPoolProfiles: [
       {
@@ -95,7 +93,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
     ]
     linuxProfile: {
       adminUsername: linuxAdminUsername
-      ssh: {
+      ssh: sshRSAPublicKey == '' ? {} : {
         publicKeys: [
           {
             keyData: sshRSAPublicKey
