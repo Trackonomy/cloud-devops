@@ -152,7 +152,7 @@ module serviceBus 'servicebus/servicebus.bicep' = if (deploySB) {
 }
 
 module gettapeeventsAsp 'appservice/site-asp.bicep' = [ for i in range (0, numOfGetTapeEventsServices) : if(deployGetTapeeventsAppService) {
-  name: 'deploySiteAppServicePlan'
+  name: 'deploy${getTapeEventsASPNames[i]}'
   params: {
     env: env
     location: location
