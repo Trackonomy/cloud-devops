@@ -1,0 +1,10 @@
+env: test
+loadBalancerIP: 127.0.0.1
+image:
+  port: 3333
+  name: exampleacr.azurecr.io/env/ann-sb-alert-sender # acr image name
+  tag: "latest"
+  env:
+    sbUrl: sbUrl
+    sbTopic: sbTopic
+replicaCount: 1 

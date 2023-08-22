@@ -1,7 +1,7 @@
 appName: util
 environment: us-stress
 replicaCount: 5
-loadBalancerIP: 172.176.84.24
+loadBalancerIP: 172.177.35.171
 image:
   name: trkuniusstressacr.azurecr.io/util
   tag: "latest"

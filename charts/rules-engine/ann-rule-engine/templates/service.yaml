@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "ann-rule-engine-{{ .Values.env }}-service"
+  namespace: {{ .Values.env }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: {{ .Values.loadBalancerIP }}
+spec:
+  selector:
+    app: "ann-rule-engine-{{ .Values.env }}"
+  ports:
+  - protocol: TCP
+    port: {{ .Values.image.port }}
+    targetPort: {{ .Values.image.targetPort }}
+  type: LoadBalancer

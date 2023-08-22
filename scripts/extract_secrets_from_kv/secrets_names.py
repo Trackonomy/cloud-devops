@@ -183,7 +183,8 @@ secret_names_stage=[
   "INVISTA-AUDIENCE",
   "INVISTA-POST-URL",
   "AZURE-CONNECT-STRING",
-  "AZURE-SENDER-ADDRESS"
+  "AZURE-SENDER-ADDRESS",
+  "SWAGGER-DASH-URL"
 ]
 
 secret_names_dev2 = [

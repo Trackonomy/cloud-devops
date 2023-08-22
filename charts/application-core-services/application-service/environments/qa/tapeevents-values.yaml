@@ -1,7 +1,7 @@
 appName: tapeevents
 environment: qa
 replicaCount: 1
-loadBalancerIP: 172.190.186.34
+loadBalancerIP: 172.190.184.163
 image:
   name: multitenantdev2.azurecr.io/tapeevents
   tag: "latest"

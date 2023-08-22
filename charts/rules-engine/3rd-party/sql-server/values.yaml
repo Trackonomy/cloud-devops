@@ -1,0 +1,2 @@
+env: us-stress
+loadBalancerIP: localhost

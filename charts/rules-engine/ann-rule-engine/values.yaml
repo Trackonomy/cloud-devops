@@ -1,0 +1,10 @@
+env: test
+loadBalancerIP: 127.0.0.1
+image:
+  port: 8080
+  targetPort: 8080
+  name: exampleacr.azurecr.io/env/ann-rule-engine # acr image name
+  tag: "latest"
+  env:
+    dbUrl: sqlserver://sqlserver:1433;database=db;user=user;password=password;trustServerCertificate=true
+replicaCount: 1 

@@ -1,0 +1,21 @@
+env: us-stress
+image:
+  name: trkuniusstressacr.azurecr.io/us-stress/ann-message-service
+  tag: latest
+
+loadBalancerIP: 20.114.227.163
+sms:
+  requests:
+    cpu:
+    memory:
+  limits:
+    cpu:
+    memory:
+
+email:
+  requests:
+    cpu:
+    memory:
+  limits:
+    cpu:
+    memory:
