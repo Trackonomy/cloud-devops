@@ -6,8 +6,8 @@ param customer  = 'unicorn'
 param deployFunctions = true 
 param deploySB = true
 param deployGetTapeeventsAppService = true
-param deployCache = false
-param deployACRAndAKS = false
+param deployCache = true
+param deployACRAndAKS = true
 
 // aks && acr
 param aksName = 'aks-trk-sbx-unicorn'
