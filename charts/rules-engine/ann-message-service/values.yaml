@@ -6,6 +6,8 @@ image:
     sms: 9000
     email: 9001
 
+loadBalancerIP: 127.0.0.1
+
 sms:
   requests:
     cpu:

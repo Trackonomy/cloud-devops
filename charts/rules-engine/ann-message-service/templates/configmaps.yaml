@@ -20,3 +20,15 @@ data:
   {{- range $line := .Files.Get "sms.env" | split "\n" }}
   {{ $line | indent 2}}
   {{- end}}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ann-message-service-alerts-{{ .Values.env }}-configmap
+  namespace: {{ .Values.env }}
+data:
+  .env: |
+  {{- range $line := .Files.Get "alerts.env" | split "\n" }}
+  {{ $line | indent 2}}
+  {{- end}}
