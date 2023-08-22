@@ -91,7 +91,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-06-01' = {
         vmSize: vmSKU
       }
     ]
-    linuxProfile: sshRSAPublicKey == '' ? {} : {
+    linuxProfile: {
       adminUsername: linuxAdminUsername
       ssh: {
         publicKeys: [
