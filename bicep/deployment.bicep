@@ -61,18 +61,6 @@ module aks 'aks/aks.bicep' = if (deployACRAndAKS) {
   }
 }
 
-module aksPubIps 'aks/pubips.bicep' = if (deployACRAndAKS) {
-  name: 'deployAksPubIps'
-  dependsOn: [
-    aks
-  ]
-  params: {
-    env: env
-    customer: customer
-    location: location
-  }
-}
-
 module acr 'aks/acr.bicep' = if(deployACRAndAKS) {
   name: 'deployAcrAndCreateRole'
   params: {
