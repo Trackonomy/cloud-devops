@@ -184,7 +184,8 @@ secret_names_stage=[
   "INVISTA-POST-URL",
   "AZURE-CONNECT-STRING",
   "AZURE-SENDER-ADDRESS",
-  "SWAGGER-DASH-URL"
+  "SWAGGER-DASH-URL",
+  "NODECFG-DOWNLINK-CALL"
 ]
 
 secret_names_dev2 = [
