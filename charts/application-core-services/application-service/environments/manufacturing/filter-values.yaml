@@ -1,7 +1,7 @@
 appName: filter
 environment: manufacturing
 replicaCount: 5
-loadBalancerIP: 20.120.32.163
+loadBalancerIP: 74.235.59.249
 image:
   name: multitenantacrprod.azurecr.io/filter
   tag: "latest"

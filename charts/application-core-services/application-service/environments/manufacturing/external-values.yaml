@@ -1,7 +1,7 @@
 appName: external
 environment: manufacturing
 replicaCount: 1
-loadBalancerIP: 172.190.246.139
+loadBalancerIP: 74.235.59.249
 image:
   name: multitenantacrprod.azurecr.io/external
   tag: "latest"
