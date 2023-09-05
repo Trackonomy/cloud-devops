@@ -8,7 +8,7 @@ image:
   port: 8098
 
 requests:
-  cpu: 100m
+  cpu: 250m
   memory: 256Mi
 
 limits:
