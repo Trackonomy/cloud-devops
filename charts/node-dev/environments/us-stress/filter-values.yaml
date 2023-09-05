@@ -8,9 +8,9 @@ image:
   port: 8098
 
 requests:
-  cpu:
-  memory:
+  cpu: 100m
+  memory: 256Mi
 
 limits:
-  cpu:
-  memory:
+  cpu: 500m
+  memory: 512Mi
