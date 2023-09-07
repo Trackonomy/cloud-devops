@@ -1,0 +1,16 @@
+appName: health-dash
+environment: can-test
+replicaCount: 1
+loadBalancerIP: 20.12.83.241
+image:
+  name: trkuniusstressacr.azurecr.io/can-test/health-dash
+  tag: "latest"
+  port: 9111
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

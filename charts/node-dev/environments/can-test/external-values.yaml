@@ -1,0 +1,16 @@
+appName: external
+environment: can-test
+replicaCount: 1
+loadBalancerIP: 20.12.83.241
+image:
+  name: trkuniusstressacr.azurecr.io/can-test/external
+  tag: "latest"
+  port: 9000
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

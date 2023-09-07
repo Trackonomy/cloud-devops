@@ -1,9 +1,9 @@
 appName: filter
-environment: us-stress
+environment: can-test
 replicaCount: 20
-loadBalancerIP: 172.177.35.171
+loadBalancerIP: 20.12.83.241
 image:
-  name: trkuniusstressacr.azurecr.io/us-stress/filter
+  name: trkuniusstressacr.azurecr.io/can-test/filter
   tag: "latest"
   port: 8098
 

@@ -3,7 +3,7 @@ environment: us-stress
 replicaCount: 5
 loadBalancerIP: 172.177.35.171
 image:
-  name: trkuniusstressacr.azurecr.io/external
+  name: trkuniusstressacr.azurecr.io/us-stress/external
   tag: "latest"
   port: 9000
 

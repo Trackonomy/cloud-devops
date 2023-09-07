@@ -1,0 +1,16 @@
+appName: util
+environment: can-test
+replicaCount: 1
+loadBalancerIP: 20.12.83.241
+image:
+  name: trkuniusstressacr.azurecr.io/can-test/util
+  tag: "latest"
+  port: 8191
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

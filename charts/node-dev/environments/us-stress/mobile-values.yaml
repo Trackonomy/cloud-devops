@@ -3,7 +3,7 @@ environment: us-stress
 replicaCount: 5
 loadBalancerIP: 172.177.35.171
 image:
-  name: trkuniusstressacr.azurecr.io/mobile
+  name: trkuniusstressacr.azurecr.io/us-stress/mobile
   tag: "latest"
   port: 9091
 

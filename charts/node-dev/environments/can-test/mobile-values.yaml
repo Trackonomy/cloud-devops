@@ -1,0 +1,16 @@
+appName: mobile
+environment: can-test
+replicaCount: 1
+loadBalancerIP: 20.12.83.241
+image:
+  name: trkuniusstressacr.azurecr.io/can-test/mobile
+  tag: "latest"
+  port: 9091
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
