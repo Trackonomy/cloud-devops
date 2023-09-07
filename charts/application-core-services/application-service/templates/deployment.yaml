@@ -42,8 +42,8 @@ spec:
               cpu: {{ default "100m" .Values.requests.cpu }}
               memory: {{ default "256Mi" .Values.requests.memory  }}
             limits:
-              cpu: {{  default "200m" .Values.requests.cpu }}
-              memory: {{ default "512Mi" .Values.requests.memory }}
+              cpu: {{  default "200m" .Values.limits.cpu }}
+              memory: {{ default "512Mi" .Values.limits.memory }}
         volumeMounts:
         - name: variables
           mountPath: /home/node/app/variables.env
