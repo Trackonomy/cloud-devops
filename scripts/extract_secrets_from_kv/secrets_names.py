@@ -97,6 +97,8 @@ secret_names_prod=[
 ]
 
 secret_names_stage=[
+  "INVISTA-KBXRAIL-API-KEY",
+  "INVISTA-KBXRAIL-POST-URL",
   "FILTER-PORT",
   "UTIL-PORT",
   "PUTIL-PORT",
