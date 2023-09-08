@@ -9,7 +9,9 @@ def get_secret_names(env):
         return secret_names_dev2
 
 secret_names_prod=[
-    "FILTER-PORT",
+  "INVISTA-KBXRAIL-API-KEY",
+  "INVISTA-KBXRAIL-POST-URL",
+  "FILTER-PORT",
   "UTIL-PORT",
   "PUTIL-PORT",
   "MOBILE-PORT",
