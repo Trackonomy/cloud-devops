@@ -1,5 +1,5 @@
 environment: dev
-loadBalancerIP: 127.0.0.1
+loadBalancerIP: 20.114.179.17
 replicaCount: 1
 keyVaultName: kv-events-uni-dev-eus2
 managedUserAssignedIdentityId: eb4a3f38-85cf-481a-9a12-5277134d7d66
