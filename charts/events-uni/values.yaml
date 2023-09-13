@@ -1,0 +1,16 @@
+environment: test
+loadBalancerIP: 127.0.0.1
+replicaCount: 1
+keyVaultName: kv-test
+managedUserAssignedIdentityId: identity-id
+identityTenant: tenant
+image:
+  name: events-uni
+  tag: 1.0.0
+requests:
+  cpu: 100m
+  memory: 256Mi
+limits:
+  cpu: 500m
+  memory: 1024Mi
+

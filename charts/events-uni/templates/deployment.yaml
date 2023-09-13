@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "events-uni-{{ .Values.environment }}-deployment"
+  namespace: {{ .Values.environment }}
+  labels:
+    app: "events-uni-{{ .Values.environment }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: "events-uni-{{ .Values.environment }}"
+  template:
+    metadata:
+      labels:
+        app: "events-uni-{{ .Values.environment }}"
+    spec:
+      containers:
+      - name: "events-uni"
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        resources:
+            requests:
+              cpu: {{ default "100m" .Values.requests.cpu }}
+              memory: {{ default "256Mi" .Values.requests.memory  }}
+            limits:
+              cpu: {{  default "500m" .Values.limits.cpu }}
+              memory: {{ default "1024Mi" .Values.limits.memory }}
+        volumeMounts:
+        - name: secrets-events-uni
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+
+        env:
+        - name: BATCH_SIZE
+          valueFrom:
+            secretKeyRef:
+              name: events-uni-batchsize
+              key: batchsize
+        - name: USER
+          valueFrom:
+            secretKeyRef:
+              name: events-uni-user
+              key: user
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: events-uni-password
+              key: password
+        - name: SERVER
+          valueFrom:
+            secretKeyRef:
+              name: events-uni-server
+              key: server
+        - name: DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: events-uni-database
+              value: database
+        - name: SCHEMA
+          valueFrom:
+            secretKeyRef:
+              name: events-uni-schema
+              value: schema
+        - name: GET_EVENTS_PROC
+          valueFrom:
+            secretKeyRef:
+              name: events-uni-geteventsproc
+              value: geteventsproc
+        - name: MSDIFF
+          valueFrom:
+            secretKeyRef:
+              name: events-uni-msdiff
+              value: msdiff
+
+      volumes:
+        - name: secrets-events-uni
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: azure-{{ .Values.keyVaultName }}-wi
