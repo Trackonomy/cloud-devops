@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "events-uni-{{ .Values.environment }}-service"
+  name: "uni-events-{{ .Values.environment }}-service"
   namespace: {{ .Values.environment }}
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-ipv4: {{ .Values.loadBalancerIP }}
 spec:
   selector:
-    app: "events-uni-{{ .Values.environment }}"
+    app: "uni-events-{{ .Values.environment }}"
   ports:
   - protocol: TCP
     port: 3000

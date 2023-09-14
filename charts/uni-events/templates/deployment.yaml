@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "events-uni-{{ .Values.environment }}-deployment"
+  name: "uni-events-{{ .Values.environment }}-deployment"
   namespace: {{ .Values.environment }}
   labels:
-    app: "events-uni-{{ .Values.environment }}"
+    app: "uni-events-{{ .Values.environment }}"
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: "events-uni-{{ .Values.environment }}"
+      app: "uni-events-{{ .Values.environment }}"
   template:
     metadata:
       labels:
-        app: "events-uni-{{ .Values.environment }}"
+        app: "uni-events-{{ .Values.environment }}"
     spec:
       containers:
-      - name: "events-uni"
+      - name: "uni-events"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
         ports:
@@ -29,7 +29,7 @@ spec:
               cpu: {{  default "500m" .Values.limits.cpu }}
               memory: {{ default "1024Mi" .Values.limits.memory }}
         volumeMounts:
-        - name: secrets-events-uni
+        - name: secrets-uni-events
           mountPath: "/mnt/secrets-store"
           readOnly: true
 
@@ -37,46 +37,46 @@ spec:
         - name: BATCH_SIZE
           valueFrom:
             secretKeyRef:
-              name: events-uni-batchsize
+              name: uni-events-batchsize
               key: batchsize
         - name: USER
           valueFrom:
             secretKeyRef:
-              name: events-uni-user
+              name: uni-events-user
               key: user
         - name: PASSWORD
           valueFrom:
             secretKeyRef:
-              name: events-uni-password
+              name: uni-events-password
               key: password
         - name: SERVER
           valueFrom:
             secretKeyRef:
-              name: events-uni-server
+              name: uni-events-server
               key: server
         - name: DATABASE
           valueFrom:
             secretKeyRef:
-              name: events-uni-database
+              name: uni-events-database
               value: database
         - name: SCHEMA
           valueFrom:
             secretKeyRef:
-              name: events-uni-schema
+              name: uni-events-schema
               value: schema
         - name: GET_EVENTS_PROC
           valueFrom:
             secretKeyRef:
-              name: events-uni-geteventsproc
+              name: uni-events-geteventsproc
               value: geteventsproc
         - name: MSDIFF
           valueFrom:
             secretKeyRef:
-              name: events-uni-msdiff
+              name: uni-events-msdiff
               value: msdiff
 
       volumes:
-        - name: secrets-events-uni
+        - name: secrets-uni-events
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
