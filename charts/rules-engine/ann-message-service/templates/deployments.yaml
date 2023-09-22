@@ -38,7 +38,7 @@ spec:
               memory: {{ default "512Mi" .Values.email.limits.memory }}
         volumeMounts:
         - name: variables-email
-          mountPath: /app/dist/src/.env
+          mountPath: /app/dist/.env
           subPath: .env
 
 ---
@@ -82,7 +82,7 @@ spec:
               memory: {{ default "512Mi" .Values.sms.limits.memory }}
         volumeMounts:
         - name: variables-sms
-          mountPath: /app/dist/src/.env
+          mountPath: /app/dist/.env
           subPath: .env
 
 ---
@@ -117,7 +117,7 @@ spec:
       - name: "ann-message-service"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
-        command: [ "node", "/app/dist/src/alerts/index.js" ]
+        command: [ "node", "/app/dist/alerts/index.js" ]
         resources:
             requests:
               cpu: {{ default "100m" .Values.sms.requests.cpu }}
@@ -129,5 +129,5 @@ spec:
         - containerPort: 3003
         volumeMounts:
         - name: variables-alerts
-          mountPath: /app/dist/src/.env
+          mountPath: /app/dist/.env
           subPath: .env
