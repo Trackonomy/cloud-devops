@@ -29,6 +29,8 @@ spec:
           value: {{ .Values.image.env.dbUrl }}
         - name: ALERTS_SERVICE_HOST
           value: {{ .Values.image.env.alertsUrl }}
+        - name: SERVICE_BUS_DEV
+          value: {{ .Values.image.env.SERVICE_BUS_DEV }}
         resources:
             requests:
               cpu: {{ default "100m" .Values.requests.cpu }}
