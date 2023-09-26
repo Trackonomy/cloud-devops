@@ -1,9 +1,6 @@
 environment: dev
 loadBalancerIP: 20.114.179.17
 replicaCount: 1
-keyVaultName: kv-events-uni-dev-eus2
-managedUserAssignedIdentityId: eb4a3f38-85cf-481a-9a12-5277134d7d66
-identityTenant: 92ebf37-cae1-460d-8a16-ce7d28d0ff9c
 image:
   name: trkuniusstressacr.azurecr.io/dev/uni-events
 requests:

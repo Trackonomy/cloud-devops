@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uni-events-{{ .Values.environment }}-configmap
+  namespace: {{ .Values.environment }}
+data:
+  .env: |
+  {{- range $line := .Files.Get "variables.env" | split "\n" }}
+  {{ $line | indent 2}}
+  {{- end}}

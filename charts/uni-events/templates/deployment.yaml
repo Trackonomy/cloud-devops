@@ -29,56 +29,13 @@ spec:
               cpu: {{  default "500m" .Values.limits.cpu }}
               memory: {{ default "1024Mi" .Values.limits.memory }}
         volumeMounts:
-        - name: secrets-uni-events
-          mountPath: "/mnt/secrets-store"
-          readOnly: true
-
-        env:
-        - name: BATCH_SIZE
-          valueFrom:
-            secretKeyRef:
-              name: uni-events-batchsize
-              key: batchsize
-        - name: USER
-          valueFrom:
-            secretKeyRef:
-              name: uni-events-user
-              key: user
-        - name: PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: uni-events-password
-              key: password
-        - name: SERVER
-          valueFrom:
-            secretKeyRef:
-              name: uni-events-server
-              key: server
-        - name: DATABASE
-          valueFrom:
-            secretKeyRef:
-              name: uni-events-database
-              value: database
-        - name: SCHEMA
-          valueFrom:
-            secretKeyRef:
-              name: uni-events-schema
-              value: schema
-        - name: GET_EVENTS_PROC
-          valueFrom:
-            secretKeyRef:
-              name: uni-events-geteventsproc
-              value: geteventsproc
-        - name: MSDIFF
-          valueFrom:
-            secretKeyRef:
-              name: uni-events-msdiff
-              value: msdiff
-
+        - name: variables-env
+          mountPath: /.env
+          subPath: .env
       volumes:
-        - name: secrets-uni-events
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: azure-{{ .Values.keyVaultName }}-wi
+      - name: variables-env
+        configMap:
+          name: 'uni-events-{{ .Values.environment }}-configmap'
+          items:
+          - key: .env
+            path: .env

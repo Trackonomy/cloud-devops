@@ -1,9 +1,7 @@
 environment: test
 loadBalancerIP: 127.0.0.1
 replicaCount: 1
-keyVaultName: kv-test
-managedUserAssignedIdentityId: identity-id
-identityTenant: tenant
+
 image:
   name: uni-events
   tag: 1.0.0
