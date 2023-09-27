@@ -24,6 +24,9 @@ def main():
         for secret_property in secrets:
             value = ''
             secret = secret_property.name
+            if secret is None:
+                print('SKIPPED EMPTY NAME SECRET')
+                continue
             try:
                 extracted_secret = client.get_secret(secret)
                 value = extracted_secret.value
