@@ -1,6 +1,15 @@
 name: Deploy shared infrastructure for new environments
 on:
   workflow_dispatch:
+    inputs:
+      deploy_eastus:
+        description: "Deploy eastus?"
+        type: boolean
+        default: true
+      deploy_weu:
+        description: "Deploy euw?"
+        type: boolean
+        default: true
 
 env:
   us_rg: rg-trk-uni-shared-eastus
@@ -11,7 +20,8 @@ env:
 
 jobs:
   deploy_eastus:
-    name: Deploy eastus infrastructure
+    if: ${{ inputs.deploy_eastus }}
+    name: Deploy US East infrastructure
     runs-on: ubuntu-latest
     environment: bicep-us-eastus
     steps:
@@ -38,6 +48,7 @@ jobs:
           --template-file main.bicep \
           --parameters params/eastus.bicepparam
   deploy_weu:
+    if: ${{ inputs.deploy_weu }}
     name: Deploy West Europe infrastructure
     runs-on: ubuntu-latest
     environment: bicep-europe-west
