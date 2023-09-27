@@ -50,7 +50,7 @@ jobs:
       run: |
         az account set --subscription ${{ env.eu_sub }}
         if [ $(az group exists --name ${{ env.eu_rg }}) = false ]; then
-          az group create --name ${{ env.eu_rg }} --location eastus2
+          az group create --name ${{ env.eu_rg }} --location westeurope
         fi
     - name: Validate bicep deployment
       working-directory: bicep/shared

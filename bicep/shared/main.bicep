@@ -35,6 +35,9 @@ param aksUserPoolSku string
 @description('AKS 3rd party pool SKU')
 param aksThirdPartyPoolSku string
 
+@description('Uni events key vault name for PPE env')
+param uniEventsPpeKvName string
+
 module global_acr 'acr.bicep' = {
   name: 'DeployGlobalAcr'
   params: {
@@ -81,5 +84,15 @@ module global_aks_acr_pull 'assignacrpull.bicep' = {
     aksPrincipalId: global_aks.outputs.clusterPrincipalID
     registryName: global_acr.outputs.acrSymbolicName
     roleAcrPull: '7f951dda-4ed3-4680-a7ca-43fe172d538d'
+  }
+}
+
+module uni_events_kv_ppe 'keyvault.bicep' = {
+  name: 'DeployUniEventsKv'
+  params: {
+    customer: customer
+    env: env
+    location: location
+    name: uniEventsPpeKvName
   }
 }

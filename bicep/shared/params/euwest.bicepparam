@@ -19,3 +19,6 @@ param aksUserPoolScale = 1
 param aksUserPoolSku = 'Standard_D8s_v3'
 param aksThirdPartyPoolScale = 1
 param aksThirdPartyPoolSku =  'Standard_D8s_v3'
+
+//key vaults
+param uniEventsPpeKvName = 'kvunieventsppeweu'
