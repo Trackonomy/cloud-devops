@@ -1,15 +1,15 @@
 using '../main.bicep'
 
-param location = 'eastus2'
+param location = 'eastus'
 param env = 'shared'
 param customer = 'unicorn'
 
 //names
-param acrRegistryName = 'acrtrkunieus2'
-param aksName = 'aks-trk-uni-shared-eastus2'
+param acrRegistryName = 'acrtrkunieus'
+param aksName = 'aks-trk-uni-shared-eastus'
 
 // ssh access
-param sshAksPubKeyName = 'ssh-aks-trk-uni-shared-eastus2'
+param sshAksPubKeyName = 'ssh-aks-trk-uni-shared-eastus'
 param sshAksPubKey = loadTextContent('../files/id_rsa.pub')
 
 //pools 

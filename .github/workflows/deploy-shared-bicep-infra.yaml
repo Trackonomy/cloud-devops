@@ -3,17 +3,17 @@ on:
   workflow_dispatch:
 
 env:
-  us_rg: rg-trk-uni-shared-eastus2
+  us_rg: rg-trk-uni-shared-eastus
   us_sub: TRK-PROD
   eu_sub: TRK-Europe-Pilot
   eu_rg: rg-trk-uni-shared-weu
   
 
 jobs:
-  deploy_eastus2:
-    name: Deploy eastus2 infrastructure
+  deploy_eastus:
+    name: Deploy eastus infrastructure
     runs-on: ubuntu-latest
-    environment: bicep-us-eastus2
+    environment: bicep-us-eastus
     steps:
     - uses: actions/checkout@v3
     - uses: azure/login@v1
@@ -23,20 +23,20 @@ jobs:
       run: |
         az account set --subscription ${{ env.us_sub }}
         if [ $(az group exists --name ${{ env.us_rg }}) = false ]; then
-          az group create --name ${{ env.us_rg }} --location eastus2
+          az group create --name ${{ env.us_rg }} --location eastus
         fi
     - name: Validate bicep deployment
       working-directory: bicep/shared
       run: |
-        az deployment group validate --name SharedEastUS2Deployment --resource-group ${{ env.us_rg }} \
+        az deployment group validate --name SharedEastUSDeployment --resource-group ${{ env.us_rg }} \
           --template-file main.bicep \
-          --parameters params/eastus2.bicepparam
+          --parameters params/eastus.bicepparam
     - name: Deploy infra 
       working-directory: bicep/shared
       run: |
-        az deployment group create --name SharedEastUS2Deployment --resource-group ${{ env.us_rg }} \
+        az deployment group create --name SharedEastUSDeployment --resource-group ${{ env.us_rg }} \
           --template-file main.bicep \
-          --parameters params/eastus2.bicepparam
+          --parameters params/eastus.bicepparam
   deploy_weu:
     name: Deploy West Europe infrastructure
     runs-on: ubuntu-latest
