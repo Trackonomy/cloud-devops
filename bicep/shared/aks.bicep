@@ -22,14 +22,6 @@ param systemPoolSKU string
 param sshRsaPubKey string
 
 @description('Node SKU as defined in https://learn.microsoft.com/en-us/azure/aks/hybrid/concepts-support')
-@allowed([
-  'Default', 'Standard_A2_v2','Standard_A4_v2'
-  'Standard_D2s_v3', 'Standard_D4s_v3', 'Standard_D8s_v3' 
-  'Standard_D16s_v3', 'Standard_D32s_v3', 'Standard_DS2_v2'
-  'Standard_DS3_v2', 'Standard_DS4_v2', 'Standard_DS5_v2'
-  'Standard_DS13_v2', 'Standard_K8S_v1', 'Standard_K8S2_v1'
-  'Standard_K8S3_v1', 'Standard_NK6', 'Standard_NK12'
-])
 param userPoolSKU string
 
 @description('SKU of third-party node pools. Available values: please see userPoolSKU')
