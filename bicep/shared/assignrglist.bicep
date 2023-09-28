@@ -10,6 +10,6 @@ resource AssignResourceGroupList 'Microsoft.Authorization/roleAssignments@2022-0
     description: 'Assign ACR Pull role to aks'
     principalId: aksPrincipalId
     principalType: 'ServicePrincipal'
-    roleDefinitionId: readerRole
+    roleDefinitionId: roleDefinitionId
   }
 }
