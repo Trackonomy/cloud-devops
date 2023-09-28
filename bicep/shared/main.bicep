@@ -97,7 +97,7 @@ module global_aks_rg_reader 'assignrglist.bicep' = {
   dependsOn: [global_aks]
   name: 'AssignAKSReaderRole'
   params: {
-    aksPrincipalId: global_aks.outputs.clusterPrincipalID
+    aksPrincipalId: global_aks.outputs.clusterSpClientID
   }
 }
 

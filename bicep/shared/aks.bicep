@@ -148,3 +148,4 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-07-02-preview' = {
 output clusterPrincipalID string = aks.properties.identityProfile.kubeletidentity.objectId
 output pubKey string = aks.properties.linuxProfile.ssh.publicKeys[0].keyData
 output clusterRG string = aks.properties.nodeResourceGroup
+output clusterSpClientID string = aks.properties.servicePrincipalProfile.clientId
