@@ -93,6 +93,14 @@ module global_aks_acr_pull 'assignacrpull.bicep' = {
   }
 }
 
+module global_aks_rg_reader 'assignrglist.bicep' = {
+  dependsOn: [global_aks]
+  name: 'AssignAKSReaderRole'
+  params: {
+    aksPrincipalId: global_aks.outputs.clusterPrincipalID
+  }
+}
+
 module uni_events_kv_ppe 'keyvault.bicep' = {
   name: 'DeployUniEventsKv'
   params: {
