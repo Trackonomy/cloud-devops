@@ -20,6 +20,9 @@ param aksName string
 @description('AKS System pool scale')
 param aksSystemPoolScale int
 
+@description('System pool max count')
+param aksSystemPoolMaxCount int
+
 @description('AKS User Pool Scale')
 param aksUserPoolScale int
 

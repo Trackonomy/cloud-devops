@@ -18,6 +18,9 @@ param k8sTier string = 'Free'
 @description('SKU of system node pools. Available values: please see userPoolSKU')
 param systemPoolSKU string
 
+@description('Max count of system pool')
+param systemMaxCount int
+
 @description('Public ssh key to connect to VMs.')
 param sshRsaPubKey string
 
@@ -93,7 +96,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2023-07-02-preview' = {
         osType: 'Linux'
         type: 'VirtualMachineScaleSets'
         count: systemPoolScale
-        maxCount: 5
+        maxCount: systemMaxCount
         vmSize: systemPoolSKU
       }
       {
