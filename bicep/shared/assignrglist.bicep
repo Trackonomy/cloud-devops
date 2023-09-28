@@ -17,7 +17,7 @@ resource AssignResourceGroupList 'Microsoft.Authorization/roleAssignments@2022-0
 param networkContributorRoleDefinitionId string = '4d97b98b-1d4f-4787-a291-c67834d212e7'
 var networkContrubutorRoleDefinition = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '${networkContributorRoleDefinitionId}')
 resource AssignNetworkContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(resourceGroup().id, aksPrincipalId, 'AssignRgListToAks')
+  name: guid(resourceGroup().id, aksPrincipalId, 'AssignNetworkContributorToAKs')
   scope: resourceGroup()
   properties: {
     description: 'Assign Network Contributor role to aks'
