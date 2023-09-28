@@ -1,4 +1,4 @@
-environment: ppe
+environment: eu-ppe
 loadBalancerIP: 20.160.199.172
 loadBalancerRG: rg-trk-uni-shared-weu
 replicaCount: 1
