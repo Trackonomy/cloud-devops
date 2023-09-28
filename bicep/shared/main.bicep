@@ -77,6 +77,7 @@ module global_aks 'aks.bicep' = {
     userPoolSKU: aksUserPoolSku
     thirdPartySKU: aksThirdPartyPoolSku
     sshRsaPubKey: global_pubkey.outputs.publicKey
+    systemMaxCount: aksSystemPoolMaxCount
   }
 }
 
