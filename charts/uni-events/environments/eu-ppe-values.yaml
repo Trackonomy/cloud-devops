@@ -1,0 +1,12 @@
+environment: ppe
+loadBalancerIP: 20.160.199.172
+loadBalancerRG: rg-trk-uni-shared-weu
+replicaCount: 1
+image:
+  name: acrtrkuniweu.azurecr.io/eu-ppe/uni-events
+requests:
+  cpu: 100m
+  memory: 256Mi
+limits:
+  cpu: 500m
+  memory: 1024Mi

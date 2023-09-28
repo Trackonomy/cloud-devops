@@ -1,5 +1,6 @@
 environment: dev
 loadBalancerIP: 20.114.179.17
+loadBalancerRG: ""
 replicaCount: 1
 image:
   name: trkuniusstressacr.azurecr.io/dev/uni-events

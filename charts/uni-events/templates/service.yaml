@@ -5,6 +5,9 @@ metadata:
   namespace: {{ .Values.environment }}
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-ipv4: {{ .Values.loadBalancerIP }}
+    {{- if not (eq .Values.loadBalancerRG "") }}
+    service.beta.kubernetes.io/azure-load-balancer-resource-group: {{ .Values.loadBalancerRG }}
+    {{- end }}
 spec:
   selector:
     app: "uni-events-{{ .Values.environment }}"

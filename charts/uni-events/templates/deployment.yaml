@@ -15,6 +15,16 @@ spec:
       labels:
         app: "uni-events-{{ .Values.environment }}"
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: workload
+                operator: In
+                values:
+                - apps
       containers:
       - name: "uni-events"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"

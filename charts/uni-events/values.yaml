@@ -1,5 +1,6 @@
 environment: test
 loadBalancerIP: 127.0.0.1
+loadBalancerRG:
 replicaCount: 1
 
 image:
