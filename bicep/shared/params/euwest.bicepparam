@@ -14,7 +14,7 @@ param sshAksPubKey = loadTextContent('../files/id_rsa.pub')
 
 //pools 
 param aksSystemPoolScale = 1
-param aksSystemPoolSku = 'Standard_D4_v4'
+param aksSystemPoolSku = 'Standard_D2_v4'
 param aksSystemPoolMaxCount = 1
 param aksUserPoolScale = 1
 param aksUserPoolSku = 'Standard_D8_v4'
