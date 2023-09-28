@@ -23,3 +23,4 @@ param aksThirdPartyPoolSku =  'Standard_D8_v4' //similar to D8s_v3 (8 cores and 
 
 //key vaults
 param uniEventsPpeKvName = 'kvunieventsppeweu'
+param ppeIpAddrName = 'ip-trk-uni-ppe-westeu'

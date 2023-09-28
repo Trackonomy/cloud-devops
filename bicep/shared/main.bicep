@@ -41,6 +41,8 @@ param aksThirdPartyPoolSku string
 @description('Uni events key vault name for PPE env')
 param uniEventsPpeKvName string
 
+@description('PPE public ip address for k8s cluster')
+param ppeIpAddrName string
 module global_acr 'acr.bicep' = {
   name: 'DeployGlobalAcr'
   params: {
@@ -98,5 +100,17 @@ module uni_events_kv_ppe 'keyvault.bicep' = {
     env: env
     location: location
     name: uniEventsPpeKvName
+  }
+}
+
+module cluster_pubip_ppe 'pubip.bicep' = {
+  name: 'DeployPubIpPPE'
+  params: {
+    customer: customer
+    env: env
+    location: location
+    pubIpName: ppeIpAddrName
+    sku: 'Standard'
+    static: true
   }
 }

@@ -22,4 +22,5 @@ param aksThirdPartyPoolScale = 1
 param aksThirdPartyPoolSku =  'Standard_D8s_v3'
 
 // key vaults
-param uniEventsPpeKvName = 'kvunieventsppeeus2'
+param uniEventsPpeKvName = 'kvunieventsppeeus'
+param ppeIpAddrName = 'ip-trk-uni-ppe-eastus'
