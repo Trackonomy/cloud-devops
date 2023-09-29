@@ -45,7 +45,7 @@ spec:
       volumes:
       - name: variables-env
         configMap:
-          name: 'ann-rule-engine-{{ .Values.environment }}-configmap'
+          name: 'ann-rule-engine-{{ .Values.env }}-configmap'
           items:
           - key: .env
             path: .env

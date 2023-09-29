@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ann-rule-engine-{{ .Values.environment }}-configmap
-  namespace: {{ .Values.environment }}
+  name: ann-rule-engine-{{ .Values.env }}-configmap
+  namespace: {{ .Values.env }}
 data:
   .env: |
   {{- range $line := .Files.Get "variables.env" | split "\n" }}
