@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ann-sb-alert-sender-{{ .Values.env }}-configmap
+  namespace: {{ .Values.env }}
+data:
+  .env: |
+  {{- range $line := .Files.Get "variables.env" | split "\n" }}
+  {{ $line | indent 2}}
+  {{- end}}

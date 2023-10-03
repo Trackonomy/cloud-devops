@@ -24,11 +24,6 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.image.port }}
-        env:
-        - name: CONNECTION_STRING
-          value: {{ .Values.image.env.sbUrl }}
-        - name: TOPIC
-          value: {{ .Values.image.env.sbTopic }}
         resources:
             requests:
               cpu: {{ default "100m" .Values.requests.cpu }}
@@ -36,3 +31,14 @@ spec:
             limits:
               cpu: {{  default "200m" .Values.requests.cpu }}
               memory: {{ default "512Mi" .Values.requests.memory }}
+        volumeMounts:
+        - name: variables-env
+          mountPath: /.env
+          subPath: .env
+      volumes:
+      - name: variables-env
+        configMap:
+          name: 'ann-sb-alert-sender-{{ .Values.env }}-configmap'
+          items:
+          - key: .env
+            path: .env
