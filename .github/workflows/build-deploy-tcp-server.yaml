@@ -1,0 +1,4 @@
+name: Build And Deploy TCP Server
+on:
+  workflow_dispatch:
+jobs:

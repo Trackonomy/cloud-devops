@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "tcp-proxy-server-{{ .Values.environment }}-deployment"
+  namespace: {{ .Values.environment }}
+  labels:
+    app: "tcp-proxy-server-{{ .Values.environment }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: "tcp-proxy-server-{{ .Values.environment }}"
+  template:
+    metadata:
+      labels:
+        app: "tcp-proxy-server-{{ .Values.environment }}"
+    spec:
+      containers:
+      - name: "tcp-proxy-server"
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.image.port }}
+        resources:
+            requests:
+              cpu: {{ default "50m" .Values.requests.cpu }}
+              memory: {{ default "64Mi" .Values.requests.memory  }}
+            limits:
+              cpu: {{  default "200m" .Values.limits.cpu }}
+              memory: {{ default "256Mi" .Values.limits.memory }}
+
+          

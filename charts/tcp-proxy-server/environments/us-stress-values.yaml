@@ -1,0 +1,4 @@
+environment: us-stress
+replicaCount: 1
+image:
+  name: trkuniusstressacr.azurecr.io/us-stress/tcp-proxy-server

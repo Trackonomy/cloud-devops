@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "tcp-proxy-server-{{ .Values.environment }}-service"
+  namespace: {{ .Values.environment }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: {{ .Values.loadBalancerIP }}
+spec:
+  selector:
+    app: "tcp-proxy-server-{{ .Values.environment }}"
+  ports:
+  - protocol: TCP
+    port: {{ .Values.image.port }}
+    targetPort: {{ .Values.image.port }}
+  type: LoadBalancer
