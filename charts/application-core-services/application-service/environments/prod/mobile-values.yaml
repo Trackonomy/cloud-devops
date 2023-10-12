@@ -1,7 +1,7 @@
 appName: mobile
 environment: prod
 replicaCount: 1
-loadBalancerIP: 168.62.42.7
+loadBalancerIP: 23.96.24.227
 image:
   name: multitenantacrprod.azurecr.io/mobile
   tag: "latest"

@@ -1,7 +1,7 @@
 appName: health-dash
 environment: prod
 replicaCount: 1
-loadBalancerIP: 23.96.31.30
+loadBalancerIP: 23.96.24.227
 image:
   name: multitenantacrprod.azurecr.io/health-dash
   tag: "latest"

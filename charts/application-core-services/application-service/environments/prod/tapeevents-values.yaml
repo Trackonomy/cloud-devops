@@ -1,7 +1,7 @@
 appName: tapeevents
 environment: prod
 replicaCount: 1
-loadBalancerIP: 23.96.27.229
+loadBalancerIP: 23.96.24.227
 image:
   name: multitenantacrprod.azurecr.io/tapeevents
   tag: "latest"
