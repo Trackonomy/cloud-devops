@@ -19,6 +19,14 @@ spec:
       - name: "tcp-proxy-server"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - /bin/ps | grep  /app/tcpechoserver | grep -v grep
+          initalDelaySeconds: 10
+          periodSeconds: 10
         ports:
         - containerPort: {{ .Values.image.port }}
         resources:
