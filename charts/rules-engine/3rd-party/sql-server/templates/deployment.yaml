@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mssql-deployment
+  name: mssql-deployment-{{ .Values.env }}
   namespace: {{ .Values.env }}
 spec:
   replicas: 1
@@ -45,4 +45,4 @@ spec:
       volumes:
       - name: mssqldb
         persistentVolumeClaim:
-          claimName: mssql-data
+          claimName: mssql-data-{{ .Values.env }}
