@@ -1,0 +1,21 @@
+env: stage
+image:
+  name: trkuniusstressacr.azurecr.io/stage/ann-message-service
+  tag: latest
+
+loadBalancerIP: 172.203.47.236
+sms:
+  requests:
+    cpu:
+    memory:
+  limits:
+    cpu:
+    memory:
+
+email:
+  requests:
+    cpu:
+    memory:
+  limits:
+    cpu:
+    memory:

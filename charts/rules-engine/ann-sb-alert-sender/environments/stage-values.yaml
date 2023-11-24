@@ -1,0 +1,14 @@
+env: stage
+loadBalancerIP: 172.203.47.236
+image:
+  port: 3333
+  name: trkuniusstressacr.azurecr.io/stage/ann-sb-alert-sender # acr image name
+replicaCount: 1
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
