@@ -117,7 +117,7 @@ spec:
       - name: "ann-message-service"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
-        command: [ "node", "/app/dist/alerts/index.js" ]
+        command: [ "node", "/app/dist/src/alerts/index.js" ]
         resources:
             requests:
               cpu: {{ default "100m" .Values.sms.requests.cpu }}
