@@ -1,0 +1,14 @@
+env: ppe
+loadBalancerIP: 172.206.98.131
+image:
+  port: 8080
+  targetPort: 8080
+  name: trkuniusstressacr.azurecr.io/ppe/ann-rule-engine # acr image name
+replicaCount: 1
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:

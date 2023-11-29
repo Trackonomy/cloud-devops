@@ -1,0 +1,14 @@
+env: ppe
+loadBalancerIP: 172.206.98.131
+image:
+  port: 3333
+  name: trkuniusstressacr.azurecr.io/ppe/ann-sb-alert-sender # acr image name
+replicaCount: 1
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
