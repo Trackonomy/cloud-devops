@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spsf-core-{{ .Values.env }}
+  namespace: {{ .Values.env }}
+  labels:
+    app: "spsf-core-{{ .Values.env }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: "spsf-core-{{ .Values.env }}"
+  template:
+    metadata:
+      labels:
+        app: "spsf-core-{{ .Values.env }}"
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+      - name: "spsf-core-service"
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.image.port }}
+        resources:
+            requests:
+              cpu: {{ default "100m" .Values.requests.cpu }}
+              memory: {{ default "256Mi" .Values.requests.memory  }}
+            limits:
+              cpu: {{  default "200m" .Values.requests.cpu }}
+              memory: {{ default "512Mi" .Values.requests.memory }}
