@@ -3,7 +3,7 @@ replicaCount: 2
 image:
   name: acrtrkmtv2prod.azurecr.io/ppe/tcp-proxy-server
 
-loadBalancerIP: 4.236.233.82
+loadBalancerIP: 20.10.237.87
 requests:
   cpu:
   memory:

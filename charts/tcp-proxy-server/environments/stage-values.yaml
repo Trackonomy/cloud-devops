@@ -3,7 +3,7 @@ replicaCount: 2
 image:
   name: acrtrkmtv2shared.azurecr.io/stage/tcp-proxy-server
 
-loadBalancerIP: 4.157.175.191
+loadBalancerIP: 20.1.226.80
 requests:
   cpu:
   memory:
