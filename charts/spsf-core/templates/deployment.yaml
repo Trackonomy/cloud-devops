@@ -33,7 +33,7 @@ spec:
               memory: {{ default "512Mi" .Values.requests.memory }}
         volumeMounts:
         - name: variables-env
-          mountPath: /.env
+          mountPath: /app/.env
           subPath: .env
       volumes:
       - name: variables-env
