@@ -1,4 +1,4 @@
-environment: stage
+environment: ppe
 replicaCount: 2
 image:
   name: acrtrkmtv2prod.azurecr.io/ppe/tcp-proxy-server
