@@ -31,3 +31,14 @@ spec:
             limits:
               cpu: {{  default "200m" .Values.requests.cpu }}
               memory: {{ default "512Mi" .Values.requests.memory }}
+        volumeMounts:
+        - name: variables-env
+          mountPath: /.env
+          subPath: .env
+      volumes:
+      - name: variables-env
+        configMap:
+          name: 'spsf-core-{{ .Values.env }}-configmap'
+          items:
+          - key: .env
+            path: .env
