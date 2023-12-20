@@ -10,6 +10,7 @@ from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 import sys
 import logging
+import argparse
 
 def get_kv_client():
     keyVaultName = os.environ["KEY_VAULT_NAME"]
@@ -17,7 +18,23 @@ def get_kv_client():
     credential = DefaultAzureCredential(exclude_interactive_browser_credential=False)
     client = SecretClient(vault_url=KVUri, credential=credential,logging_enable=True)
     return client
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        prog='Key Vault Secret Extractor',
+        description='Extracts secrets from specified Key Vault'
+        )
+    parser.add_argument('-e', '--environment')
+    args = parser.parse_args()
+    return args
+
 def main():
+    args = parse_args()
+    secret_name_prefix = ''
+    env = args.environment
+    if env != None:
+        env = str(env)
+        secret_name_prefix = env.upper() + '-'
     variables_env = open("variables.env", "r")
     client = get_kv_client()
     content_type="text/plain"
@@ -34,9 +51,9 @@ def main():
 
         key_replaced = key.replace("_", "-")
         #try:
-        print (key_replaced, "-->>>", value)
+        print(secret_name_prefix + key_replaced, "-->>>", value)
         #print(type(key), "---->>>>", type(value))
-        secret = client.set_secret(key_replaced, value=value, content_type=content_type)
+        secret = client.set_secret(secret_name_prefix + key_replaced, value=value, content_type=content_type)
         print(secret.name)
         #except Exception:
             #print("ERROR ON KEY!!!!!!")
