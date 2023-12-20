@@ -1,0 +1,13 @@
+environment: stage
+replicaCount: 2
+image:
+  name: acrtrkmtv2shared.azurecr.io/stage/tcp-proxy-server
+
+loadBalancerIP: 4.157.175.191
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
