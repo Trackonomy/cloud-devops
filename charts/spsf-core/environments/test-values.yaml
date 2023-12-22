@@ -1,0 +1,14 @@
+env: test
+loadBalancerIP: 172.200.153.255
+image:
+  port: 8078
+  name: acrspsfstage.azurecr.io/test/spsf-core-service # acr image name
+replicaCount: 1
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
