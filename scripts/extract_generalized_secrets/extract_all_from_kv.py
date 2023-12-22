@@ -24,13 +24,40 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-def main():
-    args = parse_args()
-    secret_name_prefix = ''
-    env = args.environment
-    if env != None:
-        env = str(env)
-        secret_name_prefix = env.upper() + '-'
+def prefix_flow(secret_name_prefix):
+    client = get_kv_client()
+    logger = logging.getLogger('azure')
+    logger.setLevel(logging.ERROR)
+    handler = logging.StreamHandler(stream=sys.stdout)
+    logger.addHandler(handler)
+    with open("variables.env", "w") as f:
+        secrets = client.list_properties_of_secrets()
+        
+        for secret_property in secrets:
+            value = ''
+            secret = secret_property.name
+            if secret is None:
+                print('SKIPPED EMPTY NAME SECRET')
+                continue
+            if not secret.startswith(secret_name_prefix):
+                print(f"Skipping secret: {secret}")
+                continue
+            try:
+                extracted_secret = client.get_secret(secret)
+                value = extracted_secret.value
+            except ResourceNotFoundError:
+                print(f"CANNOT EXTRACT SECRET {secret}")
+                sys.exit(1)
+        
+            if secret_name_prefix != '':
+                secret = secret.removeprefix(secret_name_prefix)
+            secret_transformed = secret.replace("-", "_")
+            value = value.rstrip("\n")
+            f.write(f"{secret_transformed}={value}" + "\n")
+            print(f"Extracted {secret_transformed}")
+        f.close()
+
+def no_prefix_flow():
     client = get_kv_client()
     logger = logging.getLogger('azure')
     logger.setLevel(logging.ERROR)
@@ -51,14 +78,23 @@ def main():
             except ResourceNotFoundError:
                 print(f"CANNOT EXTRACT SECRET {secret}")
                 sys.exit(1)
-        
-            if secret_name_prefix != '':
-                secret = secret.removeprefix(secret_name_prefix)
+
             secret_transformed = secret.replace("-", "_")
             value = value.rstrip("\n")
             f.write(f"{secret_transformed}={value}" + "\n")
             print(f"Extracted {secret_transformed}")
         f.close()
+
+def main():
+    args = parse_args()
+    secret_name_prefix = ''
+    env = args.environment
+    if env != None:
+        env = str(env)
+        secret_name_prefix = env.upper() + '-'
+        prefix_flow(secret_name_prefix)
+    else:
+        no_prefix_flow()
 
 if __name__=="__main__":
     main()
