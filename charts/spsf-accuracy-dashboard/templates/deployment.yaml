@@ -15,9 +15,6 @@ spec:
       labels:
         app: "spsf-accuracy-dashoard-{{ .Values.env }}"
     spec:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
       containers:
       - name: "spsf-accuracy-dashoard-service"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
