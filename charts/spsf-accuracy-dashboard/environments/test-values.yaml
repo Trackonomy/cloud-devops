@@ -1,0 +1,13 @@
+env: test
+loadBalancerIP: 172.200.153.255
+image:
+  name: acrspsfstage.azurecr.io/test/spsf-accuracy-dashboard # acr image name
+replicaCount: 1
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
