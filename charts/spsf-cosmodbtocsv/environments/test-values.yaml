@@ -1,0 +1,20 @@
+env: test
+loadBalancerIP: 172.200.153.255
+image:
+  port:
+    backend: 5000
+    frontend: 8080
+  name:
+    frontend: acrspsfstage.azurecr.io/test/spsf-cosmodbtocsv-backend
+    backend: acrspsfstage.azurecr.io/test/spsf-cosmodbtocsv-backend
+replicaCount:
+    backend: 1
+    frontend: 1 
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
