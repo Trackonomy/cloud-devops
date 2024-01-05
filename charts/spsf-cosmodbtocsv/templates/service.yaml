@@ -11,7 +11,7 @@ spec:
   ports:
   - protocol: TCP
     port: {{ .Values.image.port.frontend }}
-    targetPort: {{ .Values.image.port.frontend }}
+    targetPort: 80
   type: LoadBalancer
 
 ---
@@ -27,4 +27,3 @@ spec:
   - protocol: TCP
     port: {{ .Values.image.port.backend }}
     targetPort: {{ .Values.image.port.backend }}
-  type: LoadBalancer
