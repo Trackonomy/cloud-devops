@@ -1,0 +1,12 @@
+environment: eu-prod
+loadBalancerIP: 20.76.184.128
+loadBalancerRG: rg-trk-uni-shared-weu
+replicaCount: 2
+image:
+  name: acrtrkuniweu.azurecr.io/eu-prod/uni-events
+requests:
+  cpu: 100m
+  memory: 256Mi
+limits:
+  cpu: 500m
+  memory: 1024Mi

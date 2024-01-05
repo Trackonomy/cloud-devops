@@ -1,0 +1,12 @@
+environment: us-prod
+loadBalancerIP: 52.151.232.19
+loadBalancerRG: rg-trk-uni-shared-eastus
+replicaCount: 2
+image:
+  name: acrtrkunieus.azurecr.io/us-prod/uni-events
+requests:
+  cpu: 100m
+  memory: 256Mi
+limits:
+  cpu: 500m
+  memory: 1024Mi
