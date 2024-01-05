@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: spsf-core-{{ .Values.env }}-configmap
+  name: spsf-cosmodbtocsv-backend-{{ .Values.env }}-configmap
   namespace: {{ .Values.env }}
 data:
   .env: |
