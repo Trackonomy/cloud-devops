@@ -20,6 +20,8 @@ kind: Service
 metadata:
   name: "spsf-cosmodbtocsv-backend-{{ .Values.env }}-service"
   namespace: {{ .Values.env }}
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-ipv4: {{ .Values.loadBalancerIP }}
 spec:
   selector:
     app: "spsf-cosmodbtocsv-backend-{{ .Values.env }}"
@@ -27,3 +29,4 @@ spec:
   - protocol: TCP
     port: {{ .Values.image.port.backend }}
     targetPort: {{ .Values.image.port.backend }}
+  type: LoadBalancer
