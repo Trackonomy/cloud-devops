@@ -20,7 +20,7 @@ spec:
         image: "{{ .Values.image.name.backend }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.image.port }}
+        - containerPort: {{ .Values.image.port.backend }}
         resources:
             requests:
               cpu: {{ default "100m" .Values.requests.cpu }}
@@ -63,7 +63,7 @@ spec:
         image: "{{ .Values.image.name.frontend }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.image.port }}
+        - containerPort: {{ .Values.image.port.frontend }}
         resources:
             requests:
               cpu: {{ default "100m" .Values.requests.cpu }}
