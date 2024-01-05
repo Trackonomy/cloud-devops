@@ -5,7 +5,7 @@ image:
     backend: 5000
     frontend: 8080
   name:
-    frontend: acrspsfstage.azurecr.io/test/spsf-cosmodbtocsv-backend
+    frontend: acrspsfstage.azurecr.io/test/spsf-cosmodbtocsv-frontend
     backend: acrspsfstage.azurecr.io/test/spsf-cosmodbtocsv-backend
 replicaCount:
     backend: 1
