@@ -4,7 +4,7 @@ internalIP: true
 unprivileged: true
 image:
   port: 3333
-  name: trkuniusstressacr.azurecr.io/ann-sb-alert-sender/prod # acr image name
+  name: trkmtcrprod2wiacr.azurecr.io/ann-sb-alert-sender/prod # acr image name
 replicaCount: 1
 
 requests:
