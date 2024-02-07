@@ -1,5 +1,5 @@
 env: prod
-loadBalancerIP: 10.0.192.20
+loadBalancerIP: 10.0.64.25
 internalIP: true
 unprivileged: true
 image:
