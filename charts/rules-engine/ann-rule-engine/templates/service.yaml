@@ -4,6 +4,9 @@ metadata:
   name: "ann-rule-engine-{{ .Values.env }}-service"
   namespace: {{ .Values.env }}
   annotations:
+    {{- if .Values.internalIP }}
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    {{- end }}
     service.beta.kubernetes.io/azure-load-balancer-ipv4: {{ .Values.loadBalancerIP }}
 spec:
   selector:

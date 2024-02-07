@@ -1,0 +1,15 @@
+env: prod
+loadBalancerIP: 10.0.192.20
+internalIP: true
+image:
+  port: 8080
+  targetPort: 8080
+  name: trkmtcrprod2wiacr.azurecr.io/ann-rule-engine/prod
+replicaCount: 1
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
