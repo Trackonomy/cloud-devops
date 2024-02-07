@@ -1,6 +1,7 @@
 env: prod
 loadBalancerIP: 10.0.192.20
 internalIP: true
+unprivileged: true
 image:
   port: 3333
   name: trkuniusstressacr.azurecr.io/ann-sb-alert-sender/prod # acr image name

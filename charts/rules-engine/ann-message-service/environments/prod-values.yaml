@@ -5,6 +5,7 @@ image:
 
 loadBalancerIP: 10.0.192.20
 internalIP: true
+unprivileged: true
 sms:
   requests:
     cpu:

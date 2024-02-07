@@ -18,6 +18,9 @@ spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
+        {{- if .Values.unprivileged }}
+        allowPrivilegeEscalation: false
+        {{- end }}
       containers:
       - name: "ann-rule-engine"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
