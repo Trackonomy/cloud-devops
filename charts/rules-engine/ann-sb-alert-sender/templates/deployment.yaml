@@ -18,11 +18,14 @@ spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
-        {{- if .Values.unprivileged }}
-        allowPrivilegeEscalation: false
-        {{- end }}
       containers:
       - name: "ann-sb-alert-sender"
+        {{- if .Values.unprivileged }}
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          allowPrivilegeEscalation: false
+        {{- end }}
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
         ports:
