@@ -3,7 +3,7 @@ image:
   name: trkmtcrprod2wiacr.azurecr.io/ann-message-service/prod
   tag: latest
 
-loadBalancerIP: 10.0.64.25
+loadBalancerIP: 10.0.64.56
 internalIP: true
 unprivileged: true
 sms:
