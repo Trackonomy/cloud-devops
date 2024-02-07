@@ -3,7 +3,7 @@ loadBalancerIP: 10.0.192.20
 internalIP: true
 image:
   port: 3333
-  name: trkuniusstressacr.azurecr.io/trkmtcrprod2wiacr/prod # acr image name
+  name: trkuniusstressacr.azurecr.io/ann-sb-alert-sender/prod # acr image name
 replicaCount: 1
 
 requests:
