@@ -111,7 +111,7 @@ jobs:
             sudo cp -r /tmp/node-dev/* /apis/node-dev
             cd /apis/node-dev
             sudo npm install pm2 -g --unsafe-perm=true --allow-root
-            sudo npm install --unsafe-perm=true --allow-root
+            sudo npm ci --unsafe-perm=true --allow-root
           dist-type: 'SharedImageGallery'
           dist-resource-id: '/subscriptions/${{steps.parse-conf.outputs.SUB_ID}}/resourceGroups/${{steps.parse-conf.outputs.PROJECT_NAME}}/providers/Microsoft.Compute/galleries/${{steps.parse-conf.outputs.IM_GAL_ID}}/images/${{steps.parse-conf.outputs.IM_NAME}}/versions/${{steps.parse-conf.outputs.IM_VERSION}}'
           dist-location: ${{steps.parse-conf.outputs.PROJECT_LOC}}
