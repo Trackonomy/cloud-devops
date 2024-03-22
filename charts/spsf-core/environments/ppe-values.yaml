@@ -1,5 +1,5 @@
 env: ppe
-loadBalancerIP: 10.0.24.60
+loadBalancerIP: 10.0.25.50
 image:
   port: 8078
   name: trkspsfcrppepsyacr.azurecr.io/ppe/spsf-core-service # acr image name
