@@ -2,12 +2,12 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: "spsf-core-{{ .Values.environment }}"
+  name: "spsf-core-{{ .Values.env }}"
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: "spsf-core-{{ .Values.environment }}"
+    name: "spsf-core-{{ .Values.env }}"
   minReplicas: {{ .Values.minReplicas | default 2 }}
   maxReplicas: {{ .Values.maxReplicas | default 10 }}
   metrics:
