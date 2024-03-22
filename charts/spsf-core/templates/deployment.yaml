@@ -6,7 +6,9 @@ metadata:
   labels:
     app: "spsf-core-{{ .Values.env }}"
 spec:
+  {{- if eq .Values.hpa.enabled false }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       app: "spsf-core-{{ .Values.env }}"
@@ -20,6 +22,10 @@ spec:
         runAsGroup: 1000
       containers:
       - name: "spsf-core-service"
+        {{- if .Values.unprivileged }}
+        securityContext:
+          allowPrivilegeEscalation: false
+        {{- end }}
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
         ports:

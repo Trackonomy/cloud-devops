@@ -5,6 +5,9 @@ metadata:
   namespace: {{ .Values.env }}
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-ipv4: {{ .Values.loadBalancerIP }}
+    {{- if .Values.internalIP }}
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    {{- end }}
 spec:
   selector:
     app: "spsf-core-{{ .Values.env }}"

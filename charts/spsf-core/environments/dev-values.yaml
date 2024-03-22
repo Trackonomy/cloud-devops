@@ -12,3 +12,6 @@ requests:
 limits:
   cpu:
   memory:
+
+hpa:
+  enabled: false
