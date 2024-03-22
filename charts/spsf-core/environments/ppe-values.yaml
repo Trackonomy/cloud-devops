@@ -2,12 +2,14 @@ env: ppe
 loadBalancerIP: 10.0.24.50
 image:
   port: 8078
-  name: trkspsfcrppepsyacr.azurecr.io/test/spsf-core-service # acr image name
+  name: trkspsfcrppepsyacr.azurecr.io/ppe/spsf-core-service # acr image name
 
 hpa:
   enabled: true
   minReplicas: 2
   maxReplicas: 30
+
+internalIP: true
 
 unprivileged: true
 requests:
