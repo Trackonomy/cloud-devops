@@ -1,0 +1,9 @@
+apiVersion: v2
+name: spsf-external-apis
+description: A Helm chart for spsf-external-apis
+
+type: application
+
+version: 0.1.0
+
+appVersion: "1.16.0"

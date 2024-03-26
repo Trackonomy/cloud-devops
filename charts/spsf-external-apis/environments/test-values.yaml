@@ -1,0 +1,20 @@
+env: test
+loadBalancerIP: 172.200.153.255
+image:
+  port: 6000
+  name: acrspsfstage.azurecr.io/test/spsf-external-apis # acr image name
+
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
+
+hpa:
+  enabled: true
+
+secrets:
+  kv_name: kvspsfdev
+  kv_client_id: 8342fb9c-8ffc-4dfc-8ca0-3245d012230b
