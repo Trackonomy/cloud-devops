@@ -39,18 +39,18 @@ spec:
         - name: AZURE_COSMOS_DB_NAME
           valueFrom:
             secretKeyRef:
-              name: cosmos_db_name
-              key: cosmos_db_name
+              name: cosmosdbname
+              key: cosmosdbname
         - name: AZURE_COSMOS_DB_ENDPOINT
           valueFrom:
             secretKeyRef:
-              name: cosmos_db_endpoint
-              key: cosmos_db_endpoint
+              name: cosmosdbendpoint
+              key: cosmosdbendpoint
         - name: AZURE_COSMOS_DB_KEY
           valueFrom:
             secretKeyRef:
-              name: cosmos_db_key
-              key: cosmos_db_key
+              name: cosmosdbkey
+              key: cosmosdbkey
       volumes:
       - name: secrets-store01-inline
         csi:
