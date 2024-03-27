@@ -15,6 +15,7 @@ spec:
       labels:
         app: "spsf-external-apis-{{ .Values.env }}"
     spec:
+      serviceAccountName: {{ .Values.serviceAccountName }}
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000

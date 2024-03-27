@@ -15,6 +15,7 @@ limits:
 hpa:
   enabled: true
 
+serviceAccountName: test-identity-kv
 secrets:
   kv_name: kvspsfdev
   kv_client_id: 8342fb9c-8ffc-4dfc-8ca0-3245d012230b
