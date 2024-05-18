@@ -1,5 +1,5 @@
 env: test
-loadBalancerIP: 20.114.227.163
+loadBalancerIP: 172.200.153.255
 image:
   port: 7000
   targetPort: 7000
