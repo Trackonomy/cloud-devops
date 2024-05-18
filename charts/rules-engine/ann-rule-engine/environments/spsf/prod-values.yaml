@@ -2,7 +2,7 @@ env: dev
 loadBalancerIP: 20.75.71.185
 image:
   port: 7000
-  targetPort: 7000
+  targetPort: 8080
   name: acrspsfstage.azurecr.io/prod/ann-rule-engine # acr image name
 replicaCount: 1
 requests:
