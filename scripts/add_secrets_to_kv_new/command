@@ -1,0 +1,1 @@
+python3 add_variables_to_kv.py  -a tevents -e us-ppe -k kvunieventsppeeus --client-id 92778f3d-335a-4570-8d77-c3f7ccf4e556 --client-secret QSy8Q~.hQHmMZmZgzbGyt5roASXo3U6JDfsWraDo -f variables.env

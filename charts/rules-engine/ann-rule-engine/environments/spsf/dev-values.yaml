@@ -1,0 +1,14 @@
+env: test
+loadBalancerIP: 20.114.227.163
+image:
+  port: 7000
+  targetPort: 7000
+  name: acrspsfstage.azurecr.io/dev/ann-rule-engine # acr image name
+replicaCount: 1
+requests:
+  cpu:
+  memory:
+
+limits:
+  cpu:
+  memory:
