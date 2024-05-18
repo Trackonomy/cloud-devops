@@ -2,7 +2,7 @@ env: dev
 loadBalancerIP: 20.75.71.185
 image:
   port: 3333
-  name: acrspsfstage.azurecr.io/dev/ann-sb-alert-sender # acr image name
+  name: acrspsfstage.azurecr.io/prod/ann-sb-alert-sender # acr image name
 replicaCount: 1
 
 requests:
