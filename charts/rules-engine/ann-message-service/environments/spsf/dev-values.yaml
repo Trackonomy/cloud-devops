@@ -1,0 +1,21 @@
+env: test
+image:
+  name: acrspsfstage.azurecr.io/dev/ann-message-service
+  tag: latest
+
+loadBalancerIP: 172.200.153.255
+sms:
+  requests:
+    cpu:
+    memory:
+  limits:
+    cpu:
+    memory:
+
+email:
+  requests:
+    cpu:
+    memory:
+  limits:
+    cpu:
+    memory:
