@@ -12,5 +12,5 @@ requests:
   memory:
 
 limits:
-  cpu:
-  memory:
+  cpu: 500m
+  memory: 1024Mi
