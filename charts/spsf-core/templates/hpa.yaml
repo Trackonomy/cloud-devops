@@ -8,8 +8,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: "spsf-core-{{ .Values.env }}"
-  minReplicas: {{ .Values.minReplicas | default 2 }}
-  maxReplicas: {{ .Values.maxReplicas | default 10 }}
+  minReplicas: {{ .Values.minReplicas | default 10 }}
+  maxReplicas: {{ .Values.maxReplicas | default 20 }}
   metrics:
   - type: Resource
     resource:
