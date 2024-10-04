@@ -5,12 +5,12 @@ image:
   name: acrspsfstage.azurecr.io/dev/spsf-core-service # acr image name
 
 requests:
-  cpu: 2000m
-  memory: 4096Mi
+  cpu: 1000m
+  memory: 2048Mi
 
 limits:
-  cpu: 10000m
-  memory: 10240Mi
+  cpu: 5000m
+  memory: 5120Mi
 
 hpa:
   enabled: true
