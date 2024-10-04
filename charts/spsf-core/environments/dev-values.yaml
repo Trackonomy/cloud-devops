@@ -14,5 +14,5 @@ limits:
 
 hpa:
   enabled: true
-minReplicas: 10
-maxReplicas: 20
+minReplicas: 20
+maxReplicas: 30
