@@ -32,11 +32,11 @@ spec:
         - containerPort: {{ .Values.image.port }}
         resources:
             requests:
-              cpu: {{ default "100m" .Values.requests.cpu }}
-              memory: {{ default "256Mi" .Values.requests.memory  }}
+              cpu: {{ default "1000m" .Values.requests.cpu }}
+              memory: {{ default "2560Mi" .Values.requests.memory  }}
             limits:
-              cpu: {{  default "200m" .Values.requests.cpu }}
-              memory: {{ default "512Mi" .Values.requests.memory }}
+              cpu: {{  default "4000m" .Values.requests.cpu }}
+              memory: {{ default "5120Mi" .Values.requests.memory }}
         volumeMounts:
         - name: variables-env
           mountPath: /.env
