@@ -33,10 +33,10 @@ spec:
         resources:
             requests:
               cpu: {{ default "1000m" .Values.requests.cpu }}
-              memory: {{ default "2560Mi" .Values.requests.memory  }}
+              memory: {{ default "2048Mi" .Values.requests.memory  }}
             limits:
               cpu: {{  default "4000m" .Values.requests.cpu }}
-              memory: {{ default "5120Mi" .Values.requests.memory }}
+              memory: {{ default "10240Mi" .Values.requests.memory }}
         volumeMounts:
         - name: variables-env
           mountPath: /.env
