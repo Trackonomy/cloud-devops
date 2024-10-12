@@ -9,7 +9,7 @@ image:
 replicaCount: 4
 requests:
   cpu: 1000m
-  memory: 10240Mi
+  memory: 2048Mi
 
 limits:
   cpu: 5000m
